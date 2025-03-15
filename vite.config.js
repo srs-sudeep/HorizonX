@@ -5,6 +5,7 @@ import TurboConsole from "unplugin-turbo-console/vite";
 import { defineConfig } from "vite";
 import biomePlugin from "vite-plugin-biome";
 import checker from "vite-plugin-checker";
+import path from "node:path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -34,5 +35,10 @@ export default defineConfig({
 	test: {
 		globals: true,
 		environment: "jsdom",
+	},
+	resolve: {
+		alias: {
+			"~": path.resolve(__dirname, "./src"),
+		},
 	},
 });
