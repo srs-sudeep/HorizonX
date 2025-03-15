@@ -1,0 +1,42 @@
+{
+	"name": "my-app",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"start": "vite --port 3000",
+		"build": "vite build && tsc",
+		"serve": "vite preview",
+		"test": "vitest run",
+		"format": "biome format --write .",
+		"lint": "biome lint --write .",
+		"check": "biome check --write .",
+		"prepare": "husky"
+	},
+	"dependencies": {
+		"@commitlint/cli": "^19.8.0",
+		"@commitlint/config-conventional": "^19.8.0",
+		"@tanstack/react-router": "^1.114.3",
+		"@tanstack/react-router-devtools": "^1.114.3",
+		"@tanstack/router-plugin": "^1.114.3",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0",
+		"vite-plugin-biome": "^1.0.12"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"@testing-library/dom": "^10.4.0",
+		"@testing-library/react": "^16.2.0",
+		"@types/react": "^19.0.8",
+		"@types/react-dom": "^19.0.3",
+		"@vitejs/plugin-react": "^4.3.4",
+		"husky": "^9.1.7",
+		"jsdom": "^26.0.0",
+		"typescript": "^5.7.2",
+		"unplugin-auto-export": "^1.0.2",
+		"unplugin-turbo-console": "^1.11.3",
+		"vite": "^6.1.0",
+		"vite-plugin-checker": "^0.9.0",
+		"vitest": "^3.0.5",
+		"web-vitals": "^4.2.4"
+	}
+}

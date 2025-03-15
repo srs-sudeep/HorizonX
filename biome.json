@@ -1,0 +1,53 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+	"vcs": {
+		"enabled": false,
+		"clientKind": "git",
+		"useIgnoreFile": false
+	},
+	"organizeImports": {
+		"enabled": true
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true
+		}
+	},
+	"formatter": {
+		"enabled": true,
+		"formatWithErrors": false,
+		"indentWidth": 2,
+		"lineWidth": 80,
+		"ignore": [
+			"dist/*",
+			"node_modules/*",
+			"**/*.gen.ts",
+			"coverage/*",
+			"commitlint.config.js"
+		],
+		"attributePosition": "auto",
+		"indentStyle": "tab",
+		"lineEnding": "lf"
+	},
+	"javascript": {
+		"formatter": {
+			"arrowParentheses": "always",
+			"bracketSameLine": false,
+			"bracketSpacing": true,
+			"jsxQuoteStyle": "double",
+			"quoteProperties": "asNeeded",
+			"semicolons": "always",
+			"trailingCommas": "all"
+		}
+	},
+	"files": {
+		"ignore": [
+			"dist/*",
+			"node_modules/*",
+			"**/*.gen.ts",
+			"coverage/*",
+			"commitlint.config.js"
+		]
+	}
+}
