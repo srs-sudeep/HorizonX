@@ -5,5 +5,9 @@ export const Route = createFileRoute("/page")({
 });
 
 function RouteComponent() {
-	return <div>Hello "/page"!</div>;
+	return (
+		<h1 className="text-3xl font-bold underline text-amber-400">
+			Hello world!
+		</h1>
+	);
 }

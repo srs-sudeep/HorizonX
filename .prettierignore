@@ -1,0 +1,12 @@
+# Ignore artifacts:
+build
+dist
+coverage
+node_modules
+
+# Ignore all HTML files:
+*.html
+
+# Ignore generated files
+*.gen.ts
+*.gen.tsx

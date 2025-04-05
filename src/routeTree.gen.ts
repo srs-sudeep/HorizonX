@@ -11,10 +11,23 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as UnauthorizedImport } from './routes/unauthorized'
 import { Route as PageImport } from './routes/page'
+import { Route as NotFoundImport } from './routes/not-found'
 import { Route as IndexImport } from './routes/index'
+import { Route as AuthRegisterImport } from './routes/_auth/register'
+import { Route as AuthLoginImport } from './routes/_auth/login'
+import { Route as ProtectedUserIndexImport } from './routes/_protected/user/index'
+import { Route as ProtectedManagerIndexImport } from './routes/_protected/manager/index'
+import { Route as ProtectedAdminIndexImport } from './routes/_protected/admin/index'
 
 // Create/Update Routes
+
+const UnauthorizedRoute = UnauthorizedImport.update({
+  id: '/unauthorized',
+  path: '/unauthorized',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const PageRoute = PageImport.update({
   id: '/page',
@@ -22,9 +35,45 @@ const PageRoute = PageImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const NotFoundRoute = NotFoundImport.update({
+  id: '/not-found',
+  path: '/not-found',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthRegisterRoute = AuthRegisterImport.update({
+  id: '/_auth/register',
+  path: '/register',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthLoginRoute = AuthLoginImport.update({
+  id: '/_auth/login',
+  path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProtectedUserIndexRoute = ProtectedUserIndexImport.update({
+  id: '/_protected/user/',
+  path: '/user/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProtectedManagerIndexRoute = ProtectedManagerIndexImport.update({
+  id: '/_protected/manager/',
+  path: '/manager/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProtectedAdminIndexRoute = ProtectedAdminIndexImport.update({
+  id: '/_protected/admin/',
+  path: '/admin/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -39,11 +88,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/not-found': {
+      id: '/not-found'
+      path: '/not-found'
+      fullPath: '/not-found'
+      preLoaderRoute: typeof NotFoundImport
+      parentRoute: typeof rootRoute
+    }
     '/page': {
       id: '/page'
       path: '/page'
       fullPath: '/page'
       preLoaderRoute: typeof PageImport
+      parentRoute: typeof rootRoute
+    }
+    '/unauthorized': {
+      id: '/unauthorized'
+      path: '/unauthorized'
+      fullPath: '/unauthorized'
+      preLoaderRoute: typeof UnauthorizedImport
+      parentRoute: typeof rootRoute
+    }
+    '/_auth/login': {
+      id: '/_auth/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof AuthLoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/_auth/register': {
+      id: '/_auth/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof AuthRegisterImport
+      parentRoute: typeof rootRoute
+    }
+    '/_protected/admin/': {
+      id: '/_protected/admin/'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof ProtectedAdminIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/_protected/manager/': {
+      id: '/_protected/manager/'
+      path: '/manager'
+      fullPath: '/manager'
+      preLoaderRoute: typeof ProtectedManagerIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/_protected/user/': {
+      id: '/_protected/user/'
+      path: '/user'
+      fullPath: '/user'
+      preLoaderRoute: typeof ProtectedUserIndexImport
       parentRoute: typeof rootRoute
     }
   }
@@ -53,37 +151,100 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/not-found': typeof NotFoundRoute
   '/page': typeof PageRoute
+  '/unauthorized': typeof UnauthorizedRoute
+  '/login': typeof AuthLoginRoute
+  '/register': typeof AuthRegisterRoute
+  '/admin': typeof ProtectedAdminIndexRoute
+  '/manager': typeof ProtectedManagerIndexRoute
+  '/user': typeof ProtectedUserIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/not-found': typeof NotFoundRoute
   '/page': typeof PageRoute
+  '/unauthorized': typeof UnauthorizedRoute
+  '/login': typeof AuthLoginRoute
+  '/register': typeof AuthRegisterRoute
+  '/admin': typeof ProtectedAdminIndexRoute
+  '/manager': typeof ProtectedManagerIndexRoute
+  '/user': typeof ProtectedUserIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/not-found': typeof NotFoundRoute
   '/page': typeof PageRoute
+  '/unauthorized': typeof UnauthorizedRoute
+  '/_auth/login': typeof AuthLoginRoute
+  '/_auth/register': typeof AuthRegisterRoute
+  '/_protected/admin/': typeof ProtectedAdminIndexRoute
+  '/_protected/manager/': typeof ProtectedManagerIndexRoute
+  '/_protected/user/': typeof ProtectedUserIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/page'
+  fullPaths:
+    | '/'
+    | '/not-found'
+    | '/page'
+    | '/unauthorized'
+    | '/login'
+    | '/register'
+    | '/admin'
+    | '/manager'
+    | '/user'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/page'
-  id: '__root__' | '/' | '/page'
+  to:
+    | '/'
+    | '/not-found'
+    | '/page'
+    | '/unauthorized'
+    | '/login'
+    | '/register'
+    | '/admin'
+    | '/manager'
+    | '/user'
+  id:
+    | '__root__'
+    | '/'
+    | '/not-found'
+    | '/page'
+    | '/unauthorized'
+    | '/_auth/login'
+    | '/_auth/register'
+    | '/_protected/admin/'
+    | '/_protected/manager/'
+    | '/_protected/user/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  NotFoundRoute: typeof NotFoundRoute
   PageRoute: typeof PageRoute
+  UnauthorizedRoute: typeof UnauthorizedRoute
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthRegisterRoute: typeof AuthRegisterRoute
+  ProtectedAdminIndexRoute: typeof ProtectedAdminIndexRoute
+  ProtectedManagerIndexRoute: typeof ProtectedManagerIndexRoute
+  ProtectedUserIndexRoute: typeof ProtectedUserIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  NotFoundRoute: NotFoundRoute,
   PageRoute: PageRoute,
+  UnauthorizedRoute: UnauthorizedRoute,
+  AuthLoginRoute: AuthLoginRoute,
+  AuthRegisterRoute: AuthRegisterRoute,
+  ProtectedAdminIndexRoute: ProtectedAdminIndexRoute,
+  ProtectedManagerIndexRoute: ProtectedManagerIndexRoute,
+  ProtectedUserIndexRoute: ProtectedUserIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,14 +258,42 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/page"
+        "/not-found",
+        "/page",
+        "/unauthorized",
+        "/_auth/login",
+        "/_auth/register",
+        "/_protected/admin/",
+        "/_protected/manager/",
+        "/_protected/user/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
+    "/not-found": {
+      "filePath": "not-found.tsx"
+    },
     "/page": {
       "filePath": "page.tsx"
+    },
+    "/unauthorized": {
+      "filePath": "unauthorized.tsx"
+    },
+    "/_auth/login": {
+      "filePath": "_auth/login.tsx"
+    },
+    "/_auth/register": {
+      "filePath": "_auth/register.tsx"
+    },
+    "/_protected/admin/": {
+      "filePath": "_protected/admin/index.tsx"
+    },
+    "/_protected/manager/": {
+      "filePath": "_protected/manager/index.tsx"
+    },
+    "/_protected/user/": {
+      "filePath": "_protected/user/index.tsx"
     }
   }
 }

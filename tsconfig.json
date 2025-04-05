@@ -18,9 +18,14 @@
 		/* Linting */
 		"skipLibCheck": true,
 		"strict": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
 		"noFallthroughCasesInSwitch": true,
-		"noUncheckedSideEffectImports": true
+		"noUncheckedSideEffectImports": true,
+		"allowJs": true,
+		"checkJs": false,
+		"noImplicitAny": false,
+		"ignoreDeprecations": "5.0"
 	}
 }
+

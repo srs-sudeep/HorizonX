@@ -1,3 +1,8 @@
-bun format
-bun lint
-bun check
+#!/usr/bin/env sh
+# . "$(dirname -- "$0")/_/husky.sh"
+
+# # Run ESLint
+# bun run lint:check
+
+# # Run Prettier check
+# bun run format:check

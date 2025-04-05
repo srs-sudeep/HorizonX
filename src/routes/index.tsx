@@ -1,35 +1,39 @@
-import { createFileRoute } from "@tanstack/react-router";
-import "../App.css";
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { useAuthStore } from "../store";
 
 export const Route = createFileRoute("/")({
-	component: App,
+	beforeLoad: async () => {
+		// This is a client-side redirect
+		const { isAuthenticated, user } = useAuthStore.getState();
+
+		if (!isAuthenticated) {
+			throw redirect({
+				to: "/login",
+			});
+		}
+
+		// Redirect based on user role
+		if (user) {
+			if (user.role === "admin") {
+				throw redirect({
+					to: "/admin",
+				});
+			} else if (user.role === "manager") {
+				throw redirect({
+					to: "/manager",
+				});
+			} else {
+				throw redirect({
+					to: "/user",
+				});
+			}
+		}
+
+		return {};
+	},
+	component: IndexPage,
 });
 
-function App() {
-	return (
-		<div className="App">
-			<header className="App-header">
-				<img src="/WhiteLogoHorizontalNB.svg" className="App-logo" alt="logo" />{" "}
-				<p>
-					Edit <code>src/routes/index.tsx</code> and save to reload.
-				</p>
-				<a
-					className="App-link"
-					href="https://reactjs.org"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Learn React
-				</a>
-				<a
-					className="App-link"
-					href="https://tanstack.com"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Learn TanStack
-				</a>
-			</header>
-		</div>
-	);
+function IndexPage() {
+	return null;
 }
