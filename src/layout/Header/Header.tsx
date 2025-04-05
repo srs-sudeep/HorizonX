@@ -22,7 +22,7 @@ import {
 } from "@mui/material";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { useAuthStore, useUIStore } from "../../../store";
+import { useAuthStore, useUIStore } from "../../store";
 
 interface HeaderProps {
 	onToggleSidebar: () => void;

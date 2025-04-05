@@ -1,6 +1,6 @@
 import { Box, CssBaseline, Toolbar } from "@mui/material";
 import type { ReactNode } from "react";
-import { useAuthStore, useUIStore } from "../../store";
+import { useAuthStore, useUIStore } from "../store";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";

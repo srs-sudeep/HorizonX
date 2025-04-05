@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import { Layout } from "../components/layout";
+import { Layout } from "../layout/Layout";
 import { useUIStore } from "../store";
 import { darkTheme, lightTheme } from "../theme";
 

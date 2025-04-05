@@ -13,8 +13,8 @@ import {
 	useTheme,
 } from "@mui/material";
 import { useState } from "react";
-import { menuConfig } from "../../../config/menuConfig";
-import { useAuthStore } from "../../../store";
+import { menuConfig } from "../../config/menuConfig";
+import { useAuthStore } from "../../store";
 import { SidebarItem } from "./SidebarItem";
 
 interface SidebarProps {
