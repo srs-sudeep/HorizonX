@@ -1,8 +1,7 @@
 import { Alert, Box, Button, Container, Grid, Paper, TextField, Typography } from '@mui/material';
 import { Link, createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
-import { GuestGuard } from '../../core/common';
-
+import { GuestGuard } from "@core/Private/GuestGuard";
 export const Route = createFileRoute('/_auth/register')({
   component: RegisterPage,
 });
@@ -218,4 +217,3 @@ export function RegisterPage() {
     </GuestGuard>
   );
 }
-

@@ -1,14 +1,62 @@
 {
-	"include": ["**/*.ts", "**/*.tsx"],
+	"include": [
+		"**/*.ts",
+		"**/*.tsx"
+	],
 	"compilerOptions": {
 		"target": "ES2022",
 		"jsx": "react-jsx",
 		"module": "ESNext",
-		"lib": ["ES2022", "DOM", "DOM.Iterable"],
-		"types": ["vite/client", "unplugin-turbo-console/client"],
+		"lib": [
+			"ES2022",
+			"DOM",
+			"DOM.Iterable"
+		],
+		"types": [
+			"vite/client",
+			"unplugin-turbo-console/client"
+		],
 		"baseUrl": ".",
 		"paths": {
-			"~/*": ["./src/*"]
+			"~/*": [
+				"./src/*"
+			],
+			"@/*": [
+				"./src/*"
+			],
+			"@components/*": [
+				"./src/components/*"
+			],
+			"@core/*": [
+				"./src/core/*"
+			],
+			"@layout/*": [
+				"./src/layout/*"
+			],
+			"@hooks/*": [
+				"./src/hooks/*"
+			],
+			"@store/*": [
+				"./src/store/*"
+			],
+			"@theme/*": [
+				"./src/theme/*"
+			],
+			"@types/*": [
+				"./src/types/*"
+			],
+			"@utils/*": [
+				"./src/utils/*"
+			],
+			"@config/*": [
+				"./src/config/*"
+			],
+			"@services/*": [
+				"./src/services/*"
+			],
+			"@assets/*": [
+				"./src/assets/*"
+			]
 		},
 		/* Bundler mode */
 		"moduleResolution": "bundler",
@@ -28,4 +76,3 @@
 		"ignoreDeprecations": "5.0"
 	}
 }
-

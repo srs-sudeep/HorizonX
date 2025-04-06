@@ -10,8 +10,8 @@ import {
   Typography,
 } from '@mui/material';
 import { createFileRoute } from '@tanstack/react-router';
-import { AuthGuard } from '../../../core/common';
-import { UserRole } from '../../../types';
+import { AuthGuard } from '@core/Private/AuthGuard';
+import { UserRole } from '@/types/auth';
 
 export const Route = createFileRoute('/_protected/user/')({
   component: UserDashboard,
@@ -179,4 +179,3 @@ function UserDashboard() {
     </AuthGuard>
   );
 }
-

@@ -11,8 +11,8 @@ import {
 } from '@mui/material';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
-import { GuestGuard } from '../../core/common';
-import { useAuthStore } from '../../store';
+import { GuestGuard } from "@core/Private/GuestGuard";
+import { useAuthStore } from '@store/auth/authStore';
 
 export const Route = createFileRoute('/_auth/login')({
   component: LoginPage,
@@ -185,5 +185,3 @@ export function LoginPage() {
     </GuestGuard>
   );
 }
-
-

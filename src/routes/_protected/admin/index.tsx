@@ -1,7 +1,7 @@
 import { Box, Grid, Paper, Typography } from '@mui/material';
 import { createFileRoute } from '@tanstack/react-router';
-import { AuthGuard } from '../../../core/common';
-import { UserRole } from '../../../types';
+import { AuthGuard } from '@core/Private/AuthGuard';
+import { UserRole } from '@/types/auth';
 
 export const Route = createFileRoute('/_protected/admin/')({
   component: AdminDashboard,
@@ -104,4 +104,3 @@ function AdminDashboard() {
     </AuthGuard>
   );
 }
-
