@@ -132,7 +132,7 @@ export function RegisterPage() {
 
             <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3, width: '100%' }}>
               <Grid container spacing={2}>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <TextField
                     autoComplete="name"
                     name="name"
@@ -148,7 +148,7 @@ export function RegisterPage() {
                     disabled={isLoading}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <TextField
                     required
                     fullWidth
@@ -163,7 +163,7 @@ export function RegisterPage() {
                     disabled={isLoading}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     required
                     fullWidth
@@ -179,7 +179,7 @@ export function RegisterPage() {
                     disabled={isLoading}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     required
                     fullWidth
@@ -207,7 +207,7 @@ export function RegisterPage() {
               </Button>
 
               <Grid container justifyContent="flex-end">
-                <Grid item>
+                <Grid>
                   <Link to="/login">Already have an account? Sign in</Link>
                 </Grid>
               </Grid>
@@ -218,3 +218,4 @@ export function RegisterPage() {
     </GuestGuard>
   );
 }
+

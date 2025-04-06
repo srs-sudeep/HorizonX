@@ -29,7 +29,7 @@ function UserDashboard() {
         </Typography>
 
         <Grid container spacing={3}>
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Paper
               sx={{
                 p: 3,
@@ -48,7 +48,7 @@ function UserDashboard() {
             </Paper>
           </Grid>
 
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Paper
               sx={{
                 p: 3,
@@ -67,7 +67,7 @@ function UserDashboard() {
             </Paper>
           </Grid>
 
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Paper
               sx={{
                 p: 3,
@@ -92,7 +92,7 @@ function UserDashboard() {
             My Projects
           </Typography>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <Card>
                 <CardHeader
                   avatar={<Avatar sx={{ bgcolor: 'primary.main' }}>A</Avatar>}
@@ -113,7 +113,7 @@ function UserDashboard() {
               </Card>
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <Card>
                 <CardHeader
                   avatar={<Avatar sx={{ bgcolor: 'secondary.main' }}>B</Avatar>}
@@ -179,3 +179,4 @@ function UserDashboard() {
     </AuthGuard>
   );
 }
+

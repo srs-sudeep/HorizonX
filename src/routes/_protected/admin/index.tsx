@@ -19,7 +19,7 @@ function AdminDashboard() {
         </Typography>
 
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid size={{ xs: 12, md: 6, lg: 3 }}>
             <Paper
               sx={{
                 p: 3,
@@ -39,8 +39,7 @@ function AdminDashboard() {
               </Typography>
             </Paper>
           </Grid>
-
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid size={{ xs: 12, md: 6, lg: 3 }}>
             <Paper
               sx={{
                 p: 3,
@@ -60,8 +59,7 @@ function AdminDashboard() {
               </Typography>
             </Paper>
           </Grid>
-
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid size={{ xs: 12, md: 6, lg: 3 }}>
             <Paper
               sx={{
                 p: 3,
@@ -81,8 +79,7 @@ function AdminDashboard() {
               </Typography>
             </Paper>
           </Grid>
-
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid size={{ xs: 12, md: 6, lg: 3 }}>
             <Paper
               sx={{
                 p: 3,
@@ -103,18 +100,8 @@ function AdminDashboard() {
             </Paper>
           </Grid>
         </Grid>
-
-        <Box sx={{ mt: 4 }}>
-          <Typography variant="h5" gutterBottom>
-            System Status
-          </Typography>
-          <Paper sx={{ p: 3 }}>
-            <Typography variant="body1">
-              All systems are operational. The last system update was performed on April 5, 2025.
-            </Typography>
-          </Paper>
-        </Box>
       </Box>
     </AuthGuard>
   );
 }
+

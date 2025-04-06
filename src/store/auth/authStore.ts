@@ -34,7 +34,7 @@ export const useAuthStore = create<
     logout: () => void;
     checkAuth: () => boolean;
   }
->(
+>()(
   persist(
     (set, get) => ({
       user: null,

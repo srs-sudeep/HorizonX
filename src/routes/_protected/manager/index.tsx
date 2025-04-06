@@ -8,7 +8,6 @@ export const Route = createFileRoute('/_protected/manager/')({
 });
 
 function ManagerDashboard() {
-  // Sample data for the dashboard
   const recentActivities = [
     { id: 1, activity: 'Project Alpha status updated', time: '2 hours ago' },
     {
@@ -29,7 +28,7 @@ function ManagerDashboard() {
   ];
 
   return (
-    <AuthGuard allowedRoles={[UserRole.ADMIN, UserRole.MANAGER]}>
+    <AuthGuard allowedRoles={[UserRole.MANAGER]}>
       <Box>
         <Typography variant="h4" gutterBottom>
           Manager Dashboard
@@ -39,7 +38,7 @@ function ManagerDashboard() {
         </Typography>
 
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid size={{ xs: 12, md: 6, lg: 3 }}>
             <Paper
               sx={{
                 p: 3,
@@ -58,7 +57,7 @@ function ManagerDashboard() {
             </Paper>
           </Grid>
 
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid size={{ xs: 12, md: 6, lg: 3 }}>
             <Paper
               sx={{
                 p: 3,
@@ -77,7 +76,7 @@ function ManagerDashboard() {
             </Paper>
           </Grid>
 
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid size={{ xs: 12, md: 6, lg: 3 }}>
             <Paper
               sx={{
                 p: 3,
@@ -96,7 +95,7 @@ function ManagerDashboard() {
             </Paper>
           </Grid>
 
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid size={{ xs: 12, md: 6, lg: 3 }}>
             <Paper
               sx={{
                 p: 3,
@@ -117,7 +116,7 @@ function ManagerDashboard() {
         </Grid>
 
         <Grid container spacing={3} sx={{ mt: 1 }}>
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Paper sx={{ p: 3 }}>
               <Typography variant="h6" gutterBottom>
                 Recent Activities
@@ -135,7 +134,7 @@ function ManagerDashboard() {
             </Paper>
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Paper sx={{ p: 3 }}>
               <Typography variant="h6" gutterBottom>
                 Upcoming Deadlines
@@ -160,3 +159,6 @@ function ManagerDashboard() {
     </AuthGuard>
   );
 }
+
+
+

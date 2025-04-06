@@ -1,6 +1,6 @@
-import type { TypographyOptions } from "@mui/material/styles/createTypography";
+import type { ThemeOptions } from "@mui/material/styles";
 
-export const typography: TypographyOptions = {
+export const typography: ThemeOptions["typography"] = {
 	fontFamily: [
 		"Inter",
 		"-apple-system",
@@ -79,3 +79,6 @@ export const typography: TypographyOptions = {
 		textTransform: "uppercase",
 	},
 };
+
+
+

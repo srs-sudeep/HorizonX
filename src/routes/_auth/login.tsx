@@ -4,6 +4,7 @@ import {
   Button,
   CircularProgress,
   Container,
+  Grid,
   Paper,
   TextField,
   Typography,
@@ -105,36 +106,42 @@ export function LoginPage() {
             )}
 
             <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3, width: '100%' }}>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                error={!!formErrors.email}
-                helperText={formErrors.email}
-                disabled={isLoading}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                error={!!formErrors.password}
-                helperText={formErrors.password}
-                disabled={isLoading}
-              />
+              <Grid container spacing={2}>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                    autoFocus
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    error={!!formErrors.email}
+                    helperText={formErrors.email}
+                    disabled={isLoading}
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    error={!!formErrors.password}
+                    helperText={formErrors.password}
+                    disabled={isLoading}
+                  />
+                </Grid>
+              </Grid>
 
               <Button
                 type="submit"
@@ -178,3 +185,5 @@ export function LoginPage() {
     </GuestGuard>
   );
 }
+
+
