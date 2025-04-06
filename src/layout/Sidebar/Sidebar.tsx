@@ -20,6 +20,7 @@ import { menuConfig } from '@config/menuConfig';
 import { useAuthStore } from '@store/index';
 import { SidebarItem } from './SidebarItem';
 import { alpha } from '@mui/material/styles';
+import { Logo } from '@components/Logo';
 
 interface SidebarProps {
   open: boolean;
@@ -50,83 +51,38 @@ export const Sidebar = ({ open, onClose, onToggle }: SidebarProps) => {
   const drawer = (
     <>
       <Box
-        component="div"
         sx={{
+          height: 64,
           display: 'flex',
           alignItems: 'center',
           justifyContent: collapsed ? 'center' : 'space-between',
-          px: collapsed ? 1 : 2,
-          py: 2,
-          minHeight: 64,
+          px: collapsed ? 1 : 3,
+          borderBottom: '1px solid',
+          borderColor: 'divider',
         }}
       >
-        {!collapsed && (
-          <Typography
-            variant="h6"
-            component="div"
-            noWrap
-            color="primary"
-            sx={{
-              fontWeight: 700,
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <Box
-              component="span"
+        {collapsed ? (
+          <Logo showText={false} size={32} />
+        ) : (
+          <>
+            <Logo horizontal size={32} />
+            <IconButton
+              onClick={handleDrawerToggle}
+              size="small"
               sx={{
-                width: 32,
-                height: 32,
+                width: 24,
+                height: 24,
                 borderRadius: 1,
-                bgColor: 'primary.main',
-                color: 'white',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                mr: 1,
-                fontWeight: 900,
+                backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.04),
+                '&:hover': {
+                  backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.08),
+                },
               }}
             >
-              H
-            </Box>
-            Horizon
-          </Typography>
+              {collapsed ? <ChevronRightIcon fontSize="small" /> : <ChevronLeftIcon fontSize="small" />}
+            </IconButton>
+          </>
         )}
-        {collapsed && (
-          <Box
-            component="span"
-            sx={{
-              width: 32,
-              height: 32,
-              borderRadius: 1,
-              bgColor: 'primary.main',
-              color: 'white',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 900,
-            }}
-          >
-            H
-          </Box>
-        )}
-        <IconButton
-          onClick={handleDrawerToggle}
-          size="small"
-          color="inherit"
-          aria-label={collapsed ? 'expand sidebar' : 'collapse sidebar'}
-          sx={{
-            width: 28,
-            height: 28,
-            borderRadius: 1,
-            bgColor: alpha(theme.palette.primary.main, 0.08),
-            '&:hover': {
-              bgColor: alpha(theme.palette.primary.main, 0.12),
-            },
-          }}
-        >
-          {collapsed ? <ChevronRightIcon fontSize="small" /> : <ChevronLeftIcon fontSize="small" />}
-        </IconButton>
       </Box>
 
       {!collapsed && user && (

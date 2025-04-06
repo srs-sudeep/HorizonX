@@ -28,6 +28,7 @@ import {
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useAuthStore, useUIStore } from "../../store";
+import { Logo } from '@components/Logo';
 
 interface HeaderProps {
 	onToggleSidebar: () => void;
@@ -63,7 +64,7 @@ export const Header = ({ onToggleSidebar }: HeaderProps) => {
 				backgroundColor: theme.palette.background.paper,
 				color: theme.palette.text.primary,
 			}}
-			elevation={1}
+			elevation={0}
 		>
 			<Toolbar>
 				<IconButton
@@ -76,18 +77,7 @@ export const Header = ({ onToggleSidebar }: HeaderProps) => {
 					<MenuIcon />
 				</IconButton>
 
-				<Typography
-					variant="h6"
-					component="div"
-					sx={{
-						flexGrow: 0,
-						fontWeight: 700,
-						color: theme.palette.primary.main,
-						mr: 4,
-					}}
-				>
-					Horizon
-				</Typography>
+				<Logo horizontal size={40} sx={{ mr: 4 }} />
 
 				{/* Search Bar */}
 				<Box
