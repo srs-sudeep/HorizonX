@@ -41,7 +41,7 @@ interface SidebarItemProps {
       icon?: string;
     }>;
   };
-  collapsed: boolean;
+  open: boolean;
 }
 
 // Map of icon names to icon components
@@ -60,9 +60,9 @@ const iconMap: Record<string, React.ElementType> = {
   crm: CrmIcon,
 };
 
-export const SidebarItem = ({ item, collapsed }: SidebarItemProps) => {
+export const SidebarItem = ({ item, open }: SidebarItemProps) => {
   const theme = useTheme();
-  const [open, setOpen] = useState(false);
+  const [isSubMenuOpen, setSubMenuOpen] = useState(false);
   const matchRoute = useMatchRoute();
   const isActive = Boolean(matchRoute({ to: item.path, fuzzy: true }));
 
@@ -70,7 +70,7 @@ export const SidebarItem = ({ item, collapsed }: SidebarItemProps) => {
 
   const handleClick = () => {
     if (hasChildren) {
-      setOpen(!open);
+      setSubMenuOpen(!isSubMenuOpen);
     }
   };
 
@@ -86,8 +86,8 @@ export const SidebarItem = ({ item, collapsed }: SidebarItemProps) => {
       disableRipple
       sx={{
         minHeight: 44,
-        justifyContent: collapsed ? 'center' : 'initial',
-        px: collapsed ? 1 : 2,
+        justifyContent: open ? 'initial' : 'center',
+        px: open ? 2 : 1,
         py: 0.5,
         my: 0.5,
         borderRadius: 1,
@@ -104,11 +104,12 @@ export const SidebarItem = ({ item, collapsed }: SidebarItemProps) => {
         },
       }}
     >
-      <Tooltip title={collapsed ? item.label : ''} placement="right">
+      {/* Show tooltip only when sidebar is closed */}
+      <Tooltip title={!open ? item.label : ''} placement="right">
         <ListItemIcon
           sx={{
             minWidth: 0,
-            mr: collapsed ? 0 : 2,
+            mr: open ? 2 : 0,
             justifyContent: 'center',
             color: isActive ? theme.palette.primary.main : 'inherit',
           }}
@@ -116,7 +117,9 @@ export const SidebarItem = ({ item, collapsed }: SidebarItemProps) => {
           <SvgIcon component={IconComponent} fontSize="small" />
         </ListItemIcon>
       </Tooltip>
-      {!collapsed && (
+
+      {/* Only render text and expand icons when sidebar is open */}
+      {open && (
         <>
           <ListItemText
             primary={
@@ -137,7 +140,7 @@ export const SidebarItem = ({ item, collapsed }: SidebarItemProps) => {
           />
           {hasChildren && (
             <Box sx={{ color: 'inherit', ml: 1 }}>
-              {open ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}
+              {isSubMenuOpen ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}
             </Box>
           )}
         </>
@@ -148,8 +151,8 @@ export const SidebarItem = ({ item, collapsed }: SidebarItemProps) => {
   return (
     <>
       {listItemButton}
-      {hasChildren && !collapsed && (
-        <Collapse in={open} timeout="auto" unmountOnExit>
+      {hasChildren && open && (
+        <Collapse in={isSubMenuOpen} timeout="auto" unmountOnExit>
           <List component="div" disablePadding sx={{ mt: 0.5, pl: 2 }}>
             {item.children?.map(child => {
               const ChildIconComponent =

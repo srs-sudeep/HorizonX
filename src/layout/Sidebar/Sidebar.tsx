@@ -33,14 +33,12 @@ const drawerWidth = 260;
 export const Sidebar = ({ open, onClose, onToggle }: SidebarProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const [collapsed, setCollapsed] = useState(false);
   const { user } = useAuthStore();
 
   const handleDrawerToggle = () => {
     if (isMobile) {
       onClose();
     } else {
-      setCollapsed(!collapsed);
       onToggle();
     }
   };
@@ -55,13 +53,13 @@ export const Sidebar = ({ open, onClose, onToggle }: SidebarProps) => {
           height: 64,
           display: 'flex',
           alignItems: 'center',
-          justifyContent: collapsed ? 'center' : 'space-between',
-          px: collapsed ? 1 : 3,
+          justifyContent: !open ? 'center' : 'space-between',
+          px: !open ? 1 : 3,
           borderBottom: '1px solid',
           borderColor: 'divider',
         }}
       >
-        {collapsed ? (
+        {!open ? (
           <Logo showText={false} size={32} />
         ) : (
           <>
@@ -73,19 +71,19 @@ export const Sidebar = ({ open, onClose, onToggle }: SidebarProps) => {
                 width: 24,
                 height: 24,
                 borderRadius: 1,
-                backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.04),
+                backgroundColor: theme => alpha(theme.palette.primary.main, 0.04),
                 '&:hover': {
-                  backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.08),
+                  backgroundColor: theme => alpha(theme.palette.primary.main, 0.08),
                 },
               }}
             >
-              {collapsed ? <ChevronRightIcon fontSize="small" /> : <ChevronLeftIcon fontSize="small" />}
+              {!open ? <ChevronRightIcon fontSize="small" /> : <ChevronLeftIcon fontSize="small" />}
             </IconButton>
           </>
         )}
       </Box>
 
-      {!collapsed && user && (
+      {open && user && (
         <Box
           component="div"
           sx={{
@@ -118,11 +116,11 @@ export const Sidebar = ({ open, onClose, onToggle }: SidebarProps) => {
         </Box>
       )}
 
-      <Divider sx={{ mx: collapsed ? 0 : 2, mb: 1 }} />
+      <Divider sx={{ mx: !open ? 0 : 2, mb: 1 }} />
 
-      <List component="nav" sx={{ px: collapsed ? 1 : 2 }}>
+      <List component="nav" sx={{ px: !open ? 1 : 2 }}>
         {filteredMenuItems.map(item => (
-          <SidebarItem key={item.path} item={item} collapsed={collapsed} />
+          <SidebarItem key={item.path} item={item} collapsed={!open} />
         ))}
       </List>
     </>
@@ -156,12 +154,12 @@ export const Sidebar = ({ open, onClose, onToggle }: SidebarProps) => {
         // Desktop drawer
         <Drawer
           variant="permanent"
-          open={!collapsed}
+          open={open}
           sx={{
             display: { xs: 'none', md: 'block' },
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
-              width: collapsed ? 72 : drawerWidth,
+              width: !open ? 72 : drawerWidth,
               transition: theme.transitions.create('width', {
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.enteringScreen,
