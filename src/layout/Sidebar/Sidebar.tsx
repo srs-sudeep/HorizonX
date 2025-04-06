@@ -83,46 +83,50 @@ export const Sidebar = ({ open, onClose, onToggle }: SidebarProps) => {
         )}
       </Box>
 
-      {open && user && (
-        <Box
-          component="div"
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            px: 2,
-            py: 1.5,
-            mx: 2,
-            mb: 2,
-            borderRadius: 1,
-            bgColor: alpha(theme.palette.primary.main, 0.04),
-          }}
-        >
-          <Avatar
-            alt={user.name}
-            src={user.avatar}
-            variant="rounded"
-            sx={{ width: 32, height: 32, mr: 1.5 }}
-          >
-            {user.name.charAt(0)}
-          </Avatar>
-          <Box sx={{ overflow: 'hidden' }}>
-            <Typography variant="subtitle2" noWrap>
-              {user.name}
-            </Typography>
-            <Typography variant="caption" color="text.secondary" noWrap>
-              {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
-            </Typography>
-          </Box>
-        </Box>
-      )}
-
       <Divider sx={{ mx: !open ? 0 : 2, mb: 1 }} />
 
       <List component="nav" sx={{ px: !open ? 1 : 2 }}>
         {filteredMenuItems.map(item => (
-          <SidebarItem key={item.path} item={item} collapsed={!open} />
+          <SidebarItem key={item.path} item={item} open={open} />
         ))}
       </List>
+
+      {/* User profile moved to the bottom */}
+      {open && user && (
+        <Box sx={{ mt: 'auto' }}>
+          <Divider sx={{ mx: !open ? 0 : 2, my: 1 }} />
+          <Box
+            component="div"
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              px: 2,
+              py: 1.5,
+              mx: 2,
+              mb: 2,
+              borderRadius: 1,
+              bgcolor: alpha(theme.palette.primary.main, 0.04),
+            }}
+          >
+            <Avatar
+              alt={user.name}
+              src={user.avatar}
+              variant="rounded"
+              sx={{ width: 32, height: 32, mr: 1.5 }}
+            >
+              {user.name.charAt(0)}
+            </Avatar>
+            <Box sx={{ overflow: 'hidden' }}>
+              <Typography variant="subtitle2" noWrap>
+                {user.name}
+              </Typography>
+              <Typography variant="caption" color="text.secondary" noWrap>
+                {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+      )}
     </>
   );
 
@@ -162,7 +166,7 @@ export const Sidebar = ({ open, onClose, onToggle }: SidebarProps) => {
               width: !open ? 72 : drawerWidth,
               transition: theme.transitions.create('width', {
                 easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.enteringScreen,
+                duration: theme.transitions.duration.leavingScreen, // Use consistent timing
               }),
               overflowX: 'hidden',
               borderRight: 0,

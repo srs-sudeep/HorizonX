@@ -67,48 +67,131 @@ export const Header = ({ onToggleSidebar }: HeaderProps) => {
 			elevation={0}
 		>
 			<Toolbar>
+			<Logo horizontal size={40} sx={{ mr: 4 }} />
 				<IconButton
 					color="inherit"
 					aria-label="open drawer"
 					edge="start"
 					onClick={onToggleSidebar}
-					sx={{ mr: 2 }}
-				>
-					<MenuIcon />
-				</IconButton>
-
-				<Logo horizontal size={40} sx={{ mr: 4 }} />
-
-				{/* Search Bar */}
-				<Box
 					sx={{
-						position: 'relative',
-						borderRadius: 1,
-						backgroundColor: alpha(theme.palette.common.white, 0.15),
+						ml: 4,
+						backgroundColor: open => open ? alpha(theme.palette.primary.main, 0.1) : 'transparent',
+						borderRadius: '8px',
+						padding: '8px',
+						transition: theme.transitions.create(['background-color', 'transform'], {
+							duration: theme.transitions.duration.shorter,
+						}),
 						'&:hover': {
-							backgroundColor: alpha(theme.palette.common.white, 0.25),
+							backgroundColor: alpha(theme.palette.primary.main, 0.8),
 						},
-						mr: 2,
-						flexGrow: 1,
-						display: { xs: 'none', sm: 'flex' },
+						'&:active': {
+							transform: 'scale(0.95)',
+						},
 					}}
 				>
-					<IconButton sx={{ p: '10px' }} aria-label="search">
-						<SearchIcon />
-					</IconButton>
-					<InputBase
-						placeholder="Search..."
+					<MenuIcon 
 						sx={{
-							color: 'inherit',
-							flex: 1,
-							'& .MuiInputBase-input': {
-								padding: theme.spacing(1, 1, 1, 0),
-							},
+							fontSize: '1.25rem',
+							color: theme.palette.text.primary,
+							transition: theme.transitions.create('transform', {
+								duration: theme.transitions.duration.shortest,
+							}),
 						}}
 					/>
-				</Box>
-
+				</IconButton>
+				
+				{/* Spacer to push everything else to the right */}
+				<Box sx={{ flexGrow: 1 }} />
+				
+				{/* Group all right-side elements */}
 				<Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+					{/* Enhanced Search Bar */}
+					<Box
+						sx={{
+							position: 'relative',
+							borderRadius: '8px',
+							backgroundColor: alpha(theme.palette.background.default, 0.15),
+							'&:hover': {
+								backgroundColor: alpha(theme.palette.background.default, 0.25),
+							},
+							mr: 2,
+							py: 0.5,
+							width: { xs: '100%', sm: 'auto' },
+							minWidth: '400px',
+							display: { xs: 'none', sm: 'flex' },
+							border: `1px solid ${alpha(theme.palette.divider, 0.08)}`,
+							transition: theme.transitions.create(['width', 'background-color']),
+							'&:focus-within': {
+								backgroundColor: alpha(theme.palette.background.default, 0.25),
+								boxShadow: `0 2px 8px 0 ${alpha(theme.palette.primary.main, 0.15)}`,
+								borderColor: alpha(theme.palette.primary.main, 0.25),
+							},
+						}}
+					>
+						<IconButton 
+							sx={{ 
+								p: '8px',
+								color: theme.palette.text.secondary,
+							}} 
+							aria-label="search"
+						>
+							<SearchIcon fontSize="small" />
+						</IconButton>
+						<InputBase
+							placeholder="Search..."
+							sx={{
+								color: theme.palette.text.primary,
+								width: '100%',
+								'& .MuiInputBase-input': {
+									padding: theme.spacing(1, 1, 1, 0),
+									fontSize: '0.875rem',
+									transition: theme.transitions.create('width'),
+									width: '100%',
+									'&::placeholder': {
+										color: theme.palette.text.secondary,
+										opacity: 0.7,
+									},
+								},
+							}}
+							endAdornment={
+								<IconButton 
+									size="small" 
+									sx={{ 
+										visibility: 'hidden', 
+										opacity: 0,
+										transition: '0.2s',
+										mr: 0.5,
+										p: 0.5,
+										color: theme.palette.text.secondary,
+										'&:hover': {
+											backgroundColor: alpha(theme.palette.divider, 0.1),
+										},
+										'.MuiInputBase-root:focus-within &': {
+											visibility: 'visible',
+											opacity: 1,
+										}
+									}}
+								>
+									<Box 
+										component="span" 
+										sx={{ 
+											fontSize: '0.65rem', 
+											fontWeight: 'bold',
+											px: 0.5,
+											py: 0.25,
+											borderRadius: 0.5,
+											border: `1px solid ${alpha(theme.palette.divider, 0.5)}`,
+											color: theme.palette.text.secondary,
+											bgcolor: alpha(theme.palette.background.paper, 0.8),
+										}}
+									>
+										⌘K
+									</Box>
+								</IconButton>
+							}
+						/>
+					</Box>
+
 					<IconButton color="inherit">
 						<Badge badgeContent={4} color="error">
 							<NotificationsOutlined />

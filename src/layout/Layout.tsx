@@ -47,7 +47,15 @@ export const Layout = ({ children }: LayoutProps) => {
           p: 3,
           width: '100%',
           position: 'relative',
-          pb: '60px', // Add padding to account for fixed footer
+          pb: '60px', // Add padding for fixed footer
+          transition: theme => theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen, // Match sidebar transition
+          }),
+          ...(isAuthenticated && {
+            marginLeft: { md: 0 }, // Keep margin consistent
+            width: { md: `calc(100% - ${sidebarOpen ? 260 : 72}px)` },
+          }),
         }}
       >
         <Toolbar />
