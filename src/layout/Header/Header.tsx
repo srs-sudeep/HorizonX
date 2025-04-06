@@ -5,6 +5,8 @@ import {
 	Logout,
 	Menu as MenuIcon,
 	Settings,
+	Search as SearchIcon,
+	NotificationsOutlined,
 } from "@mui/icons-material";
 import {
 	AppBar,
@@ -19,6 +21,9 @@ import {
 	Typography,
 	useMediaQuery,
 	useTheme,
+	InputBase,
+	Badge,
+	alpha,
 } from "@mui/material";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
@@ -61,31 +66,65 @@ export const Header = ({ onToggleSidebar }: HeaderProps) => {
 			elevation={1}
 		>
 			<Toolbar>
-				{user && (
-					<IconButton
-						color="inherit"
-						aria-label="open drawer"
-						edge="start"
-						onClick={onToggleSidebar}
-						sx={{ mr: 2, display: { sm: "none" } }}
-					>
-						<MenuIcon />
-					</IconButton>
-				)}
+				<IconButton
+					color="inherit"
+					aria-label="open drawer"
+					edge="start"
+					onClick={onToggleSidebar}
+					sx={{ mr: 2 }}
+				>
+					<MenuIcon />
+				</IconButton>
 
 				<Typography
 					variant="h6"
 					component="div"
 					sx={{
-						flexGrow: 1,
+						flexGrow: 0,
 						fontWeight: 700,
 						color: theme.palette.primary.main,
+						mr: 4,
 					}}
 				>
 					Horizon
 				</Typography>
 
-				<Box sx={{ display: "flex", alignItems: "center" }}>
+				{/* Search Bar */}
+				<Box
+					sx={{
+						position: 'relative',
+						borderRadius: 1,
+						backgroundColor: alpha(theme.palette.common.white, 0.15),
+						'&:hover': {
+							backgroundColor: alpha(theme.palette.common.white, 0.25),
+						},
+						mr: 2,
+						flexGrow: 1,
+						display: { xs: 'none', sm: 'flex' },
+					}}
+				>
+					<IconButton sx={{ p: '10px' }} aria-label="search">
+						<SearchIcon />
+					</IconButton>
+					<InputBase
+						placeholder="Search..."
+						sx={{
+							color: 'inherit',
+							flex: 1,
+							'& .MuiInputBase-input': {
+								padding: theme.spacing(1, 1, 1, 0),
+							},
+						}}
+					/>
+				</Box>
+
+				<Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+					<IconButton color="inherit">
+						<Badge badgeContent={4} color="error">
+							<NotificationsOutlined />
+						</Badge>
+					</IconButton>
+
 					<IconButton onClick={toggleTheme} color="inherit">
 						{themeMode === "dark" ? <LightModeIcon /> : <DarkModeIcon />}
 					</IconButton>
@@ -102,7 +141,11 @@ export const Header = ({ onToggleSidebar }: HeaderProps) => {
 									aria-expanded={open ? "true" : undefined}
 								>
 									<Avatar
-										sx={{ width: 32, height: 32 }}
+										sx={{ 
+											width: 32, 
+											height: 32,
+											border: `2px solid ${theme.palette.primary.main}` 
+										}}
 										alt={user.name}
 										src={user.avatar}
 									>
@@ -118,30 +161,51 @@ export const Header = ({ onToggleSidebar }: HeaderProps) => {
 								onClick={handleClose}
 								transformOrigin={{ horizontal: "right", vertical: "top" }}
 								anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+								PaperProps={{
+									sx: {
+										mt: 1.5,
+										minWidth: 220,
+										borderRadius: 2,
+										boxShadow: theme.shadows[8],
+									},
+								}}
 							>
-								<MenuItem>
-									<Box sx={{ display: "flex", flexDirection: "column", ml: 1 }}>
-										<Typography variant="subtitle2">{user.name}</Typography>
-										<Typography variant="caption" color="text.secondary">
-											{user.email}
-										</Typography>
-										<Typography variant="caption" color="primary">
-											{user.role.toUpperCase()}
-										</Typography>
-									</Box>
-								</MenuItem>
+								<Box sx={{ p: 2, borderBottom: `1px solid ${theme.palette.divider}` }}>
+									<Typography variant="subtitle1" fontWeight="bold">
+										{user.name}
+									</Typography>
+									<Typography variant="body2" color="text.secondary">
+										{user.email}
+									</Typography>
+									<Typography 
+										variant="caption" 
+										sx={{ 
+											color: 'primary.main',
+											display: 'inline-block',
+											bgcolor: alpha(theme.palette.primary.main, 0.1),
+											px: 1,
+											py: 0.5,
+											borderRadius: 1,
+											mt: 1
+										}}
+									>
+										{user.role.toUpperCase()}
+									</Typography>
+								</Box>
 								<MenuItem component={Link} to="/profile">
-									<AccountCircle fontSize="small" sx={{ mr: 1 }} />
+									<AccountCircle fontSize="small" sx={{ mr: 2 }} />
 									Profile
 								</MenuItem>
 								<MenuItem component={Link} to="/settings">
-									<Settings fontSize="small" sx={{ mr: 1 }} />
+									<Settings fontSize="small" sx={{ mr: 2 }} />
 									Settings
 								</MenuItem>
-								<MenuItem onClick={handleLogout}>
-									<Logout fontSize="small" sx={{ mr: 1 }} />
-									Logout
-								</MenuItem>
+								<Box sx={{ borderTop: `1px solid ${theme.palette.divider}`, mt: 1 }}>
+									<MenuItem onClick={handleLogout} sx={{ color: 'error.main' }}>
+										<Logout fontSize="small" sx={{ mr: 2 }} />
+										Logout
+									</MenuItem>
+								</Box>
 							</Menu>
 						</>
 					) : (
@@ -172,3 +236,4 @@ export const Header = ({ onToggleSidebar }: HeaderProps) => {
 		</AppBar>
 	);
 };
+

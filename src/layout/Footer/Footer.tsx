@@ -5,19 +5,21 @@ export const Footer = () => {
 		<Box
 			component="footer"
 			sx={{
-				py: 3,
-				px: 2,
-				mt: "auto",
-				backgroundColor: (theme) =>
-					theme.palette.mode === "light"
-						? theme.palette.grey[100]
-						: theme.palette.grey[900],
+				py: 1,
+				height: '40px',
+				position: 'fixed',
+				bottom: 0,
+				left: 0,
+				right: 0,
+				display: 'flex',
+				alignItems: 'center',
+				borderTop: '1px solid',
+				borderColor: 'divider',
 			}}
 		>
 			<Container maxWidth="lg">
-				<Typography variant="body2" color="text.secondary" align="center">
-					{"© "}
-					{new Date().getFullYear()}{" "}
+				<Typography variant="caption" color="text.secondary" align="center" display="block">
+					© {new Date().getFullYear()}{" "}
 					<MuiLink color="inherit" href="/">
 						Horizon
 					</MuiLink>
@@ -27,3 +29,4 @@ export const Footer = () => {
 		</Box>
 	);
 };
+

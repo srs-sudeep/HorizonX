@@ -47,6 +47,7 @@ export const Layout = ({ children }: LayoutProps) => {
           p: 3,
           width: '100%',
           position: 'relative',
+          pb: '60px', // Add padding to account for fixed footer
         }}
       >
         <Toolbar />
@@ -75,3 +76,4 @@ export const Layout = ({ children }: LayoutProps) => {
     </Box>
   );
 };
+
