@@ -91,7 +91,7 @@ export const SidebarItem = ({ item, open }: SidebarItemProps) => {
         px: 2.5,
         py: 0.75,
         mb: 0.5,
-        color: isActive ? 'primary.main' : 'text.primary',
+        color: isActive ? theme => theme.palette.primary.dark : 'text.primary',
         backgroundColor: isActive ? theme => alpha(theme.palette.primary.main, 0.08) : 'transparent',
         '&:hover': {
           backgroundColor: theme => alpha(theme.palette.primary.main, isActive ? 0.12 : 0.06),
@@ -106,7 +106,7 @@ export const SidebarItem = ({ item, open }: SidebarItemProps) => {
             minWidth: 0,
             mr: open ? 2 : 0,
             justifyContent: 'center',
-            color: isActive ? 'primary.main' : 'inherit',
+            color: isActive ? theme => theme.palette.primary.dark : 'inherit',
             transition: 'all 0.2s ease-in-out',
           }}
         >
@@ -176,7 +176,7 @@ export const SidebarItem = ({ item, open }: SidebarItemProps) => {
                     my: 0.5,
                     borderRadius: 1,
                     color: isChildActive
-                      ? theme.palette.primary.main
+                      ? theme.palette.primary.dark
                       : theme.palette.text.secondary,
                     bgcolor: isChildActive
                       ? alpha(theme.palette.primary.main, 0.08)
@@ -197,7 +197,7 @@ export const SidebarItem = ({ item, open }: SidebarItemProps) => {
                       sx={{
                         minWidth: 24,
                         mr: 1,
-                        color: isChildActive ? theme.palette.primary.main : 'inherit',
+                        color: isChildActive ? theme.palette.primary.dark : 'inherit',
                       }}
                     >
                       <SvgIcon component={ChildIconComponent} fontSize="small" />

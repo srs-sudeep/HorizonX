@@ -206,6 +206,7 @@ export const Sidebar = ({ open, onClose, onToggle }: SidebarProps) => {
               boxShadow: theme.shadows[3],
               background: theme => alpha(theme.palette.background.paper, 0.95),
               backdropFilter: 'blur(8px)',
+              borderRadius: 0,
             },
           }}
         >
@@ -231,6 +232,7 @@ export const Sidebar = ({ open, onClose, onToggle }: SidebarProps) => {
               boxShadow: theme.shadows[2],
               background: theme => alpha(theme.palette.background.paper, 0.95),
               backdropFilter: 'blur(8px)',
+              borderRadius: 0,
             },
           }}
         >

@@ -122,6 +122,7 @@ export const Header = ({ onToggleSidebar }: HeaderProps) => {
 					['box-shadow', 'background-color', 'border-bottom'],
 					{ duration: theme.transitions.duration.standard }
 				),
+				borderRadius: 0, // Add this to ensure no border radius
 			}}
 			elevation={0}
 		>
