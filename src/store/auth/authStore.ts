@@ -48,7 +48,7 @@ export const useAuthStore = create<
 
         try {
           // Simulate API call
-          await new Promise(resolve => setTimeout(resolve, 1000));
+          await new Promise(resolve => setTimeout(resolve, 500)); // Reduced time
 
           // Find user with matching credentials
           const user = mockUsers.find(
@@ -65,6 +65,7 @@ export const useAuthStore = create<
           // Generate mock token
           const token = `mock-jwt-token-${Math.random().toString(36).substring(2, 15)}`;
 
+          // Update state immediately
           set({
             user: userWithoutPassword as User,
             token,
@@ -99,6 +100,8 @@ export const useAuthStore = create<
         token: state.token,
         isAuthenticated: state.isAuthenticated,
       }),
+      // Add this to ensure state is hydrated immediately on page load
+      skipHydration: false,
     }
   )
 );

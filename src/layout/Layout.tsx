@@ -1,4 +1,5 @@
-import { Box, CssBaseline, Toolbar, CircularProgress } from '@mui/material';
+import { Box, CssBaseline, Toolbar, CircularProgress, useTheme } from '@mui/material';
+import { useRouter } from '@tanstack/react-router';
 import type { ReactNode } from 'react';
 import { useState, useEffect } from 'react';
 import { useAuthStore, useUIStore } from '@store/index';
@@ -15,73 +16,71 @@ export const Layout = ({ children }: LayoutProps) => {
   const { sidebarOpen, toggleSidebar, setSidebarOpen } = useUIStore();
   const { isAuthenticated } = useAuthStore();
   const [loading, setLoading] = useState(true);
+  const theme = useTheme();
+  const router = useRouter();
 
-  // Simulate initial loading
+  // Check if current route is an authentication route (login or register)
+  const isAuthRoute =
+    router.state.location.pathname === '/login' || router.state.location.pathname === '/register';
+
+  // Reset loading state when authentication state changes
   useEffect(() => {
+    setLoading(true);
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 300); // Shorter loading time for better UX
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [isAuthenticated, router.state.location.pathname]);
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
-      <CssBaseline />
-      <Header onToggleSidebar={toggleSidebar} />
-
-      {isAuthenticated && (
-        <Sidebar
-          open={sidebarOpen}
-          onClose={() => setSidebarOpen(false)}
-          onToggle={toggleSidebar}
-        />
+    <Box
+      sx={{
+        display: 'flex',
+        minHeight: '100vh',
+        background: theme =>
+          theme.palette.mode === 'light'
+            ? `linear-gradient(to bottom right, ${theme.palette.background.default}, ${theme.palette.background.paper})`
+            : `linear-gradient(to bottom right, ${theme.palette.background.default}, ${theme.palette.background.paper})`,
+      }}
+    >
+      {/* Don't render Header and Sidebar for auth routes */}
+      {!isAuthRoute && (
+        <>
+          <Header onToggleSidebar={toggleSidebar} />
+          <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} onToggle={toggleSidebar} />
+        </>
       )}
 
       <Box
         component="main"
         sx={{
           flexGrow: 1,
+          width: { xs: '100%', md: `calc(100% - ${sidebarOpen ? 260 : 72}px)` },
+          ml: { xs: 0, md: sidebarOpen ? '30px' : '40px' },
+          transition: theme.transitions.create(['width', 'margin-left'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+          }),
           display: 'flex',
           flexDirection: 'column',
-          p: 3,
-          width: '100%',
+          minHeight: '100vh',
           position: 'relative',
-          pb: '60px', // Add padding for fixed footer
-          transition: theme => theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen, // Match sidebar transition
-          }),
-          ...(isAuthenticated && {
-            marginLeft: { md: 0 }, // Keep margin consistent
-            width: { md: `calc(100% - ${sidebarOpen ? 260 : 72}px)` },
-          }),
+          overflow: 'hidden',
         }}
       >
-        <Toolbar />
-        <Box sx={{ flexGrow: 1, py: 2, position: 'relative' }}>
-          {loading ? (
-            <Box
-              sx={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <LoadingAnimation size="large" text="Loading content..." />
-            </Box>
-          ) : (
-            children
-          )}
-        </Box>
-        <Footer />
+        {!isAuthRoute && <Toolbar />} {/* Spacer for fixed header */}
+        
+        {loading ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexGrow: 1 }}>
+            <LoadingAnimation />
+          </Box>
+        ) : (
+          <Box sx={{ p: { xs: 2, sm: 3 }, flexGrow: 1 }}>{children}</Box>
+        )}
+        
+        {!isAuthRoute && <Footer />}
       </Box>
     </Box>
   );
 };
-

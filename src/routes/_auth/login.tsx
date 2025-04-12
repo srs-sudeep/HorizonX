@@ -64,7 +64,10 @@ export function LoginPage() {
 
     try {
       await login({ email, password });
-      navigate({ to: returnUrl || '/' });
+      // Add a small delay to ensure state is updated before navigation
+      setTimeout(() => {
+        navigate({ to: returnUrl || '/' });
+      }, 100);
     } catch (error) {
       console.error('Login failed:', error);
     }
