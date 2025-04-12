@@ -97,6 +97,23 @@ export const Sidebar = ({ open, onClose, onToggle }: SidebarProps) => {
             transition: 'all 0.2s ease-in-out',
             '&:hover': {
               backgroundColor: theme => alpha(theme.palette.primary.main, 0.08),
+              transform: 'translateX(4px)',
+            },
+            '&.Mui-selected': {
+              backgroundColor: theme => alpha(theme.palette.primary.main, 0.12),
+              '&:hover': {
+                backgroundColor: theme => alpha(theme.palette.primary.main, 0.16),
+              },
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                left: 0,
+                top: '20%',
+                height: '60%',
+                width: 4,
+                backgroundColor: theme.palette.primary.main,
+                borderRadius: '0 4px 4px 0',
+              },
             },
           }
         }}
@@ -123,9 +140,11 @@ export const Sidebar = ({ open, onClose, onToggle }: SidebarProps) => {
               bgcolor: theme => alpha(theme.palette.primary.main, 0.06),
               boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
               transition: 'all 0.2s ease-in-out',
+              cursor: 'pointer',
               '&:hover': {
-                bgcolor: theme => alpha(theme.palette.primary.main, 0.08),
+                bgcolor: theme => alpha(theme.palette.primary.main, 0.12),
                 boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                transform: 'translateY(-2px)',
               },
             }}
           >

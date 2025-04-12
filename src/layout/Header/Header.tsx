@@ -48,11 +48,25 @@ export const Header = ({ onToggleSidebar }: HeaderProps) => {
 
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const [searchInputRef, setSearchInputRef] = useState<HTMLInputElement | null>(null);
-	const open = Boolean(anchorEl);
-
-	// Add these state variables for notifications
 	const [notificationAnchorEl, setNotificationAnchorEl] = useState<null | HTMLElement>(null);
+	const [scrolled, setScrolled] = useState(false);
+	const open = Boolean(anchorEl);
 	const notificationsOpen = Boolean(notificationAnchorEl);
+
+	// Add scroll detection
+	useEffect(() => {
+		const handleScroll = () => {
+			const isScrolled = window.scrollY > 10;
+			if (isScrolled !== scrolled) {
+				setScrolled(isScrolled);
+			}
+		};
+
+		window.addEventListener('scroll', handleScroll);
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+		};
+	}, [scrolled]);
 
 	// Add this handler for notification button click
 	const handleNotificationClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -97,11 +111,17 @@ export const Header = ({ onToggleSidebar }: HeaderProps) => {
 			position="fixed"
 			sx={{
 				zIndex: (theme) => theme.zIndex.drawer + 1,
-				backgroundColor: theme => alpha(theme.palette.background.paper, 0.85),
+				backgroundColor: theme => alpha(theme.palette.background.paper, scrolled ? 0.95 : 0.85),
 				backdropFilter: 'blur(10px)',
 				color: theme.palette.text.primary,
-				borderBottom: `1px solid ${alpha(theme.palette.divider, 0.08)}`,
-				boxShadow: `0 1px 10px 0 ${alpha(theme.palette.primary.main, 0.05)}`,
+				borderBottom: `1px solid ${alpha(theme.palette.divider, scrolled ? 0.12 : 0.08)}`,
+				boxShadow: scrolled 
+					? `0 4px 20px 0 ${alpha(theme.palette.common.black, 0.08)}`
+					: `0 1px 10px 0 ${alpha(theme.palette.primary.main, 0.05)}`,
+				transition: theme.transitions.create(
+					['box-shadow', 'background-color', 'border-bottom'],
+					{ duration: theme.transitions.duration.standard }
+				),
 			}}
 			elevation={0}
 		>
@@ -219,9 +239,17 @@ export const Header = ({ onToggleSidebar }: HeaderProps) => {
 											color: theme.palette.text.secondary,
 											bgcolor: alpha(theme.palette.background.paper, 0.8),
 											boxShadow: `0 1px 2px 0 ${alpha(theme.palette.common.black, 0.05)}`,
+											display: 'flex',
+											alignItems: 'center',
+											gap: 0.3,
 										}}
 									>
-										⌘K
+										<Box component="span" sx={{ 
+											fontSize: '0.6rem', 
+											opacity: 0.7,
+											lineHeight: 1,
+										}}>⌘</Box>
+										<Box component="span">K</Box>
 									</Box>
 								</Box>
 							}
@@ -255,6 +283,18 @@ export const Header = ({ onToggleSidebar }: HeaderProps) => {
 									minWidth: 16,
 									padding: '0 4px',
 									boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+									animation: notificationsOpen ? 'none' : 'pulse 2s infinite',
+									'@keyframes pulse': {
+										'0%': {
+											boxShadow: `0 0 0 0 ${alpha(theme.palette.error.main, 0.7)}`,
+										},
+										'70%': {
+											boxShadow: `0 0 0 6px ${alpha(theme.palette.error.main, 0)}`,
+										},
+										'100%': {
+											boxShadow: `0 0 0 0 ${alpha(theme.palette.error.main, 0)}`,
+										},
+									},
 								}
 							}}
 						>
@@ -386,8 +426,11 @@ export const Header = ({ onToggleSidebar }: HeaderProps) => {
 										transition: 'all 0.2s ease',
 										'&:hover': {
 											borderColor: theme.palette.primary.main,
-											transform: 'translateY(-2px)',
+											transform: 'translateY(-2px) scale(1.05)',
 											boxShadow: `0 4px 8px 0 ${alpha(theme.palette.primary.main, 0.15)}`,
+										},
+										'&:active': {
+											transform: 'translateY(0) scale(0.95)',
 										},
 									}}
 									aria-controls={open ? "account-menu" : undefined}
