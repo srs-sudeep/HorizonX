@@ -86,22 +86,17 @@ export const SidebarItem = ({ item, open }: SidebarItemProps) => {
       disableRipple
       sx={{
         minHeight: 44,
+        borderRadius: 1.5,
         justifyContent: open ? 'initial' : 'center',
-        px: open ? 2 : 1,
-        py: 0.5,
-        my: 0.5,
-        borderRadius: 1,
-        color: isActive ? theme.palette.primary.main : theme.palette.text.secondary,
-        bgcolor: isActive ? alpha(theme.palette.primary.main, 0.08) : 'transparent',
+        px: 2.5,
+        py: 0.75,
+        mb: 0.5,
+        color: isActive ? 'primary.main' : 'text.primary',
+        backgroundColor: isActive ? theme => alpha(theme.palette.primary.main, 0.08) : 'transparent',
         '&:hover': {
-          bgcolor: alpha(theme.palette.primary.main, 0.06),
+          backgroundColor: theme => alpha(theme.palette.primary.main, isActive ? 0.12 : 0.06),
         },
-        '&.Mui-selected': {
-          bgcolor: alpha(theme.palette.primary.main, 0.08),
-          '&:hover': {
-            bgcolor: alpha(theme.palette.primary.main, 0.12),
-          },
-        },
+        transition: 'all 0.2s ease-in-out',
       }}
     >
       {/* Show tooltip only when sidebar is closed */}
@@ -111,10 +106,18 @@ export const SidebarItem = ({ item, open }: SidebarItemProps) => {
             minWidth: 0,
             mr: open ? 2 : 0,
             justifyContent: 'center',
-            color: isActive ? theme.palette.primary.main : 'inherit',
+            color: isActive ? 'primary.main' : 'inherit',
+            transition: 'all 0.2s ease-in-out',
           }}
         >
-          <SvgIcon component={IconComponent} fontSize="small" />
+          <SvgIcon 
+            component={IconComponent} 
+            fontSize="small"
+            sx={{
+              transition: 'transform 0.2s ease-in-out',
+              transform: isActive ? 'scale(1.1)' : 'scale(1)',
+            }}
+          />
         </ListItemIcon>
       </Tooltip>
 

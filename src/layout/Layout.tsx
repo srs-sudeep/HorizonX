@@ -57,10 +57,10 @@ export const Layout = ({ children }: LayoutProps) => {
         sx={{
           flexGrow: 1,
           width: { xs: '100%', md: `calc(100% - ${sidebarOpen ? 260 : 72}px)` },
-          ml: { xs: 0, md: sidebarOpen ? '30px' : '40px' },
-          transition: theme.transitions.create(['width', 'margin-left'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
+          ml: { xs: 0, md: sidebarOpen ? '30px' : '60px' }, // Keep original values
+          transition: theme => theme.transitions.create(['width', 'margin-left'], {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.standard,
           }),
           display: 'flex',
           flexDirection: 'column',

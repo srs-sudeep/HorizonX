@@ -35,11 +35,11 @@ export const Footer = () => {
             ? 'linear-gradient(to right, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9))'
             : 'linear-gradient(to right, rgba(31, 41, 55, 0.9), rgba(31, 41, 55, 0.9))',
         boxShadow: '0 -2px 10px rgba(0, 0, 0, 0.05)',
-        transition: theme => theme.transitions.create(['left', 'width'], {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.leavingScreen,
+        transition: theme => theme.transitions.create(['left'], {
+          easing: theme.transitions.easing.easeOut,
+          duration: theme.transitions.duration.standard,
         }),
-        width: { xs: '100%', md: `calc(100% - ${sidebarOpen ? 260 : 72}px)` },
+        width: 'auto',
         zIndex: 1000,
       }}
     >

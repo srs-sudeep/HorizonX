@@ -56,7 +56,8 @@ export const Sidebar = ({ open, onClose, onToggle }: SidebarProps) => {
           justifyContent: !open ? 'center' : 'space-between',
           px: !open ? 1 : 3,
           borderBottom: '1px solid',
-          borderColor: 'divider',
+          borderColor: theme => alpha(theme.palette.primary.main, 0.1),
+          background: theme => alpha(theme.palette.primary.main, 0.03),
         }}
       >
         {!open ? (
@@ -68,13 +69,14 @@ export const Sidebar = ({ open, onClose, onToggle }: SidebarProps) => {
               onClick={handleDrawerToggle}
               size="small"
               sx={{
-                width: 24,
-                height: 24,
-                borderRadius: 1,
-                backgroundColor: theme => alpha(theme.palette.primary.main, 0.04),
+                width: 28,
+                height: 28,
+                borderRadius: 1.5,
+                backgroundColor: theme => alpha(theme.palette.primary.main, 0.08),
                 '&:hover': {
-                  backgroundColor: theme => alpha(theme.palette.primary.main, 0.08),
+                  backgroundColor: theme => alpha(theme.palette.primary.main, 0.12),
                 },
+                transition: 'all 0.2s ease-in-out',
               }}
             >
               {!open ? <ChevronRightIcon fontSize="small" /> : <ChevronLeftIcon fontSize="small" />}
@@ -83,9 +85,22 @@ export const Sidebar = ({ open, onClose, onToggle }: SidebarProps) => {
         )}
       </Box>
 
-      <Divider sx={{ mx: !open ? 0 : 2, mb: 1 }} />
+      <Divider sx={{ mx: !open ? 0 : 2, mb: 1, opacity: 0.6 }} />
 
-      <List component="nav" sx={{ px: !open ? 1 : 2 }}>
+      <List 
+        component="nav" 
+        sx={{ 
+          px: !open ? 1 : 2,
+          '& .MuiListItemButton-root': {
+            borderRadius: 1.5,
+            mb: 0.5,
+            transition: 'all 0.2s ease-in-out',
+            '&:hover': {
+              backgroundColor: theme => alpha(theme.palette.primary.main, 0.08),
+            },
+          }
+        }}
+      >
         {filteredMenuItems.map(item => (
           <SidebarItem key={item.path} item={item} open={open} />
         ))}
@@ -94,7 +109,7 @@ export const Sidebar = ({ open, onClose, onToggle }: SidebarProps) => {
       {/* User profile moved to the bottom */}
       {open && user && (
         <Box sx={{ mt: 'auto' }}>
-          <Divider sx={{ mx: !open ? 0 : 2, my: 1 }} />
+          <Divider sx={{ mx: !open ? 0 : 2, my: 1, opacity: 0.6 }} />
           <Box
             component="div"
             sx={{
@@ -104,23 +119,44 @@ export const Sidebar = ({ open, onClose, onToggle }: SidebarProps) => {
               py: 1.5,
               mx: 2,
               mb: 2,
-              borderRadius: 1,
-              bgcolor: alpha(theme.palette.primary.main, 0.04),
+              borderRadius: 1.5,
+              bgcolor: theme => alpha(theme.palette.primary.main, 0.06),
+              boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+              transition: 'all 0.2s ease-in-out',
+              '&:hover': {
+                bgcolor: theme => alpha(theme.palette.primary.main, 0.08),
+                boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+              },
             }}
           >
             <Avatar
               alt={user.name}
               src={user.avatar}
               variant="rounded"
-              sx={{ width: 32, height: 32, mr: 1.5 }}
+              sx={{ 
+                width: 36, 
+                height: 36, 
+                mr: 1.5,
+                borderRadius: 1,
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+              }}
             >
               {user.name.charAt(0)}
             </Avatar>
             <Box sx={{ overflow: 'hidden' }}>
-              <Typography variant="subtitle2" noWrap>
+              <Typography variant="subtitle2" noWrap fontWeight="600">
                 {user.name}
               </Typography>
-              <Typography variant="caption" color="text.secondary" noWrap>
+              <Typography 
+                variant="caption" 
+                color="text.secondary" 
+                noWrap
+                sx={{ 
+                  display: 'flex', 
+                  alignItems: 'center',
+                  opacity: 0.8,
+                }}
+              >
                 {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
               </Typography>
             </Box>
@@ -148,7 +184,9 @@ export const Sidebar = ({ open, onClose, onToggle }: SidebarProps) => {
               width: drawerWidth,
               borderRight: 0,
               backgroundImage: 'none',
-              boxShadow: theme.shadows[1],
+              boxShadow: theme.shadows[3],
+              background: theme => alpha(theme.palette.background.paper, 0.95),
+              backdropFilter: 'blur(8px)',
             },
           }}
         >
@@ -165,13 +203,15 @@ export const Sidebar = ({ open, onClose, onToggle }: SidebarProps) => {
               boxSizing: 'border-box',
               width: !open ? 72 : drawerWidth,
               transition: theme.transitions.create('width', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen, // Use consistent timing
+                easing: theme.transitions.easing.easeOut,
+                duration: theme.transitions.duration.standard,
               }),
               overflowX: 'hidden',
               borderRight: 0,
               backgroundImage: 'none',
-              boxShadow: theme.shadows[1],
+              boxShadow: theme.shadows[2],
+              background: theme => alpha(theme.palette.background.paper, 0.95),
+              backdropFilter: 'blur(8px)',
             },
           }}
         >
