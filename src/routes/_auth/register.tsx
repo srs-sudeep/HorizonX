@@ -113,7 +113,24 @@ export function RegisterPage() {
               flexDirection: 'column',
               alignItems: 'center',
               width: '100%',
-              borderRadius: 2,
+              borderRadius: 'var(--mui-shape-borderRadiusLarge)',
+              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+              position: 'relative',
+              overflow: 'hidden',
+              transition: 'transform 0.3s ease-in-out',
+              '&:hover': {
+                transform: 'translateY(-5px)',
+                boxShadow: '0 15px 35px rgba(0, 0, 0, 0.15)',
+              },
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: '8px',
+                background: 'var(--mui-palette-gradient)',
+              },
             }}
           >
             <Typography component="h1" variant="h5" fontWeight="bold" color="primary">
@@ -199,17 +216,35 @@ export function RegisterPage() {
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                disableElevation
+                sx={{ 
+                  mt: 3, 
+                  mb: 2,
+                  py: 1.8,
+                  fontSize: '1rem',
+                  fontWeight: 'bold',
+                  backgroundImage: 'var(--mui-palette-gradient)',
+                  color: '#fff',
+                  boxShadow: '0 8px 16px rgba(74, 107, 255, 0.2)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    backgroundImage: 'var(--mui-palette-gradient)',
+                    boxShadow: '0 12px 20px rgba(74, 107, 255, 0.3)',
+                    transform: 'translateY(-2px)',
+                  },
+                }}
                 disabled={isLoading}
               >
                 {isLoading ? 'Creating Account...' : 'Sign Up'}
               </Button>
 
-              <Grid container justifyContent="flex-end">
-                <Grid>
-                  <Link to="/login">Already have an account? Sign in</Link>
-                </Grid>
-              </Grid>
+              <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                <Typography variant="body2">
+                  <Link to="/login" style={{ color: 'var(--mui-palette-primary-main)', textDecoration: 'none' }}>
+                    Already have an account? Sign in
+                  </Link>
+                </Typography>
+              </Box>
             </Box>
           </Paper>
         </Box>

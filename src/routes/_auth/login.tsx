@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { GuestGuard } from "@core/Private/GuestGuard";
 import { useAuthStore } from '@store/auth/authStore';
@@ -92,7 +92,24 @@ export function LoginPage() {
               flexDirection: 'column',
               alignItems: 'center',
               width: '100%',
-              borderRadius: 2,
+              borderRadius: 'var(--mui-shape-borderRadiusLarge)',
+              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+              position: 'relative',
+              overflow: 'hidden',
+              transition: 'transform 0.3s ease-in-out',
+              '&:hover': {
+                transform: 'translateY(-5px)',
+                boxShadow: '0 15px 35px rgba(0, 0, 0, 0.15)',
+              },
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: '8px',
+                background: 'var(--mui-palette-gradient)',
+              },
             }}
           >
             <Typography component="h1" variant="h5" fontWeight="bold" color="primary">
@@ -150,18 +167,38 @@ export function LoginPage() {
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                disableElevation
+                sx={{ 
+                  mt: 3, 
+                  mb: 2,
+                  py: 1.8,
+                  fontSize: '1rem',
+                  fontWeight: 'bold',
+                  backgroundImage: 'var(--mui-palette-gradient)',
+                  color: '#fff',
+                  boxShadow: '0 8px 16px rgba(74, 107, 255, 0.2)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    backgroundImage: 'var(--mui-palette-gradient)',
+                    boxShadow: '0 12px 20px rgba(74, 107, 255, 0.3)',
+                    transform: 'translateY(-2px)',
+                  },
+                }}
                 disabled={isLoading}
               >
-                {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
+                {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Sign In'}
               </Button>
 
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, mt: 2 }}>
                 <Typography variant="body2">
-                  <a href="#">Forgot password?</a>
+                  <Link to="#" style={{ color: 'var(--mui-palette-primary-main)', textDecoration: 'none' }}>
+                    Forgot password?
+                  </Link>
                 </Typography>
                 <Typography variant="body2">
-                  <a href="/register">Don't have an account? Sign Up</a>
+                  <Link to="/register" style={{ color: 'var(--mui-palette-primary-main)', textDecoration: 'none' }}>
+                    Don't have an account? Sign Up
+                  </Link>
                 </Typography>
               </Box>
             </Box>

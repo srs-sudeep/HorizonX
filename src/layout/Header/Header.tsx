@@ -166,6 +166,7 @@ export const Header = ({ onToggleSidebar }: HeaderProps) => {
 								boxShadow: `0 4px 16px 0 ${alpha(theme.palette.primary.main, 0.15)}`,
 								borderColor: alpha(theme.palette.primary.main, 0.3),
 								transform: 'translateY(-2px)',
+								width: { sm: '450px' }, // Expand width when focused
 							},
 						}}
 					>
