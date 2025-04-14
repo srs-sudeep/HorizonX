@@ -12,7 +12,7 @@ import {
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { GuestGuard } from "@core/Private/GuestGuard";
-import { useAuthStore } from '@store/auth/authStore';
+import { useAuth } from '@hooks/useAuth';
 
 export const Route = createFileRoute('/_auth/login')({
   component: LoginPage,
@@ -22,7 +22,7 @@ export function LoginPage() {
   const navigate = useNavigate();
   // We'll handle the return URL manually
   const returnUrl = '/';
-  const { login, isLoading, error } = useAuthStore();
+  const { login, isLoading, error } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -62,15 +62,14 @@ export function LoginPage() {
       return;
     }
 
-    try {
-      await login({ email, password });
-      // Add a small delay to ensure state is updated before navigation
-      setTimeout(() => {
-        navigate({ to: returnUrl || '/' });
-      }, 100);
-    } catch (error) {
-      console.error('Login failed:', error);
-    }
+    login({ email, password }, {
+      onSuccess: () => {
+        // Add a small delay to ensure state is updated before navigation
+        setTimeout(() => {
+          navigate({ to: returnUrl || '/' });
+        }, 100);
+      }
+    });
   };
 
   return (

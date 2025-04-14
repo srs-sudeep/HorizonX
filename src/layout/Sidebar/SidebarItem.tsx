@@ -29,6 +29,7 @@ import {
 import { useTheme } from '@mui/material/styles';
 import { Link, useMatchRoute } from '@tanstack/react-router';
 import { useState } from 'react';
+import { useAuthStore } from '@store/index';
 
 interface SidebarItemProps {
   item: {
@@ -64,7 +65,19 @@ export const SidebarItem = ({ item, open }: SidebarItemProps) => {
   const theme = useTheme();
   const [isSubMenuOpen, setSubMenuOpen] = useState(false);
   const matchRoute = useMatchRoute();
-  const isActive = Boolean(matchRoute({ to: item.path, fuzzy: true }));
+  const { user } = useAuthStore();
+  
+  // Resolve dynamic paths based on user role
+  const resolvedPath = item.dynamicPath && user 
+    ? item.path.replace(':role', user.role)
+    : item.path;
+  
+  // Check if current route matches this item's path
+  // For dynamic paths, we need to check against the resolved path
+  const isActive = Boolean(matchRoute({ 
+    to: resolvedPath,
+    fuzzy: true 
+  }));
 
   const hasChildren = item.children && item.children.length > 0;
 
@@ -80,7 +93,7 @@ export const SidebarItem = ({ item, open }: SidebarItemProps) => {
   const listItemButton = (
     <ListItemButton
       component={hasChildren ? 'div' : Link}
-      to={hasChildren ? undefined : item.path}
+      to={hasChildren ? undefined : resolvedPath}
       onClick={handleClick}
       selected={isActive}
       disableRipple

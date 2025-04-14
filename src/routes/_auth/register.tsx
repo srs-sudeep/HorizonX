@@ -2,12 +2,14 @@ import { Alert, Box, Button, Container, Grid, Paper, TextField, Typography } fro
 import { Link, createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { GuestGuard } from "@core/Private/GuestGuard";
+import { useAuth } from '@hooks/useAuth';
 export const Route = createFileRoute('/_auth/register')({
   component: RegisterPage,
 });
 
 export function RegisterPage() {
   const navigate = useNavigate();
+  const { register, error: authError, isLoading } = useAuth();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -24,7 +26,6 @@ export function RegisterPage() {
   });
 
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -77,20 +78,15 @@ export function RegisterPage() {
       return;
     }
 
-    setIsLoading(true);
     setError(null);
 
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // For demo purposes, just redirect to login
-      navigate({ to: '/login', search: { registered: 'true' } });
-    } catch (err) {
-      setError('Registration failed. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
+    const { confirmPassword, ...credentials } = formData;
+    
+    register(credentials, {
+      onSuccess: () => {
+        navigate({ to: '/login', search: { registered: 'true' } });
+      }
+    });
   };
 
   return (

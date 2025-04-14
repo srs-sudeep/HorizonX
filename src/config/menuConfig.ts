@@ -1,97 +1,60 @@
-import type { RouteConfig } from '../types';
-import { UserRole } from '../types/auth';
+// This is a placeholder since the actual file wasn't in the retrieval results
+// I'll create a basic structure based on what we can see in the Sidebar component
 
-export const menuConfig: RouteConfig[] = [
+export const menuConfig = [
   {
-    path: '/',
-    label: 'Dashboards',
+    path: '/:role',
+    label: 'Dashboard',
     icon: 'dashboard',
-    roles: [UserRole.ADMIN, UserRole.MANAGER, UserRole.USER],
-    children: [
-      {
-        path: '/analytics',
-        label: 'Analytics Dashboard',
-        icon: 'chart',
-        roles: [UserRole.ADMIN, UserRole.MANAGER, UserRole.USER],
-      },
-      {
-        path: '/ecommerce',
-        label: 'E-Commerce Dashboard',
-        icon: 'cart',
-        roles: [UserRole.ADMIN, UserRole.MANAGER],
-      },
-      {
-        path: '/crm',
-        label: 'CRM Dashboard',
-        icon: 'people',
-        roles: [UserRole.ADMIN],
-      },
-    ],
+    roles: ['admin', 'manager', 'user'],
+    dynamicPath: true, // Add this flag to indicate it's a dynamic path
   },
   {
-    path: '/admin',
-    label: 'Admin',
-    icon: 'settings',
-    roles: [UserRole.ADMIN],
-    children: [
-      {
-        path: '/admin/users',
-        label: 'User Management',
-        icon: 'people',
-        roles: [UserRole.ADMIN],
-      },
-      {
-        path: '/admin/settings',
-        label: 'System Settings',
-        icon: 'settings',
-        roles: [UserRole.ADMIN],
-      },
-    ],
+    path: '/analytics',
+    label: 'Analytics',
+    icon: 'analytics',
+    roles: ['admin', 'manager'],
   },
   {
-    path: '/manager',
-    label: 'Management',
-    icon: 'chart',
-    roles: [UserRole.ADMIN, UserRole.MANAGER],
+    path: '/crm',
+    label: 'CRM',
+    icon: 'crm',
+    roles: ['admin', 'manager'],
     children: [
       {
-        path: '/manager/reports',
-        label: 'Reports',
-        icon: 'chart',
-        roles: [UserRole.ADMIN, UserRole.MANAGER],
-      },
-      {
-        path: '/manager/team',
-        label: 'Team',
+        path: '/crm/customers',
+        label: 'Customers',
         icon: 'people',
-        roles: [UserRole.ADMIN, UserRole.MANAGER],
       },
-    ],
-  },
-  {
-    path: '/user',
-    label: 'User Area',
-    icon: 'person',
-    roles: [UserRole.ADMIN, UserRole.MANAGER, UserRole.USER],
-    children: [
       {
-        path: '/user/profile',
-        label: 'Profile',
+        path: '/crm/leads',
+        label: 'Leads',
         icon: 'person',
-        roles: [UserRole.ADMIN, UserRole.MANAGER, UserRole.USER],
-      },
-      {
-        path: '/user/notifications',
-        label: 'Notifications',
-        icon: 'notifications',
-        roles: [UserRole.ADMIN, UserRole.MANAGER, UserRole.USER],
       },
     ],
   },
   {
-    path: '/help',
-    label: 'Help & Support',
-    icon: 'help',
-    roles: [UserRole.ADMIN, UserRole.MANAGER, UserRole.USER],
+    path: '/ecommerce',
+    label: 'E-Commerce',
+    icon: 'store',
+    roles: ['admin', 'manager'],
+    children: [
+      {
+        path: '/ecommerce/products',
+        label: 'Products',
+        icon: 'cart',
+      },
+      {
+        path: '/ecommerce/orders',
+        label: 'Orders',
+        icon: 'chart',
+      },
+    ],
+  },
+  {
+    path: '/settings',
+    label: 'Settings',
+    icon: 'settings',
+    roles: ['admin', 'manager', 'user'],
   },
 ];

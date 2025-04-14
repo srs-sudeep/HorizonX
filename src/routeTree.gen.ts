@@ -15,11 +15,17 @@ import { Route as UnauthorizedImport } from './routes/unauthorized'
 import { Route as PageImport } from './routes/page'
 import { Route as NotFoundImport } from './routes/not-found'
 import { Route as IndexImport } from './routes/index'
+import { Route as EcommerceProductsImport } from './routes/ecommerce/products'
+import { Route as EcommerceOrdersImport } from './routes/ecommerce/orders'
+import { Route as CrmLeadsImport } from './routes/crm/leads'
+import { Route as ProtectedSettingsImport } from './routes/_protected/settings'
+import { Route as ProtectedAnalyticsImport } from './routes/_protected/analytics'
 import { Route as AuthRegisterImport } from './routes/_auth/register'
 import { Route as AuthLoginImport } from './routes/_auth/login'
 import { Route as ProtectedUserIndexImport } from './routes/_protected/user/index'
 import { Route as ProtectedManagerIndexImport } from './routes/_protected/manager/index'
 import { Route as ProtectedAdminIndexImport } from './routes/_protected/admin/index'
+import { Route as ProtectedCrmCustomersImport } from './routes/_protected/crm/customers'
 
 // Create/Update Routes
 
@@ -44,6 +50,36 @@ const NotFoundRoute = NotFoundImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const EcommerceProductsRoute = EcommerceProductsImport.update({
+  id: '/ecommerce/products',
+  path: '/ecommerce/products',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const EcommerceOrdersRoute = EcommerceOrdersImport.update({
+  id: '/ecommerce/orders',
+  path: '/ecommerce/orders',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CrmLeadsRoute = CrmLeadsImport.update({
+  id: '/crm/leads',
+  path: '/crm/leads',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProtectedSettingsRoute = ProtectedSettingsImport.update({
+  id: '/_protected/settings',
+  path: '/settings',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProtectedAnalyticsRoute = ProtectedAnalyticsImport.update({
+  id: '/_protected/analytics',
+  path: '/analytics',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -74,6 +110,12 @@ const ProtectedManagerIndexRoute = ProtectedManagerIndexImport.update({
 const ProtectedAdminIndexRoute = ProtectedAdminIndexImport.update({
   id: '/_protected/admin/',
   path: '/admin/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProtectedCrmCustomersRoute = ProtectedCrmCustomersImport.update({
+  id: '/_protected/crm/customers',
+  path: '/crm/customers',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -123,6 +165,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRegisterImport
       parentRoute: typeof rootRoute
     }
+    '/_protected/analytics': {
+      id: '/_protected/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof ProtectedAnalyticsImport
+      parentRoute: typeof rootRoute
+    }
+    '/_protected/settings': {
+      id: '/_protected/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof ProtectedSettingsImport
+      parentRoute: typeof rootRoute
+    }
+    '/crm/leads': {
+      id: '/crm/leads'
+      path: '/crm/leads'
+      fullPath: '/crm/leads'
+      preLoaderRoute: typeof CrmLeadsImport
+      parentRoute: typeof rootRoute
+    }
+    '/ecommerce/orders': {
+      id: '/ecommerce/orders'
+      path: '/ecommerce/orders'
+      fullPath: '/ecommerce/orders'
+      preLoaderRoute: typeof EcommerceOrdersImport
+      parentRoute: typeof rootRoute
+    }
+    '/ecommerce/products': {
+      id: '/ecommerce/products'
+      path: '/ecommerce/products'
+      fullPath: '/ecommerce/products'
+      preLoaderRoute: typeof EcommerceProductsImport
+      parentRoute: typeof rootRoute
+    }
+    '/_protected/crm/customers': {
+      id: '/_protected/crm/customers'
+      path: '/crm/customers'
+      fullPath: '/crm/customers'
+      preLoaderRoute: typeof ProtectedCrmCustomersImport
+      parentRoute: typeof rootRoute
+    }
     '/_protected/admin/': {
       id: '/_protected/admin/'
       path: '/admin'
@@ -156,6 +240,12 @@ export interface FileRoutesByFullPath {
   '/unauthorized': typeof UnauthorizedRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
+  '/analytics': typeof ProtectedAnalyticsRoute
+  '/settings': typeof ProtectedSettingsRoute
+  '/crm/leads': typeof CrmLeadsRoute
+  '/ecommerce/orders': typeof EcommerceOrdersRoute
+  '/ecommerce/products': typeof EcommerceProductsRoute
+  '/crm/customers': typeof ProtectedCrmCustomersRoute
   '/admin': typeof ProtectedAdminIndexRoute
   '/manager': typeof ProtectedManagerIndexRoute
   '/user': typeof ProtectedUserIndexRoute
@@ -168,6 +258,12 @@ export interface FileRoutesByTo {
   '/unauthorized': typeof UnauthorizedRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
+  '/analytics': typeof ProtectedAnalyticsRoute
+  '/settings': typeof ProtectedSettingsRoute
+  '/crm/leads': typeof CrmLeadsRoute
+  '/ecommerce/orders': typeof EcommerceOrdersRoute
+  '/ecommerce/products': typeof EcommerceProductsRoute
+  '/crm/customers': typeof ProtectedCrmCustomersRoute
   '/admin': typeof ProtectedAdminIndexRoute
   '/manager': typeof ProtectedManagerIndexRoute
   '/user': typeof ProtectedUserIndexRoute
@@ -181,6 +277,12 @@ export interface FileRoutesById {
   '/unauthorized': typeof UnauthorizedRoute
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
+  '/_protected/analytics': typeof ProtectedAnalyticsRoute
+  '/_protected/settings': typeof ProtectedSettingsRoute
+  '/crm/leads': typeof CrmLeadsRoute
+  '/ecommerce/orders': typeof EcommerceOrdersRoute
+  '/ecommerce/products': typeof EcommerceProductsRoute
+  '/_protected/crm/customers': typeof ProtectedCrmCustomersRoute
   '/_protected/admin/': typeof ProtectedAdminIndexRoute
   '/_protected/manager/': typeof ProtectedManagerIndexRoute
   '/_protected/user/': typeof ProtectedUserIndexRoute
@@ -195,6 +297,12 @@ export interface FileRouteTypes {
     | '/unauthorized'
     | '/login'
     | '/register'
+    | '/analytics'
+    | '/settings'
+    | '/crm/leads'
+    | '/ecommerce/orders'
+    | '/ecommerce/products'
+    | '/crm/customers'
     | '/admin'
     | '/manager'
     | '/user'
@@ -206,6 +314,12 @@ export interface FileRouteTypes {
     | '/unauthorized'
     | '/login'
     | '/register'
+    | '/analytics'
+    | '/settings'
+    | '/crm/leads'
+    | '/ecommerce/orders'
+    | '/ecommerce/products'
+    | '/crm/customers'
     | '/admin'
     | '/manager'
     | '/user'
@@ -217,6 +331,12 @@ export interface FileRouteTypes {
     | '/unauthorized'
     | '/_auth/login'
     | '/_auth/register'
+    | '/_protected/analytics'
+    | '/_protected/settings'
+    | '/crm/leads'
+    | '/ecommerce/orders'
+    | '/ecommerce/products'
+    | '/_protected/crm/customers'
     | '/_protected/admin/'
     | '/_protected/manager/'
     | '/_protected/user/'
@@ -230,6 +350,12 @@ export interface RootRouteChildren {
   UnauthorizedRoute: typeof UnauthorizedRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
+  ProtectedAnalyticsRoute: typeof ProtectedAnalyticsRoute
+  ProtectedSettingsRoute: typeof ProtectedSettingsRoute
+  CrmLeadsRoute: typeof CrmLeadsRoute
+  EcommerceOrdersRoute: typeof EcommerceOrdersRoute
+  EcommerceProductsRoute: typeof EcommerceProductsRoute
+  ProtectedCrmCustomersRoute: typeof ProtectedCrmCustomersRoute
   ProtectedAdminIndexRoute: typeof ProtectedAdminIndexRoute
   ProtectedManagerIndexRoute: typeof ProtectedManagerIndexRoute
   ProtectedUserIndexRoute: typeof ProtectedUserIndexRoute
@@ -242,6 +368,12 @@ const rootRouteChildren: RootRouteChildren = {
   UnauthorizedRoute: UnauthorizedRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
+  ProtectedAnalyticsRoute: ProtectedAnalyticsRoute,
+  ProtectedSettingsRoute: ProtectedSettingsRoute,
+  CrmLeadsRoute: CrmLeadsRoute,
+  EcommerceOrdersRoute: EcommerceOrdersRoute,
+  EcommerceProductsRoute: EcommerceProductsRoute,
+  ProtectedCrmCustomersRoute: ProtectedCrmCustomersRoute,
   ProtectedAdminIndexRoute: ProtectedAdminIndexRoute,
   ProtectedManagerIndexRoute: ProtectedManagerIndexRoute,
   ProtectedUserIndexRoute: ProtectedUserIndexRoute,
@@ -263,6 +395,12 @@ export const routeTree = rootRoute
         "/unauthorized",
         "/_auth/login",
         "/_auth/register",
+        "/_protected/analytics",
+        "/_protected/settings",
+        "/crm/leads",
+        "/ecommerce/orders",
+        "/ecommerce/products",
+        "/_protected/crm/customers",
         "/_protected/admin/",
         "/_protected/manager/",
         "/_protected/user/"
@@ -285,6 +423,24 @@ export const routeTree = rootRoute
     },
     "/_auth/register": {
       "filePath": "_auth/register.tsx"
+    },
+    "/_protected/analytics": {
+      "filePath": "_protected/analytics.tsx"
+    },
+    "/_protected/settings": {
+      "filePath": "_protected/settings.tsx"
+    },
+    "/crm/leads": {
+      "filePath": "crm/leads.tsx"
+    },
+    "/ecommerce/orders": {
+      "filePath": "ecommerce/orders.tsx"
+    },
+    "/ecommerce/products": {
+      "filePath": "ecommerce/products.tsx"
+    },
+    "/_protected/crm/customers": {
+      "filePath": "_protected/crm/customers.tsx"
     },
     "/_protected/admin/": {
       "filePath": "_protected/admin/index.tsx"
