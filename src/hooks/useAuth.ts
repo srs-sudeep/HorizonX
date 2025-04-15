@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { authService } from '../services/authService';
 import { useAuthStore } from '../store/auth/authStore';
 import { type LoginCredentials, type RegisterCredentials } from '../types';
-import { apiClient } from '~/services/apiClient';
+import { apiClient } from '@services/apiClient';
 
 export function useAuth() {
   const queryClient = useQueryClient();

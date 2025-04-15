@@ -36,6 +36,7 @@ interface SidebarItemProps {
     path: string;
     label: string;
     icon?: string;
+    dynamicPath?: boolean;
     children?: Array<{
       path: string;
       label: string;
@@ -69,7 +70,7 @@ export const SidebarItem = ({ item, open }: SidebarItemProps) => {
   
   // Resolve dynamic paths based on user role
   const resolvedPath = item.dynamicPath && user 
-    ? item.path.replace(':role', user.role)
+    ? item.path.replace(':role', user.role || '')
     : item.path;
   
   // Check if current route matches this item's path

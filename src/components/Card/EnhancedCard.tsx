@@ -1,4 +1,5 @@
-import { Card, CardContent, CardHeader, CardProps, Typography, Box, alpha, useTheme } from '@mui/material';
+import { Card, CardContent, CardHeader, Typography, Box, alpha, useTheme } from '@mui/material';
+import type { CardProps } from '@mui/material';
 import React from 'react';
 
 interface EnhancedCardProps extends CardProps {
@@ -30,11 +31,11 @@ export const EnhancedCard = ({
   return (
     <Card 
       sx={{ 
-        borderRadius: theme.shape.borderRadiusLarge,
+        borderRadius: theme.shape.borderRadius || 8,
         transition: 'all 0.3s ease',
         boxShadow: elevated ? `0 4px 20px 0 ${alpha(theme.palette.mode === 'light' ? '#000' : '#fff', 0.05)}` : 'none',
         ...(bordered && {
-          border: `1px solid ${theme.vars.palette.border.subtle}`,
+          border: `1px solid ${theme.palette.divider}`,
         }),
         ...(hoverable && {
           '&:hover': {
@@ -43,7 +44,7 @@ export const EnhancedCard = ({
           }
         }),
         ...(gradient && {
-          background: theme.vars.palette.gradient,
+          background: `linear-gradient(45deg, ${theme.palette.primary.main} 30%, ${theme.palette.primary.light} 90%)`,
           color: theme.palette.getContrastText(theme.palette.primary.main),
         }),
         ...sx 

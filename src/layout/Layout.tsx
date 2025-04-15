@@ -6,7 +6,7 @@ import { useAuthStore, useUIStore } from '@store/index';
 import { Footer } from './Footer';
 import { Header } from './Header';
 import { Sidebar } from './Sidebar';
-import { LoadingAnimation } from '~/components/LoadingAnimation/LoadingAnimation';
+import { LoadingAnimation } from '@components/LoadingAnimation/LoadingAnimation';
 
 interface LayoutProps {
   children: ReactNode;

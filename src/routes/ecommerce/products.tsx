@@ -161,7 +161,7 @@ function ProductsPage() {
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                     <Rating value={product.rating?.rate || 0} precision={0.5} readOnly size="small" />
                     <Typography variant="body2" color="text.secondary" sx={{ ml: 1 }}>
-                      ({product.rating?.count || 0})
+                      ({typeof product.rating === 'object' ? product.rating.count : 0})
                     </Typography>
                   </Box>
                   <Typography variant="body2" color="text.secondary" sx={{ 

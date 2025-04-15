@@ -190,7 +190,7 @@ export function LoginPage() {
 
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, mt: 2 }}>
                 <Typography variant="body2">
-                  <Link to="#" style={{ color: 'var(--mui-palette-primary-main)', textDecoration: 'none' }}>
+                  <Link to="/forgot-password" style={{ color: 'var(--mui-palette-primary-main)', textDecoration: 'none' }}>
                     Forgot password?
                   </Link>
                 </Typography>

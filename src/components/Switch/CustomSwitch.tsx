@@ -1,4 +1,5 @@
-import { Switch, SwitchProps, styled } from '@mui/material';
+import { Switch, styled } from '@mui/material';
+import type { SwitchProps } from '@mui/material';
 
 export const CustomSwitch = styled((props: SwitchProps) => (
   <Switch {...props} />

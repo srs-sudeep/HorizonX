@@ -1,7 +1,7 @@
-import { experimental_extendTheme as extendTheme } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 import { alpha } from '@mui/material';
 
-export const theme = extendTheme({
+export const theme = createTheme({
   colorSchemes: {
     light: {
       palette: {

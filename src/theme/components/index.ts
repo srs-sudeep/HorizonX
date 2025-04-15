@@ -37,27 +37,25 @@ export const components: Components<Theme> = {
   },
   MuiAppBar: {
     styleOverrides: {
-      root: {
+      root: ({ theme }) => ({
         boxShadow: '0px 2px 20px rgba(0, 0, 0, 0.08)',
         backdropFilter: 'blur(10px)',
-        backgroundImage: theme =>
-          theme.palette.mode === 'light'
-            ? 'linear-gradient(to right, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95))'
-            : 'linear-gradient(to right, rgba(31, 41, 55, 0.95), rgba(31, 41, 55, 0.95))',
-      },
+        backgroundImage: theme.palette.mode === 'light' 
+          ? 'linear-gradient(to right, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95))'
+          : 'linear-gradient(to right, rgba(31, 41, 55, 0.95), rgba(31, 41, 55, 0.95))'
+      }),
     },
   },
   MuiDrawer: {
     styleOverrides: {
-      paper: {
+      paper: ({ theme }) => ({
         borderRight: 'none',
         boxShadow: '0px 0px 25px rgba(0, 0, 0, 0.1)',
-        backgroundImage: theme =>
-          theme.palette.mode === 'light'
-            ? 'linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95))'
-            : 'linear-gradient(180deg, rgba(31, 41, 55, 0.95), rgba(31, 41, 55, 0.95))',
-        backdropFilter: 'blur(10px)',
-      },
+        backgroundImage: theme.palette.mode === 'light'
+          ? 'linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95))'
+          : 'linear-gradient(180deg, rgba(31, 41, 55, 0.95), rgba(31, 41, 55, 0.95))',
+        backdropFilter: 'blur(10px)'
+      }),
     },
   },
   MuiListItemButton: {
@@ -109,10 +107,10 @@ export const components: Components<Theme> = {
   },
   MuiAvatar: {
     styleOverrides: {
-      root: {
+      root: ({ theme }) => ({
         boxShadow: '0 2px 10px rgba(0, 0, 0, 0.15)',
-        border: theme => `2px solid ${theme.palette.background.paper}`,
-      },
+        border: `2px solid ${theme.palette.background.paper}`,
+      }),
     },
   },
   MuiChip: {

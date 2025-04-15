@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { Box, Card, CardContent, Grid, Typography, Paper, Tabs, Tab, Divider, Avatar, List, ListItem, ListItemText, ListItemAvatar, Chip, LinearProgress } from '@mui/material';
+import { Box, Card, CardContent, Typography, Paper, Tabs, Tab, Divider, Avatar, List, ListItem, ListItemText, ListItemAvatar, Chip, LinearProgress } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import { useState } from 'react';
 import { useAnalyticsData } from '@hooks/useAnalyticsData';
 import { TrendingUp, TrendingDown, Language, DeviceHub, Public, Computer, Smartphone, Tablet } from '@mui/icons-material';
