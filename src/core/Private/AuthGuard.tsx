@@ -13,17 +13,22 @@ export const AuthGuard = ({ children, allowedRoles }: AuthGuardProps) => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (!isAuthenticated) {
-			navigate({
-				to: "/login",
-				search: { returnUrl: window.location.pathname },
-			});
-			return;
-		}
+		// Add a small delay to prevent immediate redirection after logout
+		const timer = setTimeout(() => {
+			if (!isAuthenticated) {
+				navigate({
+					to: "/login",
+					search: { returnUrl: window.location.pathname },
+				});
+				return;
+			}
 
-		if (allowedRoles && user && !allowedRoles.includes(user.role)) {
-			navigate({ to: "/unauthorized" });
-		}
+			if (allowedRoles && user && !allowedRoles.includes(user.role)) {
+				navigate({ to: "/unauthorized" });
+			}
+		}, 100);
+		
+		return () => clearTimeout(timer);
 	}, [isAuthenticated, user, allowedRoles, navigate]);
 
 	if (!isAuthenticated) {

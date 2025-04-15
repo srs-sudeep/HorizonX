@@ -1,29 +1,16 @@
-import { createFileRoute, redirect } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
 import { useAuthStore } from '@store/index';
+import { LandingPage } from '@components/LandingPage/LandingPage';
 
 export const Route = createFileRoute('/')({
-  beforeLoad: async () => {
-    // This is a client-side redirect
-    const { isAuthenticated, user } = useAuthStore.getState();
-
-    if (!isAuthenticated) {
-      throw redirect({
-        to: '/login',
-      });
-    }
-
-    // Redirect based on user role
-    if (user) {
-      throw redirect({
-        to: `/${user.role}`,
-      });
-    }
-
-    return {};
-  },
   component: IndexPage,
 });
 
 function IndexPage() {
-  return null;
+  const { isAuthenticated, user } = useAuthStore();
+  
+  // Always show the landing page on the root route
+  return <LandingPage />;
+  
+  // If authenticated, we'll let the user navigate to their dashboard via buttons on the landing page
 }

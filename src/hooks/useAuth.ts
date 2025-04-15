@@ -31,10 +31,26 @@ export function useAuth() {
   
   // Login mutation
   const loginMutation = useMutation({
-    mutationFn: (credentials: LoginCredentials) => storeLogin(credentials),
-    onSuccess: () => {
+    mutationFn: async (credentials: LoginCredentials) => {
+      // First login through the store
+      await storeLogin(credentials);
+      // Return the current state after login
+      return {
+        user: useAuthStore.getState().user,
+        isAuthenticated: useAuthStore.getState().isAuthenticated
+      };
+    },
+    onSuccess: (data) => {
       // Invalidate the current user query to refetch it
       queryClient.invalidateQueries({ queryKey: ['auth', 'currentUser'] });
+      
+      // Only redirect if authentication was successful
+      if (data.isAuthenticated && data.user?.role) {
+        window.location.href = `/${data.user.role}`;
+      }
+    },
+    onError: (error) => {
+      console.error("Login failed:", error);
     }
   });
   
@@ -52,18 +68,26 @@ export function useAuth() {
       apiClient.setAuthToken(data.token);
       // Invalidate the current user query
       queryClient.invalidateQueries({ queryKey: ['auth', 'currentUser'] });
+      
+      // Redirect to the appropriate dashboard based on user role
+      if (data.user?.role) {
+        window.location.href = `/${data.user.role}`;
+      }
     }
   });
   
   // Logout mutation
   const logoutMutation = useMutation({
     mutationFn: () => {
+      // First clear any user-related queries
+      queryClient.invalidateQueries();
+      // Then logout from the store
       storeLogout();
       return Promise.resolve();
     },
     onSuccess: () => {
-      // Clear any user-related queries
-      queryClient.invalidateQueries();
+      // Force redirect to landing page
+      window.location.replace('/');
     }
   });
   
@@ -79,7 +103,14 @@ export function useAuth() {
       return registerMutation.mutate(credentials, options);
     },
     logout: (options?: { onSuccess?: () => void }) => {
-      return logoutMutation.mutate(undefined, options);
+      return logoutMutation.mutate(undefined, {
+        ...options,
+        onSuccess: () => {
+          // Navigate to landing page after logout
+          window.location.replace('/');
+          options?.onSuccess?.();
+        }
+      });
     }
   };
 }

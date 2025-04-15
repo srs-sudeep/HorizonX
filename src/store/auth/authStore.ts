@@ -72,11 +72,18 @@ export const useAuthStore = create<
             isAuthenticated: true,
             isLoading: false,
           });
+          
+          // Return the user and token for the mutation
+          return {
+            user: userWithoutPassword as User,
+            token
+          };
         } catch (error) {
           set({
             isLoading: false,
             error: error instanceof Error ? error.message : 'An error occurred',
           });
+          throw error; // Re-throw to be caught by the mutation
         }
       },
 

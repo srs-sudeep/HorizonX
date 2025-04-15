@@ -13,7 +13,9 @@ export const GuestGuard = ({ children }: GuestGuardProps) => {
 	const returnUrl = "/";
 
 	useEffect(() => {
-		if (isAuthenticated) {
+		// Only redirect if we're on a login/register page and authenticated
+		// This prevents redirection right after logout
+		if (isAuthenticated && window.location.pathname.includes('/login')) {
 			navigate({ to: returnUrl || "/" });
 		}
 	}, [isAuthenticated, navigate, returnUrl]);

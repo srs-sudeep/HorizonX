@@ -57,19 +57,34 @@ export function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!validateForm()) {
+    
+    // Basic validation
+    if (!email) {
+      setFormErrors(prev => ({ ...prev, email: 'Email is required' }));
       return;
     }
-
-    login({ email, password }, {
-      onSuccess: () => {
-        // Add a small delay to ensure state is updated before navigation
-        setTimeout(() => {
-          navigate({ to: returnUrl || '/' });
-        }, 100);
+    
+    if (!password) {
+      setFormErrors(prev => ({ ...prev, password: 'Password is required' }));
+      return;
+    }
+    
+    // Clear any previous errors
+    setFormErrors({ email: '', password: '' });
+    
+    // Call the login function
+    login(
+      { email, password },
+      {
+        onSuccess: () => {
+          // Redirect is handled in the useAuth hook
+          console.log("Login successful");
+        },
+        onError: (error) => {
+          console.error("Login error:", error);
+        }
       }
-    });
+    );
   };
 
   return (

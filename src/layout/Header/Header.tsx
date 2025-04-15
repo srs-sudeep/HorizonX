@@ -102,8 +102,16 @@ export const Header = ({ onToggleSidebar }: HeaderProps) => {
 	};
 
 	const handleLogout = () => {
-		logout();
+		// Close the menu first
 		handleClose();
+		
+		// Then logout
+		logout({
+			onSuccess: () => {
+				// Force redirect to landing page
+				window.location.replace('/');
+			}
+		});
 	};
 
 	return (

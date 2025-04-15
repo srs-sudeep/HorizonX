@@ -33,6 +33,14 @@ export const Layout = ({ children }: LayoutProps) => {
     return () => clearTimeout(timer);
   }, [isAuthenticated, router.state.location.pathname]);
 
+  // Add this effect to handle logout redirection
+  useEffect(() => {
+    // If not authenticated and not on an auth route, redirect to landing page
+    if (!isAuthenticated && !isAuthRoute && !loading) {
+      window.location.replace('/');
+    }
+  }, [isAuthenticated, isAuthRoute, loading]);
+
   return (
     <Box
       sx={{
