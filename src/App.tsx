@@ -62,6 +62,10 @@ function App() {
             '0%': { opacity: 0, transform: 'scale(0.95)' },
             '100%': { opacity: 1, transform: 'scale(1)' },
           },
+          '@keyframes fadeOut': {
+            '0%': { opacity: 1, transform: 'scale(1)' },
+            '100%': { opacity: 0, transform: 'scale(0.95)' },
+          },
           // Add focus styles for better accessibility
           'a:focus, button:focus, input:focus, select:focus, textarea:focus': {
             outline: `2px solid ${theme.palette.primary.main}`,
