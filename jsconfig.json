@@ -1,0 +1,55 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "./src/*"
+            ],
+            "@components/*": [
+                "./src/components/*"
+            ],
+            "@core/*": [
+                "./src/core/*"
+            ],
+            "@views/*": [
+                "./src/views/*"
+            ],
+            "@layout/*": [
+                "./src/layout/*"
+            ],
+            "@hooks/*": [
+                "./src/hooks/*"
+            ],
+            "@store/*": [
+                "./src/store/*"
+            ],
+            "@theme/*": [
+                "./src/theme/*"
+            ],
+            "@types/*": [
+                "./src/types/*"
+            ],
+            "@utils/*": [
+                "./src/utils/*"
+            ],
+            "@config/*": [
+                "./src/config/*"
+            ],
+            "@services/*": [
+                "./src/services/*"
+            ],
+            "@assets/*": [
+                "./src/assets/*"
+            ]
+        }
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
+        "**/*.gen.ts"
+    ]
+}

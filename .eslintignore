@@ -1,0 +1,10 @@
+node_modules
+dist
+build
+coverage
+public
+*.gen.ts
+*.gen.tsx
+**/*.d.ts
+vite.config.ts
+
