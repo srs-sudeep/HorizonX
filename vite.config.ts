@@ -20,7 +20,7 @@ export default defineConfig({
       // File extension (default is 'ts') `ts` | `js`
       extname: 'ts',
       // Custom export format
-      formatter: (filename) => `export * from './${filename}'`,
+      formatter: filename => `export * from './${filename}'`,
     }),
     tailwindcss(),
   ],
