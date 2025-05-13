@@ -1,4 +1,3 @@
-import AppLogo from '@/components/AppLogo';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -101,9 +100,6 @@ const Navbar = ({ toggleSidebar }: NavbarProps) => {
   return (
     <header className="bg-background/80 backdrop-blur-md border-b h-20 px-6 flex flex-col justify-center">
       <div className="flex items-center h-full">
-        <div className="flex items-center mr-6">
-          <AppLogo className="text-primary" />
-        </div>
 
         <div className="flex-1 flex flex-col">
           <div className="flex items-center">

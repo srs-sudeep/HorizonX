@@ -1,5 +1,4 @@
 
-import React from 'react';
 import { Users, FileText, Calendar, Building, BarChart } from 'lucide-react';
 import StatCard from '@/components/dashboard/StatCard';
 import RevenueChart from '@/components/dashboard/RevenueChart';

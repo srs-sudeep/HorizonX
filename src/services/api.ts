@@ -1,4 +1,4 @@
-import { User, UserRole } from '@/store/useAuthStore';
+import { type User, type UserRole } from '@/store/useAuthStore';
 
 // Mock user database
 const MOCK_USERS = [
@@ -42,6 +42,10 @@ const MOCK_USERS = [
 // Simulate API delay
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
+// Mock token storage
+let mockToken: string | null = null;
+let currentUser: User | null = null;
+
 export const authApi = {
   // Mock login function
   login: async (email: string, password: string): Promise<{ user: User }> => {
@@ -55,7 +59,14 @@ export const authApi = {
       throw new Error('Invalid email or password');
     }
     
-    // In a real app, this would return a token too
+    // Set mock token and current user
+    mockToken = `mock-token-${Date.now()}`;
+    currentUser = user;
+    
+    // Store in localStorage for persistence
+    localStorage.setItem('auth-token', mockToken);
+    localStorage.setItem('current-user', JSON.stringify(user));
+    
     return { user };
   },
   
@@ -89,7 +100,14 @@ export const authApi = {
     // Simulate network delay
     await delay(500);
     
-    // In a real app, this would invalidate the token on the server
+    // Clear mock token and current user
+    mockToken = null;
+    currentUser = null;
+    
+    // Clear from localStorage
+    localStorage.removeItem('auth-token');
+    localStorage.removeItem('current-user');
+    
     return;
   },
   
@@ -98,8 +116,21 @@ export const authApi = {
     // Simulate network delay
     await delay(500);
     
-    // In a real app, this would validate the token and return the user
-    // For now, we'll just return null to simulate no active session
+    // Check if we have a token and current user
+    if (mockToken) {
+      return currentUser;
+    }
+    
+    // Check localStorage for persistence across page refreshes
+    const storedToken = localStorage.getItem('auth-token');
+    const storedUser = localStorage.getItem('current-user');
+    
+    if (storedToken && storedUser) {
+      mockToken = storedToken;
+      currentUser = JSON.parse(storedUser);
+      return currentUser;
+    }
+    
     return null;
   }
 };

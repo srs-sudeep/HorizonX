@@ -66,3 +66,4 @@ export function FullPageLoader() {
     </div>
   );
 }
+

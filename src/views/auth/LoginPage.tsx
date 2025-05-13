@@ -1,12 +1,13 @@
 
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/components/ui/use-toast';
+import { useAuthStore } from '@/store/useAuthStore';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -15,7 +16,12 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
+  const { login } = useAuthStore();
+
+  // Get the redirect path from location state or default to dashboard
+  const from = (location.state as any)?.from || '/dashboard';
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,44 +37,25 @@ const LoginPage = () => {
     
     setIsLoading(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      // For demo purposes, hardcoded credentials
-      if (email === 'admin@example.com' && password === 'password') {
-        // Store auth info in localStorage or state management
-        localStorage.setItem('user', JSON.stringify({ 
-          email, 
-          role: 'admin',
-          name: 'Admin User' 
-        }));
-        
-        navigate('/admin/dashboard');
-      } else if (email === 'teacher@example.com' && password === 'password') {
-        localStorage.setItem('user', JSON.stringify({ 
-          email, 
-          role: 'teacher',
-          name: 'Teacher User' 
-        }));
-        
-        navigate('/teacher/dashboard');
-      } else if (email === 'student@example.com' && password === 'password') {
-        localStorage.setItem('user', JSON.stringify({ 
-          email, 
-          role: 'student',
-          name: 'Student User' 
-        }));
-        
-        navigate('/student/dashboard');
-      } else {
-        toast({
-          title: "Login Failed",
-          description: "Invalid email or password",
-          variant: "destructive",
-        });
-      }
+    try {
+      await login(email, password);
       
+      toast({
+        title: "Success",
+        description: "You have successfully logged in",
+      });
+      
+      // Navigate to the redirect path or role-specific dashboard
+      navigate(from, { replace: true });
+    } catch (error) {
+      toast({
+        title: "Login Failed",
+        description: error instanceof Error ? error.message : "Invalid email or password",
+        variant: "destructive",
+      });
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -128,6 +115,8 @@ const LoginPage = () => {
             <p>admin@example.com / password</p>
             <p>teacher@example.com / password</p>
             <p>student@example.com / password</p>
+            <p>medical@example.com / password</p>
+            <p>multi@example.com / password (has multiple roles)</p>
           </div>
         </CardContent>
         <CardFooter className="flex justify-center">

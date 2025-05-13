@@ -82,8 +82,8 @@ const modules: ModuleItem[] = [
 
 const subModules: SubModuleItem[] = [
   // Dashboard submodules
-  { id: 'main-dashboard', moduleId: 'dashboard', label: 'Main Dashboard', path: '/dashboard', icon: <LayoutDashboard size={16} /> },
-  { id: 'analytics', moduleId: 'dashboard', label: 'Analytics', path: '/dashboard/analytics', icon: <BarChart size={16} /> },
+  { id: 'main-dashboard', moduleId: 'dashboard', label: 'Main Dashboard', path: '/admin/dashboard', icon: <LayoutDashboard size={16} /> },
+  { id: 'analytics', moduleId: 'dashboard', label: 'Analytics', path: '/admin/dashboard/analytics', icon: <BarChart size={16} /> },
   
   // Academics submodules
   { 

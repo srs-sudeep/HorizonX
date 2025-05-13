@@ -15,21 +15,29 @@ const RoleBasedRoute = ({
   allowedRoles, 
   fallbackPath = '/unauthorized' 
 }: RoleBasedRouteProps) => {
-  const { currentRole, user, setCurrentRole } = useAuthStore();
+  const { currentRole, user, setCurrentRole, checkAuth } = useAuthStore();
   const [loading, setLoading] = useState(true);
   const location = useLocation();
 
   useEffect(() => {
     const checkRoleAccess = async () => {
-      // If no current role is set but user has roles, set the first one
-      if (!currentRole && user?.roles?.length) {
-        setCurrentRole(user.roles[0]);
+      try {
+        // First check if the user is authenticated
+        await checkAuth();
+        // If no current role is set but user has roles, set the first one
+        if (!currentRole && user?.roles?.length) {
+            setCurrentRole(user.roles[0]);
+        }
+        console.log(currentRole)
+      } catch (error) {
+        console.error('Role check failed:', error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     
     checkRoleAccess();
-  }, [currentRole, user, setCurrentRole]);
+  }, [currentRole, user, setCurrentRole, checkAuth]);
 
   // Show loading when checking permissions
   if (loading) {
@@ -40,8 +48,26 @@ const RoleBasedRoute = ({
   if (currentRole && allowedRoles.includes(currentRole)) {
     return <>{children}</>;
   }
+
+  // If user doesn't have the required role but has other roles that are allowed
+  if (user && user.roles) {
+    const hasAllowedRole = user.roles.some(role => allowedRoles.includes(role as UserRole));
+    
+    if (hasAllowedRole) {
+      // Find the first allowed role
+      const firstAllowedRole = user.roles.find(role => 
+        allowedRoles.includes(role as UserRole)
+      ) as UserRole;
+      
+      // Set the current role to the first allowed role
+      setCurrentRole(firstAllowedRole);
+      
+      // Return loading while the role is being updated
+      return <FullPageLoader />;
+    }
+  }
   
-  // If user doesn't have the required role, redirect to unauthorized page
+  // If user doesn't have any of the required roles, redirect to unauthorized page
   return <Navigate to={fallbackPath} state={{ from: location.pathname }} replace />;
 };
 

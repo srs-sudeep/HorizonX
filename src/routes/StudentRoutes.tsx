@@ -1,4 +1,3 @@
-import React from 'react';
 import { Navigate } from 'react-router-dom';
 import lazyLoad from '@/lib/lazyLoad';
 import RoleBasedRoute from '@/core/guards/RoleBasedRoute';

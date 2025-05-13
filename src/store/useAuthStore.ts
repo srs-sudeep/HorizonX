@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { authApi } from '@/services/api';
 
 export type UserRole = 'admin' | 'teacher' | 'student' | 'librarian' | 'medical';
 
@@ -9,7 +10,7 @@ export interface User {
   email: string;
   roles: UserRole[];
   avatar?: string;
-  currentRole?:string;
+  currentRole?: string;
 }
 
 interface AuthState {
@@ -20,6 +21,7 @@ interface AuthState {
   
   // Actions
   login: (email: string, password: string) => Promise<void>;
+  loginWithUser: (user: User) => void;
   logout: () => void;
   checkAuth: () => Promise<boolean>;
   setCurrentRole: (role: UserRole) => void;
@@ -35,45 +37,14 @@ export const useAuthStore = create<AuthState>()(
       
       login: async (email, password) => {
         try {
-          // This is a mock implementation - replace with actual API call
-          // Simulate API call
-          await new Promise(resolve => setTimeout(resolve, 1000));
-          
-          // Mock user data based on email
-          let mockUser: User;
-          
-          if (email.includes('admin')) {
-            mockUser = {
-              id: '1',
-              name: 'Admin User',
-              email,
-              roles: ['admin'],
-              avatar: 'https://ui-avatars.com/api/?name=Admin+User',
-            };
-          } else if (email.includes('teacher')) {
-            mockUser = {
-              id: '2',
-              name: 'Teacher User',
-              email,
-              roles: ['teacher'],
-              avatar: 'https://ui-avatars.com/api/?name=Teacher+User',
-            };
-          } else {
-            mockUser = {
-              id: '3',
-              name: 'Student User',
-              email,
-              roles: ['student'],
-              avatar: 'https://ui-avatars.com/api/?name=Student+User',
-            };
-          }
+          const { user } = await authApi.login(email, password);
           
           // Set the current role to the first role
-          const currentRole = mockUser.roles[0];
+          const currentRole = user.roles[0];
           
           set({
             isAuthenticated: true,
-            user: mockUser,
+            user,
             token: 'mock-jwt-token',
             currentRole,
           });
@@ -83,18 +54,29 @@ export const useAuthStore = create<AuthState>()(
         }
       },
       
-      logout: () => {
+      loginWithUser: (user) => {
+        const currentRole = user.roles[0];
+        
         set({
-          isAuthenticated: false,
-          user: null,
-          token: null,
-          currentRole: null,
+          isAuthenticated: true,
+          user,
+          token: 'mock-jwt-token',
+          currentRole,
+        });
+      },
+      
+      logout: () => {
+        authApi.logout().then(() => {
+          set({
+            isAuthenticated: false,
+            user: null,
+            token: null,
+            currentRole: null,
+          });
         });
       },
       
       checkAuth: async () => {
-        // This is a mock implementation - replace with actual API call
-        // In a real app, you would validate the token with your backend
         const { token } = get();
         
         if (!token) {
@@ -102,11 +84,26 @@ export const useAuthStore = create<AuthState>()(
           return false;
         }
         
-        // Simulate API call to validate token
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
-        // Token is valid in this mock implementation
-        return get().isAuthenticated;
+        try {
+          // Try to get the current user
+          const user = await authApi.getCurrentUser();
+          
+          if (user) {
+            set({ 
+              isAuthenticated: true, 
+              user,
+              currentRole: user.roles[0]
+            });
+            return true;
+          } else {
+            set({ isAuthenticated: false, user: null, token: null });
+            return false;
+          }
+        } catch (error) {
+          console.error('Auth check failed:', error);
+          set({ isAuthenticated: false, user: null, token: null });
+          return false;
+        }
       },
       
       setCurrentRole: (role) => {
