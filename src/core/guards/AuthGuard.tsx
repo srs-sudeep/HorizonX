@@ -1,0 +1,39 @@
+
+import React, { useEffect, useState } from 'react';
+import { Navigate, useLocation, Outlet } from 'react-router-dom';
+import { useAuthStore } from '@/store/useAuthStore';
+import { FullPageLoader } from '@/components/ui/loading-spinner';
+
+interface AuthGuardProps {
+  children?: React.ReactNode;
+}
+
+const AuthGuard = ({ children }: AuthGuardProps) => {
+  const { isAuthenticated, checkAuth } = useAuthStore();
+  const location = useLocation();
+  const [isChecking, setIsChecking] = useState(true);
+
+  useEffect(() => {
+    const verifyAuth = async () => {
+      await checkAuth();
+      setIsChecking(false);
+    };
+    
+    verifyAuth();
+  }, [checkAuth]);
+
+  if (isChecking) {
+    return <FullPageLoader />;
+  }
+
+  if (!isAuthenticated) {
+    // Redirect to login page with return path
+    return <Navigate to="/login" state={{ from: location.pathname }} replace />;
+  }
+
+  // Users are authenticated at this point
+  return children ? <>{children}</> : <Outlet />;
+};
+
+export default AuthGuard;
+

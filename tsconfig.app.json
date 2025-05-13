@@ -14,6 +14,23 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/core/*": ["./src/core/*"],
+      "@/views/*": ["./src/views/*"],
+      "@/layouts/*": ["./src/layouts/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/store/*": ["./src/store/*"],
+      "@/theme/*": ["./src/theme/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/config/*": ["./src/config/*"],
+      "@/services/*": ["./src/services/*"],
+      "@/assets/*": ["./src/assets/*"],
+      "@/lib/*": ["./src/lib/*"]
+    },
 
     /* Linting */
     "strict": true,
@@ -25,3 +42,4 @@
   },
   "include": ["src"]
 }
+

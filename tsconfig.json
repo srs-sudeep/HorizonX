@@ -1,10 +1,24 @@
 {
-  "files": [],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/core/*": ["./src/core/*"],
+      "@/views/*": ["./src/views/*"],
+      "@/layouts/*": ["./src/layouts/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/store/*": ["./src/store/*"],
+      "@/theme/*": ["./src/theme/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/config/*": ["./src/config/*"],
+      "@/services/*": ["./src/services/*"],
+      "@/assets/*": ["./src/assets/*"],
+      "@/lib/*": ["./src/lib/*"]
+    },
+    "jsx": "react-jsx"
   },
+  "files": [],
   "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
 }
