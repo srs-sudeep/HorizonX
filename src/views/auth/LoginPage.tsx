@@ -8,6 +8,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/components/ui/use-toast';
 import { useAuthStore } from '@/store/useAuthStore';
+import {getDashboardLink} from '@/lib/redirect';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -16,12 +17,11 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   
   const navigate = useNavigate();
-  const location = useLocation();
   const { toast } = useToast();
-  const { login } = useAuthStore();
+  const { login,currentRole } = useAuthStore();
 
   // Get the redirect path from location state or default to dashboard
-  const from = (location.state as any)?.from || '/dashboard';
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,6 +46,13 @@ const LoginPage = () => {
       });
       
       // Navigate to the redirect path or role-specific dashboard
+    //   console.log(currentRole)
+    //   const from = (currentRole ? getDashboardLink(currentRole) : '/');
+    //   console.log(from);
+    const user = useAuthStore.getState().user;
+      const role = user?.roles?.[0] || null;
+      const from = role ? getDashboardLink(role) : '/';
+      console.log('Redirecting to:', from);
       navigate(from, { replace: true });
     } catch (error) {
       toast({

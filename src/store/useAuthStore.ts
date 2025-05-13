@@ -48,6 +48,7 @@ export const useAuthStore = create<AuthState>()(
             token: 'mock-jwt-token',
             currentRole,
           });
+
         } catch (error) {
           console.error('Login failed:', error);
           throw new Error('Invalid credentials');

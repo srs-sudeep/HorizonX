@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuthStore } from '@/store/useAuthStore';
 import { ThemeSwitcher } from '@/theme';
 import { Button } from '@/components/ui/button';
+import {getDashboardLink} from '@/lib/redirect';
 interface ErrorLayoutProps {
   children: React.ReactNode;
 }
@@ -17,15 +18,7 @@ const ErrorLayout = ({ children }: ErrorLayoutProps) => {
     }
 
     // If authenticated, redirect to their role dashboard
-    const rolePaths: Record<string, string> = {
-      admin: '/admin/dashboard',
-      teacher: '/teacher/dashboard',
-      student: '/student/dashboard',
-      librarian: '/librarian/dashboard',
-      medical: '/medical/dashboard',
-    };
-
-    return currentRole && rolePaths[currentRole] ? rolePaths[currentRole] : '/';
+    return currentRole ? getDashboardLink(currentRole) : "/";
   };
 
   return (
@@ -41,7 +34,7 @@ const ErrorLayout = ({ children }: ErrorLayoutProps) => {
           </Button>
 
           <Button asChild variant="outline">
-            <Link to="/dashboard">Go to Dashboard</Link>
+            <Link to={getHomeLink()}>Go to Dashboard</Link>
           </Button>
         </div>
       </main>
