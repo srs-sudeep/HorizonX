@@ -68,14 +68,14 @@ const Navbar = () => {
   };
   if (isMobile) {
     return (
-      <div className="sticky top-0 z-40 h-14 flex items-center justify-between px-4 border-b bg-background">
+      <div className="sticky top-0 z-40 h-14 flex items-center justify-between px-4 border-b rounded-b-xl shadow-2x py-3 bg-[#0b14374d]/5 dark:bg-white/8 backdrop-blur-theme">
         <div className="md:hidden mr-2">
           <button onClick={toggleSidebar}>
             <Menu className="w-6 h-6" />
           </button>
         </div>
         <div className="text-sm font-semibold text-muted-foreground">
-          <AppLogo />
+          <AppLogo horizontal />
         </div>
         <div className="flex flex-row">
           <div>

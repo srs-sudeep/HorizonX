@@ -7,7 +7,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 import AppLogo from '@/components/AppLogo';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Sheet, SheetContent } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet';
 import { useSidebar } from '@/core/context/sidebarContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
@@ -274,7 +274,7 @@ const ModuleSidebar = () => {
           {/* Module icons sidebar */}
           <div className="w-16 h-full bg-sidebar flex flex-col items-center py-4 border-r border-sidebar-border">
             <div className="mb-6">
-              <AppLogo collapsed={true} className="w-10 h-10 text-sidebar-foreground" />
+              <AppLogo short className="w-10 h-10 text-sidebar-foreground" />
             </div>
 
             <div className="flex-1 flex flex-col items-center">{modules.map(renderModuleIcon)}</div>
@@ -290,6 +290,7 @@ const ModuleSidebar = () => {
               transition={{ duration: 0.2 }}
               className="w-64 h-full bg-sidebar flex flex-col"
             >
+              <AppLogo name className = "m-2 pt-3" />
               {/* Header with module name */}
               <div className="h-16 flex items-center px-4 border-b border-sidebar-border">
                 <h2 className="text-lg font-medium text-sidebar-foreground">
@@ -365,6 +366,8 @@ const ModuleSidebar = () => {
     <>
       {isMobile ? (
         <Sheet open={isOpen} onOpenChange={closeSidebar}>
+        <SheetTitle hidden>
+        </SheetTitle>
           <SheetContent
             side="left"
             className="p-0 w-[280px] bg-sidebar border-r border-sidebar-border"
@@ -372,105 +375,9 @@ const ModuleSidebar = () => {
             {sideBarcontent}
           </SheetContent>
         </Sheet>
-      ) : (
-        // Desktop layout (your original full sidebar)
-        <div className="h-full flex">
-          {/* Sidebar content inside Drawer */}
-          <div className="w-full h-full">
-            {/* Paste full sidebar JSX here */}
-            <div className="flex h-screen border-r border-sidebar-border">
-              {/* Module icons sidebar */}
-              <div className="w-16 h-full bg-sidebar flex flex-col items-center py-4 border-r border-sidebar-border">
-                <div className="mb-6">
-                  <AppLogo collapsed={true} className="w-10 h-10 text-sidebar-foreground" />
-                </div>
-
-                <div className="flex-1 flex flex-col items-center">
-                  {modules.map(renderModuleIcon)}
-                </div>
-              </div>
-
-              {/* Submodules sidebar */}
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeModule}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.2 }}
-                  className="w-64 h-full bg-sidebar flex flex-col"
-                >
-                  {/* Header with module name */}
-                  <div className="h-16 flex items-center px-4 border-b border-sidebar-border">
-                    <h2 className="text-lg font-medium text-sidebar-foreground">
-                      {modules.find(m => m.id === activeModule)?.label || 'Dashboard'}
-                    </h2>
-                  </div>
-
-                  {/* Search box */}
-                  <div className="px-3 py-2 border-b border-sidebar-border">
-                    <div className="relative">
-                      <Search className="absolute left-2 top-2.5 h-4 w-4 text-sidebar-foreground/70" />
-                      <input
-                        type="text"
-                        placeholder="Search..."
-                        className="w-full pl-8 pr-3 py-2 text-sm bg-sidebar-accent/10 border-0 rounded-md focus:outline-none focus:ring-1 focus:ring-sidebar-accent text-sidebar-foreground"
-                        value={searchQuery}
-                        onChange={e => setSearchQuery(e.target.value)}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Submodules list */}
-                  <ScrollArea className="flex-1">
-                    {isLoading ? (
-                      <div className="flex justify-center items-center h-20">
-                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-sidebar-accent"></div>
-                      </div>
-                    ) : (
-                      <div className="py-3 px-2">
-                        {activeModule &&
-                          getFilteredBySearchSubModules().map(subModule =>
-                            renderSubModuleItem(subModule)
-                          )}
-
-                        {/* Show search results from other modules when searching */}
-                        {searchQuery.trim() !== '' && (
-                          <>
-                            {Object.entries(subModulesMap)
-                              .filter(([moduleId]) => moduleId !== activeModule)
-                              .flatMap(([moduleId, subModules]) => {
-                                const filteredSubModules = subModules.filter(
-                                  sm =>
-                                    sm.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                    sm.path.toLowerCase().includes(searchQuery.toLowerCase())
-                                );
-
-                                return filteredSubModules.length > 0 ? (
-                                  <div
-                                    key={moduleId}
-                                    className="mt-4 pt-4 border-t border-sidebar-border/50"
-                                  >
-                                    <h3 className="px-3 mb-2 text-xs uppercase text-sidebar-foreground/60">
-                                      {modules.find(m => m.id === moduleId)?.label || moduleId}
-                                    </h3>
-                                    {filteredSubModules.map(subModule =>
-                                      renderSubModuleItem(subModule)
-                                    )}
-                                  </div>
-                                ) : null;
-                              })}
-                          </>
-                        )}
-                      </div>
-                    )}
-                  </ScrollArea>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          </div>
-        </div>
-      )}
+      ) : 
+      sideBarcontent
+      }
     </>
   );
 };

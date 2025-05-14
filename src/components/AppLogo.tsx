@@ -1,20 +1,44 @@
-
 import { cn } from '@/lib/utils';
+import { useTheme } from '@/theme';
 
 interface AppLogoProps {
   className?: string;
-  collapsed?: boolean;
+  horizontal?: boolean;
+  name?: boolean;
+  short?: boolean;
 }
 
-const AppLogo = ({ className, collapsed = false }: AppLogoProps) => {
+const getLogoSrc = (theme: string, horizontal?: boolean,name?: boolean,short?: boolean): string => {
+  if (horizontal) {
+    return theme === 'dark' ? '/WhiteLogoHorizontal.svg' : '/LogoHorizontal.svg';
+  }
+  else if (name) {
+    return theme === 'dark'? '/WhiteLongName.svg' : '/LongName.svg';
+  }
+  else if (short){
+    return theme === 'dark' ? '/WhiteX.svg' : '/X.svg';
+  }
+  return theme === 'dark' ? '/WhiteLogo.svg' : '/Logo.svg';
+};
+
+const AppLogo = ({
+  className,
+  horizontal = false,
+  name = false,
+  short = false,
+}: AppLogoProps) => {
+  const { theme } = useTheme();
+  const logoSrc = getLogoSrc(theme, horizontal,name,short);
+
   return (
     <div className={cn("flex items-center gap-2", className)}>
-      <div className="flex items-center justify-center w-8 h-8 rounded-md bg-gradient-to-br from-blue-500 to-blue-600 shadow-md">
-        <span className="text-white font-bold text-lg">C</span>
+      <div className="relative">
+        <img
+          src={logoSrc}
+          alt="Logo"
+          className="object-contain w-full h-full"
+        />
       </div>
-      {!collapsed && (
-        <div className="font-bold text-lg">Codename</div>
-      )}
     </div>
   );
 };
