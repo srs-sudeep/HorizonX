@@ -15,7 +15,6 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
 
   useEffect(() => {
     const verifyAuth = async () => {
-        console.log("hello")
       try {
         await checkAuth();
       } catch (error) {
