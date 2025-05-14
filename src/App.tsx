@@ -5,7 +5,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { Toaster as Sonner } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { ThemeProvider } from '@/theme';
-import './index.css'
+
 function App() {
   const queryClient = new QueryClient({
     defaultOptions: {
