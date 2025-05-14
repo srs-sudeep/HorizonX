@@ -77,7 +77,6 @@ const ConfigurableSidebar = () => {
     }
   }, [location.pathname]);
 
-  //   // Navigate to first allowed page when role changes
   //   useEffect(() => {
   //     if (currentRole) {
   //       // Reset sidebar state when role changes

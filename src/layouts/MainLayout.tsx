@@ -1,11 +1,11 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from '@/components/navbar/Navbar';
-// import ModuleSidebar from '@/components/sidebar/ModuleSidebar';
+import ModuleSidebar from '@/components/sidebar/ModuleSidebar';
 
 const MainLayout = () => {
   return (
       <div className="flex h-screen overflow-hidden">
-        {/* <ModuleSidebar /> */}
+        <ModuleSidebar />
         <div className="flex-1 flex flex-col overflow-hidden">
           <Navbar />
           <main className="flex-1 overflow-auto p-6 bg-background">
