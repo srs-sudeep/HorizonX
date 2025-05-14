@@ -5,14 +5,8 @@ import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const LandingPage = () => {
-  const { isAuthenticated, user, currentRole } = useAuthStore();
+  const { isAuthenticated, currentRole } = useAuthStore();
 
-  // Determine dashboard link based on user role
-  const getLink = () => {
-    if (!isAuthenticated || !user) return '/login';
-
-    return getDashboardLink(currentRole ? currentRole : user.roles[0]);
-  };
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -27,7 +21,7 @@ const LandingPage = () => {
       <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
         {isAuthenticated ? (
           <Button asChild size="lg" className="px-8 text-lg h-12">
-            <Link to={getLink()} className="gap-2">
+            <Link to={getDashboardLink(currentRole)} className="gap-2">
               Go to Dashboard <ArrowRight className="h-5 w-5" />
             </Link>
           </Button>
