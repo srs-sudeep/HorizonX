@@ -3,14 +3,9 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
-import { getDashboardLink } from '@/lib/redirect';
-import { useAuthStore, type UserRole } from '@/store/useAuthStore';
+import { useAuthStore } from '@/store/useAuthStore';
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-
-interface User {
-  roles?: UserRole[];
-}
+import { Link } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -18,7 +13,6 @@ const LoginPage: React.FC = () => {
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const navigate = useNavigate();
   const { toast } = useToast();
   const { login } = useAuthStore();
 
@@ -38,15 +32,10 @@ const LoginPage: React.FC = () => {
 
     try {
       await login(email, password);
-
       toast({
         title: 'Success',
         description: 'You have successfully logged in',
       });
-      const user = useAuthStore.getState().user as User | null;
-      const role = user?.roles?.[0] || null;
-      const from = getDashboardLink(role);
-      navigate(from, { replace: true });
     } catch (error) {
       toast({
         title: 'Login Failed',

@@ -20,7 +20,7 @@ interface AuthState {
   currentRole: UserRole | null;
 
   // Actions
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<User | null>;
   loginWithUser: (user: User) => void;
   logout: () => void;
   checkAuth: () => Promise<boolean>;
@@ -42,12 +42,21 @@ export const useAuthStore = create<AuthState>()(
           // Set the current role to the first role
           const currentRole = user.roles[0];
 
+          // Update user with currentRole for consistency
+          const updatedUser = {
+            ...user,
+            currentRole,
+          };
+
           set({
             isAuthenticated: true,
-            user,
+            user: updatedUser,
             token: 'mock-jwt-token',
             currentRole,
           });
+          
+          // Return the user for convenience
+          return updatedUser;
         } catch (error) {
           console.error('Login failed:', error);
           throw new Error('Invalid credentials');

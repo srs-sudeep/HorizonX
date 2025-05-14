@@ -47,7 +47,7 @@ const GuestGuard = ({ children, redirectPath = 'role-dashboard' }: GuestGuardPro
     }
 
     // Otherwise, redirect to the specified path
-    return <Navigate to={redirectPath} replace />;
+    return <Navigate to={'/'} replace />;
   }
 
   // User is not authenticated, allow access to the guest route
