@@ -4,11 +4,11 @@ import Navbar from '@/components/navbar/Navbar';
 
 const MainLayout = () => {
   return (
-      <div className="flex h-screen overflow-hidden bg-background">
+      <div className="flex h-screen overflow-hidden">
         {/* <ModuleSidebar /> */}
         <div className="flex-1 flex flex-col overflow-hidden">
           <Navbar />
-          <main className="flex-1 overflow-auto p-6">
+          <main className="flex-1 overflow-auto p-6 bg-background">
             <Outlet />
           </main>
           <footer className="px-6 py-3 text-xs text-muted-foreground border-t bg-muted/30">

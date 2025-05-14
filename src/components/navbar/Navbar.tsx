@@ -1,10 +1,19 @@
 import {
   Breadcrumb,
+  BreadcrumbList,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
+import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,53 +35,26 @@ import { useAuthStore, type UserRole } from '@/store';
 import { ThemeSwitcher } from '@/theme';
 import { Bell, ChevronDown, HelpCircle, LogOut, Mail, Search, Settings, User } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { notifications } from '@/types';
+import AppLogo from '@/components/AppLogo';
 
-interface NavbarProps {
-  toggleSidebar?: () => void;
-}
-
-interface NotificationProps {
-  id: string;
-  title: string;
-  message: string;
-  time: string;
-  read: boolean;
-}
-
-const notifications: NotificationProps[] = [
-  {
-    id: '1',
-    title: 'New Order',
-    message: 'You have received a new order #12345',
-    time: '5 minutes ago',
-    read: false,
-  },
-  {
-    id: '2',
-    title: 'Payment Success',
-    message: 'Payment for order #12344 was successful',
-    time: '2 hours ago',
-    read: false,
-  },
-  {
-    id: '3',
-    title: 'New Message',
-    message: 'You have a new message from John Doe',
-    time: 'Yesterday',
-    read: true,
-  },
-];
-
-
-const Navbar = ({ toggleSidebar }: NavbarProps) => {
+const Navbar = () => {
   const { user, logout, setCurrentRole } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
+  const [isMobile, setIsMobile] = React.useState(false);
 
   const handleRoleChange = (role: UserRole) => {
+    // First set the role
     setCurrentRole(role);
-    navigate(getDashboardLink(role));
+    navigate(getDashboardLink(role), { replace: true });
   };
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Get current page name from path
   const getPageName = () => {
@@ -89,37 +71,139 @@ const Navbar = ({ toggleSidebar }: NavbarProps) => {
       return { name, url };
     });
   };
+  if (isMobile) {
+    return (
+      <div className="sticky top-0 z-40 h-14 flex items-center justify-between px-4 border-b bg-background">
+        <div className="text-sm font-semibold text-muted-foreground"><AppLogo/></div>
+        <div className='flex flex-row'>
+          <div>
+            <ThemeSwitcher />
+          </div>
+          <Drawer direction="bottom">
+            <DrawerTrigger asChild>
+              <Button variant="ghost" size="icon" className="rounded-full">
+                <UserAvatar
+                  name={user?.name || 'User'}
+                  role={user?.currentRole || ''}
+                  showInfo={false}
+                />
+              </Button>
+            </DrawerTrigger>
+            <DrawerContent className="p-4 space-y-4 w-[100vw] rounded-t-3xl">
+              <DrawerHeader>
+                <DrawerTitle className="text-lg">Quick Menu</DrawerTitle>
+              </DrawerHeader>
+
+              <div className="space-y-4">
+                {/* Search */}
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input placeholder="Search..." className="pl-10 pr-4 py-2 rounded-lg border" />
+                </div>
+
+                {/* Notifications */}
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-muted-foreground font-medium text-sm">
+                    <Bell className="h-4 w-4" />
+                    Notifications
+                  </div>
+                  <div className="max-h-48 overflow-y-auto border rounded-md">
+                    {notifications.map(n => (
+                      <div
+                        key={n.id}
+                        className={`px-4 py-2 text-sm border-b last:border-0 ${n.read ? 'opacity-60' : ''}`}
+                      >
+                        <div className="font-semibold">{n.title}</div>
+                        <p className="text-xs">{n.message}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Role Switch */}
+                {user?.roles && user.roles.length > 1 && (
+                  <div className="space-y-2">
+                    <p className="text-muted-foreground text-sm font-medium">Switch Role</p>
+                    <div className="space-y-1">
+                      {user.roles.map(role => (
+                        <Button
+                          key={role}
+                          variant={role === user.currentRole ? 'default' : 'outline'}
+                          size="sm"
+                          className="w-full capitalize"
+                          onClick={() => handleRoleChange(role)}
+                        >
+                          {role}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Actions */}
+                <div className="space-y-1 text-sm">
+                  <Button variant="ghost" size="sm" className="w-full justify-start">
+                    <User className="mr-2 h-4 w-4" /> Profile
+                  </Button>
+                  <Button variant="ghost" size="sm" className="w-full justify-start">
+                    <Settings className="mr-2 h-4 w-4" /> Settings
+                  </Button>
+                  <Button variant="ghost" size="sm" className="w-full justify-start">
+                    <HelpCircle className="mr-2 h-4 w-4" /> Help & Support
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    className="w-full justify-start"
+                    onClick={logout}
+                  >
+                    <LogOut className="mr-2 h-4 w-4" /> Log out
+                  </Button>
+                </div>
+              </div>
+            </DrawerContent>
+          </Drawer>
+        </div>
+      </div>
+    );
+  }
 
   return (
-
- <header className='sticky top-2 border mx-2 z-40 flex flex-row flex-wrap items-center justify-between rounded-xl bg-white/20 p-2 backdrop-blur-xl dark:bg-[#0b14374d]'>
+    <div className="isolate sticky top-2 border mx-6 z-40 flex flex-row flex-wrap items-center justify-between rounded-xl shadow-2x py-3 px-6  bg-[#0b14374d]/5 dark:bg-white/8 backdrop-blur-theme">
       <div className="flex items-center justify-between w-full">
         {/* Left side with breadcrumbs and page title */}
-        <div className="flex flex-col">
-          <div className="flex items-center">
-            <Breadcrumb className="text-sm text-muted-foreground flex">
-              <BreadcrumbItem className="flex items-center">
-                <BreadcrumbLink href="/" className="hover:text-primary">HorizonX</BreadcrumbLink>
+        <div className="flex flex-col justify-center">
+          <Breadcrumb className="flex flex-wrap items-center space-x-1 text-base font-medium text-muted-foreground">
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/" className="hover:text-primary">
+                  HorizonX
+                </BreadcrumbLink>
               </BreadcrumbItem>
+
               {getBreadcrumbItems().map((item, index) => (
-                <BreadcrumbItem key={index} className="flex items-center">
+                <React.Fragment key={index}>
                   <BreadcrumbSeparator />
-                  <BreadcrumbLink href={item.url} className="hover:text-primary">{item.name}</BreadcrumbLink>
-                </BreadcrumbItem>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href={item.url} className="hover:text-primary">
+                      {item.name}
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                </React.Fragment>
               ))}
-            </Breadcrumb>
-          </div>
-          <h1 className="text-2xl font-semibold mt-1 text-foreground">{getPageName()}</h1>
+            </BreadcrumbList>
+          </Breadcrumb>
+          <h1 className="text-3xl font-bold text-foreground">{getPageName()}</h1>
         </div>
 
         {/* Center - Search */}
-        <div className="relative max-w-md">
-          <div className="relative w-full">
-            <Search className="h-4 w-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
+        <div className="flex-1 px-8">
+          <div className="relative max-w-xl mx-auto w-full">
+            <Search className="h-5 w-5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
             <Input
               type="search"
               placeholder="Search..."
-              className="pl-10 pr-4 py-2 rounded-full bg-background/50 border-none focus-visible:ring-1 focus-visible:ring-primary/30"
+              className="pl-10 pr-4 py-2 w-full rounded-full bg-background/90 border border-border/50 focus-visible:ring-1 focus-visible:ring-primary/40 shadow-sm"
             />
           </div>
         </div>
@@ -256,7 +340,7 @@ const Navbar = ({ toggleSidebar }: NavbarProps) => {
           </DropdownMenu>
         </div>
       </div>
-    </header>
+    </div>
   );
 };
 

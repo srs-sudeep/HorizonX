@@ -18,7 +18,7 @@ interface AuthState {
   user: User | null;
   token: string | null;
   currentRole: UserRole | null;
-  
+
   // Actions
   login: (email: string, password: string) => Promise<void>;
   loginWithUser: (user: User) => void;
@@ -34,30 +34,29 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       token: null,
       currentRole: null,
-      
+
       login: async (email, password) => {
         try {
           const { user } = await authApi.login(email, password);
-          
+
           // Set the current role to the first role
           const currentRole = user.roles[0];
-          
+
           set({
             isAuthenticated: true,
             user,
             token: 'mock-jwt-token',
             currentRole,
           });
-
         } catch (error) {
           console.error('Login failed:', error);
           throw new Error('Invalid credentials');
         }
       },
-      
-      loginWithUser: (user) => {
+
+      loginWithUser: user => {
         const currentRole = user.roles[0];
-        
+
         set({
           isAuthenticated: true,
           user,
@@ -65,7 +64,7 @@ export const useAuthStore = create<AuthState>()(
           currentRole,
         });
       },
-      
+
       logout: () => {
         authApi.logout().then(() => {
           set({
@@ -76,24 +75,24 @@ export const useAuthStore = create<AuthState>()(
           });
         });
       },
-      
+
       checkAuth: async () => {
         const { token } = get();
-        
+
         if (!token) {
           set({ isAuthenticated: false, user: null });
           return false;
         }
-        
+
         try {
           // Try to get the current user
           const user = await authApi.getCurrentUser();
-          
+
           if (user) {
-            set({ 
-              isAuthenticated: true, 
+            set({
+              isAuthenticated: true,
               user,
-              currentRole: user.roles[0]
+              currentRole: user.roles[0],
             });
             return true;
           } else {
@@ -106,13 +105,23 @@ export const useAuthStore = create<AuthState>()(
           return false;
         }
       },
-      
-      setCurrentRole: (role) => {
+
+      setCurrentRole: role => {
         const { user } = get();
         
         // Ensure the user has this role
         if (user && user.roles.includes(role)) {
-          set({ currentRole: role });
+          // Update both currentRole and user.currentRole to ensure consistency
+          set({
+            currentRole: role,
+            user: {
+              ...user,
+              currentRole: role,
+            },
+          });
+          
+          // Log for debugging
+          console.log(`Role set to: ${role}`);
         } else {
           console.error('User does not have the specified role');
         }
@@ -120,7 +129,7 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'auth-storage',
-      partialize: (state) => ({
+      partialize: state => ({
         isAuthenticated: state.isAuthenticated,
         user: state.user,
         token: state.token,
@@ -129,4 +138,3 @@ export const useAuthStore = create<AuthState>()(
     }
   )
 );
-
