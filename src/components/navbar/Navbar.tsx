@@ -21,6 +21,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import UserAvatar from '@/components/UserAvatar';
+import { getDashboardLink } from '@/lib/redirect';
 import { useAuthStore, type UserRole } from '@/store';
 import { ThemeSwitcher } from '@/theme';
 import { Bell, ChevronDown, HelpCircle, LogOut, Mail, Search, Settings, User } from 'lucide-react';
@@ -63,13 +64,6 @@ const notifications: NotificationProps[] = [
   },
 ];
 
-const roleDashboardRoutes: Record<UserRole, string> = {
-  admin: '/admin/dashboard',
-  teacher: '/teacher/dashboard',
-  student: '/student/dashboard',
-  librarian: '/librarian/dashboard',
-  medical: '/medical/dashboard',
-};
 
 const Navbar = ({ toggleSidebar }: NavbarProps) => {
   const { user, logout, setCurrentRole } = useAuthStore();
@@ -78,7 +72,7 @@ const Navbar = ({ toggleSidebar }: NavbarProps) => {
 
   const handleRoleChange = (role: UserRole) => {
     setCurrentRole(role);
-    navigate(roleDashboardRoutes[role]);
+    navigate(getDashboardLink(role));
   };
 
   // Get current page name from path
@@ -98,29 +92,30 @@ const Navbar = ({ toggleSidebar }: NavbarProps) => {
   };
 
   return (
-    <header className="bg-background/80 backdrop-blur-md border-b h-20 px-6 flex flex-col justify-center">
-      <div className="flex items-center h-full">
+    // <header className="backdrop-blur-lg bg-background/60 h-20 border border-border/40 px-6 flex items-center rounded-xl shadow-sm m-10 z-10">
 
-        <div className="flex-1 flex flex-col">
+ <header className='sticky top-2 border mx-2 z-40 flex flex-row flex-wrap items-center justify-between rounded-xl bg-white/20 p-2 backdrop-blur-xl dark:bg-[#0b14374d]'>
+      <div className="flex items-center justify-between w-full">
+        {/* Left side with breadcrumbs and page title */}
+        <div className="flex flex-col">
           <div className="flex items-center">
-            <Breadcrumb>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/">HorizonX</BreadcrumbLink>
+            <Breadcrumb className="text-sm text-muted-foreground flex">
+              <BreadcrumbItem className="flex items-center">
+                <BreadcrumbLink href="/" className="hover:text-primary">HorizonX</BreadcrumbLink>
               </BreadcrumbItem>
               {getBreadcrumbItems().map((item, index) => (
-                <React.Fragment key={index}>
+                <BreadcrumbItem key={index} className="flex items-center">
                   <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    <BreadcrumbLink href={item.url}>{item.name}</BreadcrumbLink>
-                  </BreadcrumbItem>
-                </React.Fragment>
+                  <BreadcrumbLink href={item.url} className="hover:text-primary">{item.name}</BreadcrumbLink>
+                </BreadcrumbItem>
               ))}
             </Breadcrumb>
           </div>
-          <h1 className="text-2xl font-semibold mt-1">{getPageName()}</h1>
+          <h1 className="text-2xl font-semibold mt-1 text-foreground">{getPageName()}</h1>
         </div>
 
-        <div className="relative max-w-md mx-4">
+        {/* Center - Search */}
+        <div className="relative max-w-md">
           <div className="relative w-full">
             <Search className="h-4 w-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
             <Input
@@ -131,6 +126,7 @@ const Navbar = ({ toggleSidebar }: NavbarProps) => {
           </div>
         </div>
 
+        {/* Right side - Actions */}
         <div className="flex items-center gap-4">
           <ThemeSwitcher />
 

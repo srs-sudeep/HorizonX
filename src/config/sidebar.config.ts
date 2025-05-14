@@ -130,7 +130,7 @@ export const modulesConfig: SidebarModuleConfig[] = [
     label: 'Administration', 
     icon: 'shield',
     iconSize: 20,
-    requiredRoles: ['admin'],
+    requiredRoles: ['admin','teacher'],
     order: 20
   },
   { 

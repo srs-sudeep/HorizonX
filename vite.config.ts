@@ -28,6 +28,9 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
   },
+  server: {
+    port: 3000,
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

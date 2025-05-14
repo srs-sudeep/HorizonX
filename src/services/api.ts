@@ -6,7 +6,7 @@ const MOCK_USERS = [
     id: '1',
     name: 'Admin User',
     email: 'admin@example.com',
-    roles: ['admin'] as UserRole[],
+    roles: ['admin', 'teacher'] as UserRole[],
     avatar: 'https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&color=fff'
   },
   {

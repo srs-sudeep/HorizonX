@@ -80,12 +80,16 @@ const ConfigurableSidebar = () => {
     }
   }, [location.pathname]);
 
-  // Navigate to first allowed page when role changes
+//   // Navigate to first allowed page when role changes
 //   useEffect(() => {
 //     if (currentRole) {
+//       // Reset sidebar state when role changes
 //       const availableModules = modulesConfig.filter(
 //         module => !module.requiredRoles || module.requiredRoles.includes(currentRole)
 //       );
+      
+//       // Update filtered modules based on current role only, not all user roles
+//       const filteredModules = getFilteredModules([currentRole]);
       
 //       if (availableModules.length > 0) {
 //         const firstModule = availableModules[0];
@@ -100,7 +104,7 @@ const ConfigurableSidebar = () => {
 //         }
 //       }
 //     }
-//   // Only run when role changes, not on every location change
+//   // Only run when role changes
 //   }, [currentRole, navigate]);
 
   // Filter submodules based on search query
