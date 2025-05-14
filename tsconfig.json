@@ -35,8 +35,8 @@
       "@/config/*": [
         "./src/config/*"
       ],
-      "@/services/*": [
-        "./src/services/*"
+      "@/api/*": [
+        "./src/api/*"
       ],
       "@/assets/*": [
         "./src/assets/*"
