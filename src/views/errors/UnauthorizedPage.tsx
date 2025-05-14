@@ -1,8 +1,5 @@
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import { AlertTriangle } from 'lucide-react';
 import { useAuthStore } from '@/store/useAuthStore';
-import { getDashboardLink } from '@/lib/redirect';
 const UnauthorizedPage = () => {
   const { currentRole } = useAuthStore();
   
@@ -22,16 +19,6 @@ const UnauthorizedPage = () => {
           Your current role ({currentRole}) doesn't have sufficient permissions.
         </p>
       )}
-      
-      <div className="flex flex-col sm:flex-row gap-4">
-        <Button asChild variant="default">
-          <Link to={getDashboardLink(currentRole)}>Go to Dashboard</Link>
-        </Button>
-        
-        <Button asChild variant="outline">
-          <Link to="/">Back to Home</Link>
-        </Button>
-      </div>
     </div>
   );
 };

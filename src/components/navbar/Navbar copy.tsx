@@ -25,7 +25,6 @@ import { getDashboardLink } from '@/lib/redirect';
 import { useAuthStore, type UserRole } from '@/store';
 import { ThemeSwitcher } from '@/theme';
 import { Bell, ChevronDown, HelpCircle, LogOut, Mail, Search, Settings, User } from 'lucide-react';
-import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 interface NavbarProps {
