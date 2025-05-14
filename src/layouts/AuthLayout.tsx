@@ -1,30 +1,28 @@
 import { ThemeSwitcher } from '@/theme';
-import { Link, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 const AuthLayout = () => {
   return (
-    <div className="min-h-[100vh] flex flex-col bg-gradient-to-br from-purple-50 to-blue-50 dark:from-gray-900 dark:to-blue-950">
-      <header className="p-4 flex justify-end">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-indigo-50 dark:from-violet-950 dark:via-purple-900 dark:to-indigo-900 relative overflow-hidden">
+      {/* Background blur elements - only visible in dark mode */}
+      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-pink-500/0 dark:bg-pink-500/30 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-indigo-500/0 dark:bg-indigo-500/30 rounded-full blur-3xl"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-500/0 dark:bg-purple-500/20 rounded-full blur-3xl"></div>
+      
+      {/* Theme switcher positioned in top corner */}
+      <div className="absolute top-4 right-4 z-10">
         <ThemeSwitcher />
-      </header>
-
-      <main className="flex-1 flex items-center justify-center p-4">
-        <div className="w-full max-w-md">
-          <div className="mb-6 flex flex-col items-center">
-            <Link to="/" className="flex items-center gap-2 mb-2">
-              <div className="flex items-center justify-center w-10 h-10 rounded-md bg-gradient-to-br from-blue-500 to-purple-600 shadow-md">
-                <span className="text-white font-bold text-xl">C</span>
-              </div>
-            </Link>
-            <h1 className="text-2xl font-bold">Codename</h1>
-          </div>
-          <Outlet />
-        </div>
-      </main>
-
-      <footer className="p-4 text-center text-sm text-gray-500 dark:text-gray-400">
+      </div>
+      
+      {/* Main container for all auth pages */}
+      <div className="w-full max-w-5xl mx-4 bg-white/80 dark:bg-black/40 backdrop-blur-md rounded-2xl overflow-hidden shadow-2xl">
+        <Outlet />
+      </div>
+      
+      {/* Footer */}
+      <div className="absolute bottom-4 text-center text-sm text-gray-500 dark:text-gray-400">
         &copy; {new Date().getFullYear()} Codename. All rights reserved.
-      </footer>
+      </div>
     </div>
   );
 };

@@ -10,7 +10,7 @@ import AuthRoutes from '@/routes/AuthRoutes';
 import ErrorRoutes from '@/routes/ErrorRoutes';
 
 //Module routes
-import DashboardRoutes from '@/routes/Dashboard';
+import DashboardRoutes from '@/routes/DashboardRoutes';
 import AdminRoutes from '@/routes/AdminRoutes';
 import AcademicsRoutes from '@/routes/Academics';
 // import LibraryRoutes from '@/routes/Library';

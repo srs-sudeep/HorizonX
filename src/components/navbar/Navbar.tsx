@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  Bell, LogOut, Search, Settings, User, ChevronDown, Sun, Moon, Laptop 
+  Bell, LogOut, Search, Settings, User, ChevronDown 
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,24 +9,17 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, 
   DropdownMenuTrigger, DropdownMenuSeparator 
 } from '@/components/ui/dropdown-menu';
-import { useTheme } from '@/theme';
+import { ThemeSwitcher } from '@/theme';
 import {useAuthStore} from '@/store/useAuthStore';
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const { theme, setTheme } = useTheme();
   const { user, logout, currentRole, setCurrentRole } = useAuthStore();
   
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Searching for:', searchQuery);
     // Implement search functionality
-  };
-  
-  const handleLogout = () => {
-    logout();
-    // Redirect to login page
-    window.location.href = '/login';
   };
   
   const handleRoleChange = (role: string) => {
@@ -62,33 +55,7 @@ const Navbar = () => {
         
         <div className="flex items-center gap-2 ml-auto">
           {/* Theme switcher */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                {theme === 'light' ? (
-                  <Sun className="h-5 w-5" />
-                ) : theme === 'dark' ? (
-                  <Moon className="h-5 w-5" />
-                ) : (
-                  <Laptop className="h-5 w-5" />
-                )}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setTheme('light')}>
-                <Sun className="mr-2 h-4 w-4" />
-                <span>Light</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme('dark')}>
-                <Moon className="mr-2 h-4 w-4" />
-                <span>Dark</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme('system')}>
-                <Laptop className="mr-2 h-4 w-4" />
-                <span>System</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+        <ThemeSwitcher />
           
           {/* Notifications */}
           <DropdownMenu>
@@ -191,7 +158,7 @@ const Navbar = () => {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+                <DropdownMenuItem onClick={logout} className="cursor-pointer">
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Logout</span>
                 </DropdownMenuItem>
