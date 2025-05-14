@@ -5,7 +5,7 @@ import {
   BreadcrumbLink,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Drawer,
@@ -37,24 +37,17 @@ import { Bell, ChevronDown, HelpCircle, LogOut, Mail, Search, Settings, User } f
 import { useLocation, useNavigate } from 'react-router-dom';
 import { notifications } from '@/types';
 import AppLogo from '@/components/AppLogo';
-
+import { useIsMobile } from '@/hooks/use-mobile';
 const Navbar = () => {
   const { user, logout, setCurrentRole } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
-  const [isMobile, setIsMobile] = React.useState(false);
+  const isMobile = useIsMobile();
 
   const handleRoleChange = (role: UserRole) => {
-    // First set the role
     setCurrentRole(role);
     navigate(getDashboardLink(role), { replace: true });
   };
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   // Get current page name from path
   const getPageName = () => {

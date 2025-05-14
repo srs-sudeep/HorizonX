@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { ChevronDown, ChevronRight, Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
