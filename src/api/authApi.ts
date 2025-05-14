@@ -1,7 +1,7 @@
 import { type User, type UserRole } from '@/store/useAuthStore';
 
 // Mock user database
-const MOCK_USERS = [
+const MOCK_USERS: User[] = [
   {
     id: '1',
     name: 'Admin User',

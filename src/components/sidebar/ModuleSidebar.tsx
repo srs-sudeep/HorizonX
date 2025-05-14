@@ -1,9 +1,9 @@
 import {
     getFilteredModules,
-    getHierarchicalSubModules,
-    type SidebarModuleItem,
-    type SidebarSubModuleItem,
-} from '@/api/mockApi/sidebar';
+    getHierarchicalSubModules
+} from '@/api/sidebarApi';
+import { type SidebarModuleItem, type HierarchicalSubModule,iconMap } from '@/types';
+import { useAuthStore } from '@/store/useAuthStore';
 import AppLogo from '@/components/AppLogo';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -11,8 +11,6 @@ import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { useSidebar } from '@/core/context/sidebarContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
-import { useAuthStore } from '@/store/useAuthStore';
-import { iconMap } from '@/types';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronRight, Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -22,11 +20,6 @@ const getIconComponent = (iconName: keyof typeof iconMap, size: number = 24) => 
   const IconComponent = iconMap[iconName];
   return IconComponent ? <IconComponent size={size} /> : null;
 };
-
-// Interface for hierarchical submodules with children
-interface HierarchicalSubModule extends SidebarSubModuleItem {
-  children?: HierarchicalSubModule[];
-}
 
 const ModuleSidebar = () => {
   const [activeModule, setActiveModule] = useState<string | null>(null);

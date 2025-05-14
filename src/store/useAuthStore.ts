@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { authApi } from '@/';
+import { authApi } from '@/api/authApi';
 
 export type UserRole = 'admin' | 'teacher' | 'student' | 'librarian' | 'medical';
 
