@@ -1,8 +1,7 @@
-
-import React, { useEffect, useState } from 'react';
-import { Navigate, useLocation, Outlet } from 'react-router-dom';
-import { useAuthStore } from '@/store/useAuthStore';
 import { FullPageLoader } from '@/components/ui/loading-spinner';
+import { useAuthStore } from '@/store/useAuthStore';
+import React, { useEffect, useState } from 'react';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 interface AuthGuardProps {
   children?: React.ReactNode;
@@ -23,7 +22,7 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
         setIsChecking(false);
       }
     };
-    
+
     verifyAuth();
   }, [checkAuth]);
 
@@ -41,4 +40,3 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
 };
 
 export default AuthGuard;
-

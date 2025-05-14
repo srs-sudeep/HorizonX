@@ -1,5 +1,5 @@
 import { type UserRole } from '@/store/useAuthStore';
-import {type iconMap} from '@/types'
+import { type iconMap } from '@/types';
 // Types for sidebar configuration
 export interface SidebarModuleConfig {
   id: string;

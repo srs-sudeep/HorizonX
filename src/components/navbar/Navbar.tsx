@@ -1,48 +1,50 @@
+import AppLogo from '@/components/AppLogo';
 import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbSeparator,
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import React from 'react';
 import { Button } from '@/components/ui/button';
 import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
+    Drawer,
+    DrawerContent,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
 } from '@/components/ui/drawer';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuPortal,
+    DropdownMenuSeparator,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
+    DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import UserAvatar from '@/components/UserAvatar';
+import { useSidebar } from '@/core/context/sidebarContext';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { getDashboardLink } from '@/lib/redirect';
 import { useAuthStore, type UserRole } from '@/store';
 import { ThemeSwitcher } from '@/theme';
-import { Bell, ChevronDown, HelpCircle, LogOut, Mail, Search, Settings, User } from 'lucide-react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { notifications } from '@/types';
-import AppLogo from '@/components/AppLogo';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { Bell, ChevronDown, HelpCircle, LogOut, Mail, Menu, Search, Settings, User } from 'lucide-react';
+import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 const Navbar = () => {
   const { user, logout, setCurrentRole } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
   const isMobile = useIsMobile();
+  const { toggleSidebar } = useSidebar();
 
   const handleRoleChange = (role: UserRole) => {
     setCurrentRole(role);
@@ -67,8 +69,15 @@ const Navbar = () => {
   if (isMobile) {
     return (
       <div className="sticky top-0 z-40 h-14 flex items-center justify-between px-4 border-b bg-background">
-        <div className="text-sm font-semibold text-muted-foreground"><AppLogo/></div>
-        <div className='flex flex-row'>
+        <div className="md:hidden mr-2">
+          <button onClick={toggleSidebar}>
+            <Menu className="w-6 h-6" />
+          </button>
+        </div>
+        <div className="text-sm font-semibold text-muted-foreground">
+          <AppLogo />
+        </div>
+        <div className="flex flex-row">
           <div>
             <ThemeSwitcher />
           </div>

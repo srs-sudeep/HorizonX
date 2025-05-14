@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useAuthStore, type UserRole } from '@/store/useAuthStore';
 import { fetchRoutePermissions, type RouteAccess } from '@/api/routesApi';
-import { useNavigate } from 'react-router-dom';
 import { getDashboardLink } from '@/lib/redirect';
+import { useAuthStore, type UserRole } from '@/store/useAuthStore';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface UseRoleAccessResult {
   loading: boolean;
@@ -43,9 +43,7 @@ export function useRoleAccess(path: string): UseRoleAccessResult {
           setRoutePermissions(permissions);
 
           const routePermission = permissions.find(p => p.path === path);
-          setHasAccess(
-            !!routePermission && routePermission.allowedRoles.includes(currentRole)
-          );
+          setHasAccess(!!routePermission && routePermission.allowedRoles.includes(currentRole));
         }
       } catch (error) {
         console.error('Role access check failed:', error);

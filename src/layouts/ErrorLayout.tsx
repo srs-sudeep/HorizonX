@@ -1,9 +1,9 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { getDashboardLink } from '@/lib/redirect';
 import { useAuthStore } from '@/store/useAuthStore';
 import { ThemeSwitcher } from '@/theme';
-import { Button } from '@/components/ui/button';
-import {getDashboardLink} from '@/lib/redirect';
+import React from 'react';
+import { Link } from 'react-router-dom';
 interface ErrorLayoutProps {
   children: React.ReactNode;
 }
@@ -18,7 +18,7 @@ const ErrorLayout = ({ children }: ErrorLayoutProps) => {
     }
 
     // If authenticated, redirect to their role dashboard
-    return currentRole ? getDashboardLink(currentRole) : "/";
+    return currentRole ? getDashboardLink(currentRole) : '/';
   };
 
   return (

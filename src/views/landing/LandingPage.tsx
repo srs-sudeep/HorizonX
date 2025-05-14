@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
-import { useAuthStore } from '@/store/useAuthStore';
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
 import { getDashboardLink } from '@/lib/redirect';
+import { useAuthStore } from '@/store/useAuthStore';
+import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const LandingPage = () => {
   const { isAuthenticated, user, currentRole } = useAuthStore();
@@ -10,8 +10,8 @@ const LandingPage = () => {
   // Determine dashboard link based on user role
   const getLink = () => {
     if (!isAuthenticated || !user) return '/login';
-    
-    return getDashboardLink(currentRole? currentRole : user.roles[0]);
+
+    return getDashboardLink(currentRole ? currentRole : user.roles[0]);
   };
 
   return (
@@ -19,7 +19,8 @@ const LandingPage = () => {
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold mb-4">Welcome to School Management System</h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          A comprehensive platform for managing educational institutions, connecting students, teachers, and administrators.
+          A comprehensive platform for managing educational institutions, connecting students,
+          teachers, and administrators.
         </p>
       </div>
 

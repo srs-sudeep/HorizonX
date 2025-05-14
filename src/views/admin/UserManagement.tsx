@@ -1,33 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow 
-} from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { 
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter 
-} from '@/components/ui/dialog';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
-import { 
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue 
-} from '@/components/ui/select';
-import { 
-  getUsers, createUser, updateUser, deleteUser, 
-  assignRole, removeRole, getAllRoles, User 
+import {
+    assignRole,
+    createUser,
+    deleteUser,
+    getAllRoles,
+    getUsers,
+    removeRole,
+    updateUser,
+    User,
 } from '@/api/mockApi/users';
-import { UserRole } from '@/store/useAuthStore';
-import { PlusCircle, Pencil, Trash2, Search, UserPlus, Shield } from 'lucide-react';
-import { toast } from 'sonner';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+    Dialog,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
+import { UserRole } from '@/store/useAuthStore';
+import { Pencil, Search, Shield, Trash2, UserPlus } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 const UserManagement = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [roles, setRoles] = useState<UserRole[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  
+
   // User dialog state
   const [isUserDialogOpen, setIsUserDialogOpen] = useState(false);
   const [isUserDeleteDialogOpen, setIsUserDeleteDialogOpen] = useState(false);
@@ -38,7 +50,7 @@ const UserManagement = () => {
     roles: [],
     isActive: true,
   });
-  
+
   // Role dialog state
   const [isRoleDialogOpen, setIsRoleDialogOpen] = useState(false);
 
@@ -46,10 +58,7 @@ const UserManagement = () => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [usersData, rolesData] = await Promise.all([
-          getUsers(),
-          getAllRoles()
-        ]);
+        const [usersData, rolesData] = await Promise.all([getUsers(), getAllRoles()]);
         setUsers(usersData);
         setRoles(rolesData);
       } catch (error) {
@@ -59,14 +68,15 @@ const UserManagement = () => {
         setIsLoading(false);
       }
     };
-    
+
     loadData();
   }, []);
 
   // Filter users based on search query
-  const filteredUsers = users.filter(user => 
-    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredUsers = users.filter(
+    user =>
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   // User form handlers
@@ -86,7 +96,7 @@ const UserManagement = () => {
         ...prev,
         roles: currentRoles.includes(role)
           ? currentRoles.filter(r => r !== role)
-          : [...currentRoles, role]
+          : [...currentRoles, role],
       };
     });
   };
@@ -100,7 +110,7 @@ const UserManagement = () => {
         email: user.email,
         roles: [...user.roles],
         isActive: user.isActive,
-        avatar: user.avatar
+        avatar: user.avatar,
       });
     } else {
       setCurrentUser(null);
@@ -109,7 +119,7 @@ const UserManagement = () => {
         email: '',
         roles: [],
         isActive: true,
-        avatar: undefined
+        avatar: undefined,
       });
     }
     setIsUserDialogOpen(true);
@@ -120,7 +130,7 @@ const UserManagement = () => {
     setCurrentUser(user);
     setUserFormData({
       ...user,
-      roles: [...user.roles]
+      roles: [...user.roles],
     });
     setIsRoleDialogOpen(true);
   };
@@ -142,7 +152,7 @@ const UserManagement = () => {
       if (currentUser) {
         // Update existing user
         const updated = await updateUser(currentUser.id, userFormData);
-        setUsers(prev => prev.map(u => u.id === updated.id ? updated : u));
+        setUsers(prev => prev.map(u => (u.id === updated.id ? updated : u)));
         toast.success('User updated successfully');
       } else {
         // Create new user
@@ -160,24 +170,28 @@ const UserManagement = () => {
   // Handle role management submission
   const handleRoleSubmit = async () => {
     if (!currentUser) return;
-    
+
     try {
       // Find roles to add and remove
-      const rolesToAdd = (userFormData.roles || []).filter(role => !currentUser.roles.includes(role));
-      const rolesToRemove = currentUser.roles.filter(role => !(userFormData.roles || []).includes(role));
-      
+      const rolesToAdd = (userFormData.roles || []).filter(
+        role => !currentUser.roles.includes(role)
+      );
+      const rolesToRemove = currentUser.roles.filter(
+        role => !(userFormData.roles || []).includes(role)
+      );
+
       // Apply changes
       let updatedUser = currentUser;
-      
+
       for (const role of rolesToAdd) {
         updatedUser = await assignRole(currentUser.id, role);
       }
-      
+
       for (const role of rolesToRemove) {
         updatedUser = await removeRole(currentUser.id, role);
       }
-      
-      setUsers(prev => prev.map(u => u.id === updatedUser.id ? updatedUser : u));
+
+      setUsers(prev => prev.map(u => (u.id === updatedUser.id ? updatedUser : u)));
       toast.success('User roles updated successfully');
       setIsRoleDialogOpen(false);
     } catch (error) {
@@ -189,7 +203,7 @@ const UserManagement = () => {
   // Handle user deletion
   const handleUserDelete = async () => {
     if (!currentUser) return;
-    
+
     try {
       await deleteUser(currentUser.id);
       setUsers(prev => prev.filter(u => u.id !== currentUser.id));
@@ -226,7 +240,7 @@ const UserManagement = () => {
         <Input
           placeholder="Search users..."
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={e => setSearchQuery(e.target.value)}
           className="max-w-sm"
         />
       </div>
@@ -252,7 +266,7 @@ const UserManagement = () => {
                 </TableCell>
               </TableRow>
             ) : (
-              filteredUsers.map((user) => (
+              filteredUsers.map(user => (
                 <TableRow key={user.id}>
                   <TableCell>
                     <div className="flex items-center space-x-3">
@@ -279,33 +293,33 @@ const UserManagement = () => {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <span className={`px-2 py-1 rounded-full text-xs ${
-                      user.isActive 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-red-100 text-red-800'
-                    }`}>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs ${
+                        user.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                      }`}
+                    >
                       {user.isActive ? 'Active' : 'Inactive'}
                     </span>
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button 
-                      variant="ghost" 
+                    <Button
+                      variant="ghost"
                       size="icon"
                       onClick={() => openRoleDialog(user)}
                       title="Manage Roles"
                     >
                       <Shield className="h-4 w-4" />
                     </Button>
-                    <Button 
-                      variant="ghost" 
+                    <Button
+                      variant="ghost"
                       size="icon"
                       onClick={() => openUserDialog(user)}
                       title="Edit User"
                     >
                       <Pencil className="h-4 w-4" />
                     </Button>
-                    <Button 
-                      variant="ghost" 
+                    <Button
+                      variant="ghost"
                       size="icon"
                       onClick={() => openUserDeleteDialog(user)}
                       title="Delete User"
@@ -324,9 +338,7 @@ const UserManagement = () => {
       <Dialog open={isUserDialogOpen} onOpenChange={setIsUserDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>
-              {currentUser ? 'Edit User' : 'Create User'}
-            </DialogTitle>
+            <DialogTitle>{currentUser ? 'Edit User' : 'Create User'}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
@@ -339,7 +351,7 @@ const UserManagement = () => {
                 placeholder="User Name"
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -351,7 +363,7 @@ const UserManagement = () => {
                 placeholder="user@example.com"
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="avatar">Avatar URL (Optional)</Label>
               <Input
@@ -362,23 +374,25 @@ const UserManagement = () => {
                 placeholder="https://example.com/avatar.png"
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label>Roles</Label>
               <div className="grid grid-cols-2 gap-2">
-                {roles.map((role) => (
+                {roles.map(role => (
                   <div key={role} className="flex items-center space-x-2">
                     <Checkbox
                       id={`role-${role}`}
                       checked={(userFormData.roles || []).includes(role)}
                       onCheckedChange={() => handleUserRoleToggle(role)}
                     />
-                    <Label htmlFor={`role-${role}`} className="capitalize">{role}</Label>
+                    <Label htmlFor={`role-${role}`} className="capitalize">
+                      {role}
+                    </Label>
                   </div>
                 ))}
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
                 <Checkbox
@@ -394,9 +408,7 @@ const UserManagement = () => {
             <Button variant="outline" onClick={() => setIsUserDialogOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={handleUserSubmit}>
-              {currentUser ? 'Update' : 'Create'}
-            </Button>
+            <Button onClick={handleUserSubmit}>{currentUser ? 'Update' : 'Create'}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -418,18 +430,20 @@ const UserManagement = () => {
                 <p className="text-sm text-muted-foreground">{currentUser?.email}</p>
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <Label>Assigned Roles</Label>
               <div className="grid grid-cols-2 gap-2">
-                {roles.map((role) => (
+                {roles.map(role => (
                   <div key={role} className="flex items-center space-x-2">
                     <Checkbox
                       id={`role-dialog-${role}`}
                       checked={(userFormData.roles || []).includes(role)}
                       onCheckedChange={() => handleUserRoleToggle(role)}
                     />
-                    <Label htmlFor={`role-dialog-${role}`} className="capitalize">{role}</Label>
+                    <Label htmlFor={`role-dialog-${role}`} className="capitalize">
+                      {role}
+                    </Label>
                   </div>
                 ))}
               </div>
@@ -439,9 +453,7 @@ const UserManagement = () => {
             <Button variant="outline" onClick={() => setIsRoleDialogOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={handleRoleSubmit}>
-              Save Changes
-            </Button>
+            <Button onClick={handleRoleSubmit}>Save Changes</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -464,9 +476,7 @@ const UserManagement = () => {
                 <p className="text-sm text-muted-foreground">{currentUser?.email}</p>
               </div>
             </div>
-            <p className="text-sm text-muted-foreground mt-4">
-              This action cannot be undone.
-            </p>
+            <p className="text-sm text-muted-foreground mt-4">This action cannot be undone.</p>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setIsUserDeleteDialogOpen(false)}>

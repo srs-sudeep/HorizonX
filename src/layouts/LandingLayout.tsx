@@ -1,8 +1,7 @@
-import { Outlet } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import { useAuthStore } from '@/store/useAuthStore';
 import { Button } from '@/components/ui/button';
+import { useAuthStore } from '@/store/useAuthStore';
 import { ThemeSwitcher } from '@/theme';
+import { Link, Outlet } from 'react-router-dom';
 
 const LandingLayout = () => {
   const { isAuthenticated, user, currentRole } = useAuthStore();
@@ -10,18 +9,18 @@ const LandingLayout = () => {
   // Determine dashboard link based on user role
   const getDashboardLink = () => {
     if (!isAuthenticated || !user) return '/login';
-    
+
     const rolePaths: Record<string, string> = {
       admin: '/admin/dashboard',
       teacher: '/teacher/dashboard',
       student: '/student/dashboard',
       librarian: '/librarian/dashboard',
-      medical: '/medical/dashboard'
+      medical: '/medical/dashboard',
     };
-    
-    return currentRole && rolePaths[currentRole] 
-      ? rolePaths[currentRole] 
-      : user.roles && user.roles.length > 0 
+
+    return currentRole && rolePaths[currentRole]
+      ? rolePaths[currentRole]
+      : user.roles && user.roles.length > 0
         ? rolePaths[user.roles[0]] || '/dashboard'
         : '/dashboard';
   };
@@ -35,10 +34,10 @@ const LandingLayout = () => {
             <Link to="/" className="text-2xl font-bold">
               SchoolMS
             </Link>
-            
+
             <div className="flex items-center gap-4">
               <ThemeSwitcher />
-              
+
               {isAuthenticated ? (
                 <Button asChild>
                   <Link to={getDashboardLink()}>Dashboard</Link>
@@ -57,12 +56,12 @@ const LandingLayout = () => {
           </div>
         </div>
       </header>
-      
+
       {/* Main content */}
       <main className="flex-1 bg-muted/30">
         <Outlet />
       </main>
-      
+
       {/* Footer */}
       <footer className="border-t bg-background">
         <div className="container mx-auto px-4 py-6">
@@ -72,7 +71,7 @@ const LandingLayout = () => {
                 © 2024 SchoolMS. All rights reserved.
               </p>
             </div>
-            
+
             <div className="flex gap-6">
               <Link to="#" className="text-sm text-muted-foreground hover:text-foreground">
                 Privacy Policy

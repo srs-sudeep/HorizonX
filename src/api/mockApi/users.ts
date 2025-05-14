@@ -1,5 +1,5 @@
-import { v4 as uuidv4 } from 'uuid';
 import { type UserRole } from '@/store/useAuthStore';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface User {
   id: string;
@@ -20,7 +20,7 @@ let users: User[] = [
     roles: ['admin'],
     isActive: true,
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=admin',
-    createdAt: '2023-01-01T00:00:00.000Z'
+    createdAt: '2023-01-01T00:00:00.000Z',
   },
   {
     id: '2',
@@ -29,7 +29,7 @@ let users: User[] = [
     roles: ['teacher'],
     isActive: true,
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=teacher',
-    createdAt: '2023-01-02T00:00:00.000Z'
+    createdAt: '2023-01-02T00:00:00.000Z',
   },
   {
     id: '3',
@@ -38,7 +38,7 @@ let users: User[] = [
     roles: ['student'],
     isActive: true,
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=student',
-    createdAt: '2023-01-03T00:00:00.000Z'
+    createdAt: '2023-01-03T00:00:00.000Z',
   },
   {
     id: '4',
@@ -47,7 +47,7 @@ let users: User[] = [
     roles: ['librarian'],
     isActive: true,
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=librarian',
-    createdAt: '2023-01-04T00:00:00.000Z'
+    createdAt: '2023-01-04T00:00:00.000Z',
   },
   {
     id: '5',
@@ -56,7 +56,7 @@ let users: User[] = [
     roles: ['medical'],
     isActive: true,
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=medical',
-    createdAt: '2023-01-05T00:00:00.000Z'
+    createdAt: '2023-01-05T00:00:00.000Z',
   },
   {
     id: '6',
@@ -65,7 +65,7 @@ let users: User[] = [
     roles: ['admin', 'teacher'],
     isActive: true,
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=multi',
-    createdAt: '2023-01-06T00:00:00.000Z'
+    createdAt: '2023-01-06T00:00:00.000Z',
   },
   {
     id: '7',
@@ -74,8 +74,8 @@ let users: User[] = [
     roles: ['student'],
     isActive: false,
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=inactive',
-    createdAt: '2023-01-07T00:00:00.000Z'
-  }
+    createdAt: '2023-01-07T00:00:00.000Z',
+  },
 ];
 
 // Simulate API delay
@@ -99,7 +99,7 @@ export const createUser = async (userData: Omit<User, 'id' | 'createdAt'>): Prom
   const newUser: User = {
     id: uuidv4(),
     ...userData,
-    createdAt: new Date().toISOString()
+    createdAt: new Date().toISOString(),
   };
   users.push(newUser);
   return newUser;
@@ -112,10 +112,10 @@ export const updateUser = async (id: string, userData: Partial<User>): Promise<U
   if (index === -1) {
     throw new Error('User not found');
   }
-  
+
   const updatedUser = {
     ...users[index],
-    ...userData
+    ...userData,
   };
   users[index] = updatedUser;
   return updatedUser;
@@ -138,11 +138,11 @@ export const assignRole = async (userId: string, role: UserRole): Promise<User> 
   if (!user) {
     throw new Error('User not found');
   }
-  
+
   if (!user.roles.includes(role)) {
     user.roles.push(role);
   }
-  
+
   return user;
 };
 
@@ -153,7 +153,7 @@ export const removeRole = async (userId: string, role: UserRole): Promise<User> 
   if (!user) {
     throw new Error('User not found');
   }
-  
+
   user.roles = user.roles.filter(r => r !== role);
   return user;
 };

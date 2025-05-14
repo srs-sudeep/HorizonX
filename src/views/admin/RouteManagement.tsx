@@ -1,23 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow 
-} from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { 
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter 
-} from '@/components/ui/dialog';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
-import { 
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue 
-} from '@/components/ui/select';
-import { 
-  getRoutes, createRoute, updateRoute, deleteRoute, RouteConfig 
+import {
+    createRoute,
+    deleteRoute,
+    getRoutes,
+    RouteConfig,
+    updateRoute,
 } from '@/api/mockApi/routes';
 import { getAllRoles } from '@/api/mockApi/users';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+    Dialog,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
 import { type UserRole } from '@/store/useAuthStore';
-import { PlusCircle, Pencil, Trash2, Search } from 'lucide-react';
+import { Pencil, PlusCircle, Search, Trash2 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 const RouteManagement = () => {
@@ -32,17 +42,14 @@ const RouteManagement = () => {
     path: '',
     requiredRoles: [],
     isActive: true,
-    description: ''
+    description: '',
   });
 
   // Load data
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [routesData, rolesData] = await Promise.all([
-          getRoutes(),
-          getAllRoles()
-        ]);
+        const [routesData, rolesData] = await Promise.all([getRoutes(), getAllRoles()]);
         setRoutes(routesData);
         setRoles(rolesData);
       } catch (error) {
@@ -52,14 +59,15 @@ const RouteManagement = () => {
         setIsLoading(false);
       }
     };
-    
+
     loadData();
   }, []);
 
   // Filter routes based on search query
-  const filteredRoutes = routes.filter(route => 
-    route.path.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    route.description?.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredRoutes = routes.filter(
+    route =>
+      route.path.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      route.description?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   // Handle form input changes
@@ -81,7 +89,7 @@ const RouteManagement = () => {
         ...prev,
         requiredRoles: currentRoles.includes(role)
           ? currentRoles.filter(r => r !== role)
-          : [...currentRoles, role]
+          : [...currentRoles, role],
       };
     });
   };
@@ -94,7 +102,7 @@ const RouteManagement = () => {
         path: route.path,
         requiredRoles: [...route.requiredRoles],
         isActive: route.isActive,
-        description: route.description
+        description: route.description,
       });
     } else {
       setCurrentRoute(null);
@@ -102,7 +110,7 @@ const RouteManagement = () => {
         path: '',
         requiredRoles: [],
         isActive: true,
-        description: ''
+        description: '',
       });
     }
     setIsDialogOpen(true);
@@ -125,7 +133,7 @@ const RouteManagement = () => {
       if (currentRoute) {
         // Update existing route
         const updated = await updateRoute(currentRoute.id, formData);
-        setRoutes(prev => prev.map(r => r.id === updated.id ? updated : r));
+        setRoutes(prev => prev.map(r => (r.id === updated.id ? updated : r)));
         toast.success('Route updated successfully');
       } else {
         // Create new route
@@ -143,7 +151,7 @@ const RouteManagement = () => {
   // Handle route deletion
   const handleDelete = async () => {
     if (!currentRoute) return;
-    
+
     try {
       await deleteRoute(currentRoute.id);
       setRoutes(prev => prev.filter(r => r.id !== currentRoute.id));
@@ -170,7 +178,7 @@ const RouteManagement = () => {
         <Input
           placeholder="Search routes..."
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={e => setSearchQuery(e.target.value)}
           className="max-w-sm"
         />
       </div>
@@ -196,37 +204,27 @@ const RouteManagement = () => {
                 </TableCell>
               </TableRow>
             ) : (
-              filteredRoutes.map((route) => (
+              filteredRoutes.map(route => (
                 <TableRow key={route.id}>
                   <TableCell className="font-medium">{route.path}</TableCell>
                   <TableCell>
-                    {route.requiredRoles.length > 0 
-                      ? route.requiredRoles.join(', ') 
-                      : 'All users'}
+                    {route.requiredRoles.length > 0 ? route.requiredRoles.join(', ') : 'All users'}
                   </TableCell>
                   <TableCell>
-                    <span className={`px-2 py-1 rounded-full text-xs ${
-                      route.isActive 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-red-100 text-red-800'
-                    }`}>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs ${
+                        route.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                      }`}
+                    >
                       {route.isActive ? 'Active' : 'Inactive'}
                     </span>
                   </TableCell>
                   <TableCell>{route.description || '-'}</TableCell>
                   <TableCell className="text-right">
-                    <Button 
-                      variant="ghost" 
-                      size="icon"
-                      onClick={() => openDialog(route)}
-                    >
+                    <Button variant="ghost" size="icon" onClick={() => openDialog(route)}>
                       <Pencil className="h-4 w-4" />
                     </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="icon"
-                      onClick={() => openDeleteDialog(route)}
-                    >
+                    <Button variant="ghost" size="icon" onClick={() => openDeleteDialog(route)}>
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </TableCell>
@@ -241,9 +239,7 @@ const RouteManagement = () => {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>
-              {currentRoute ? 'Edit Route' : 'Create Route'}
-            </DialogTitle>
+            <DialogTitle>{currentRoute ? 'Edit Route' : 'Create Route'}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
@@ -256,11 +252,11 @@ const RouteManagement = () => {
                 placeholder="/example/path"
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label>Required Roles</Label>
               <div className="grid grid-cols-2 gap-2">
-                {roles.map((role) => (
+                {roles.map(role => (
                   <div key={role} className="flex items-center space-x-2">
                     <Checkbox
                       id={`role-${role}`}
@@ -272,7 +268,7 @@ const RouteManagement = () => {
                 ))}
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
                 <Checkbox
@@ -283,7 +279,7 @@ const RouteManagement = () => {
                 <Label htmlFor="isActive">Active</Label>
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="description">Description</Label>
               <Input
@@ -299,9 +295,7 @@ const RouteManagement = () => {
             <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={handleSubmit}>
-              {currentRoute ? 'Update' : 'Create'}
-            </Button>
+            <Button onClick={handleSubmit}>{currentRoute ? 'Update' : 'Create'}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

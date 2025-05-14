@@ -1,9 +1,8 @@
-
+import { FullPageLoader } from '@/components/ui/loading-spinner';
+import { getDashboardLink } from '@/lib/redirect';
+import { useAuthStore } from '@/store/useAuthStore';
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuthStore } from '@/store/useAuthStore';
-import { FullPageLoader } from '@/components/ui/loading-spinner';
-import {getDashboardLink} from '@/lib/redirect';
 
 interface GuestGuardProps {
   children: React.ReactNode;
@@ -24,7 +23,7 @@ const GuestGuard = ({ children, redirectPath = 'role-dashboard' }: GuestGuardPro
         setIsChecking(false);
       }
     };
-    
+
     verifyAuth();
   }, [checkAuth]);
 
@@ -39,15 +38,14 @@ const GuestGuard = ({ children, redirectPath = 'role-dashboard' }: GuestGuardPro
       if (currentRole) {
         return <Navigate to={getDashboardLink(currentRole)} replace />;
       }
-      
+
       // Otherwise use the first role from user.roles
-      const defaultPath = user.roles && user.roles.length > 0 
-        ? getDashboardLink(user.roles[0]) || '/'
-        : '/';
-        
+      const defaultPath =
+        user.roles && user.roles.length > 0 ? getDashboardLink(user.roles[0]) || '/' : '/';
+
       return <Navigate to={defaultPath} replace />;
     }
-    
+
     // Otherwise, redirect to the specified path
     return <Navigate to={redirectPath} replace />;
   }
@@ -57,4 +55,3 @@ const GuestGuard = ({ children, redirectPath = 'role-dashboard' }: GuestGuardPro
 };
 
 export default GuestGuard;
-

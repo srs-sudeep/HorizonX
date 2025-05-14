@@ -1,27 +1,47 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow 
-} from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { 
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter 
-} from '@/components/ui/dialog';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
-import { 
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue 
-} from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { 
-  getModules, getSubModules, createModule, updateModule, deleteModule,
-  createSubModule, updateSubModule, deleteSubModule,
-  SidebarModuleItem, SidebarSubModuleItem
+import {
+    createModule,
+    createSubModule,
+    deleteModule,
+    deleteSubModule,
+    getModules,
+    getSubModules,
+    SidebarModuleItem,
+    SidebarSubModuleItem,
+    updateModule,
+    updateSubModule,
 } from '@/api/mockApi/sidebar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+    Dialog,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { UserRole } from '@/store/useAuthStore';
-import { iconMap, getIconComponent } from '@/types';
-import { PlusCircle, Pencil, Trash2 } from 'lucide-react';
+import { getIconComponent, iconMap } from '@/types';
+import { Pencil, PlusCircle, Trash2 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 const SidebarManagement = () => {
@@ -29,7 +49,7 @@ const SidebarManagement = () => {
   const [subModules, setSubModules] = useState<SidebarSubModuleItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedModuleId, setSelectedModuleId] = useState<string | undefined>();
-  
+
   // Module dialog state
   const [isModuleDialogOpen, setIsModuleDialogOpen] = useState(false);
   const [isModuleDeleteDialogOpen, setIsModuleDeleteDialogOpen] = useState(false);
@@ -40,9 +60,9 @@ const SidebarManagement = () => {
     iconSize: 20,
     requiredRoles: [],
     order: 10,
-    isActive: true
+    isActive: true,
   });
-  
+
   // SubModule dialog state
   const [isSubModuleDialogOpen, setIsSubModuleDialogOpen] = useState(false);
   const [isSubModuleDeleteDialogOpen, setIsSubModuleDeleteDialogOpen] = useState(false);
@@ -56,20 +76,17 @@ const SidebarManagement = () => {
     requiredRoles: [],
     order: 10,
     isActive: true,
-    parentId: undefined
+    parentId: undefined,
   });
-  
+
   // Available roles
   const roles: UserRole[] = ['admin', 'teacher', 'student', 'librarian', 'medical'];
-  
+
   // Load data
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [modulesData, subModulesData] = await Promise.all([
-          getModules(),
-          getSubModules()
-        ]);
+        const [modulesData, subModulesData] = await Promise.all([getModules(), getSubModules()]);
         setModules(modulesData);
         setSubModules(subModulesData);
       } catch (error) {
@@ -79,34 +96,34 @@ const SidebarManagement = () => {
         setIsLoading(false);
       }
     };
-    
+
     loadData();
   }, []);
-  
+
   // Filter submodules based on selected module
   const filteredSubModules = selectedModuleId
     ? subModules.filter(sm => sm.moduleId === selectedModuleId)
     : subModules;
-  
+
   // Module form handlers
   const handleModuleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setModuleFormData(prev => ({ ...prev, [name]: value }));
   };
-  
+
   const handleModuleNumberInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setModuleFormData(prev => ({ ...prev, [name]: parseInt(value) || 0 }));
   };
-  
+
   const handleModuleIconChange = (icon: keyof typeof iconMap) => {
     setModuleFormData(prev => ({ ...prev, icon }));
   };
-  
+
   const handleModuleCheckboxChange = (checked: boolean) => {
     setModuleFormData(prev => ({ ...prev, isActive: checked }));
   };
-  
+
   const handleModuleRoleToggle = (role: UserRole) => {
     setModuleFormData(prev => {
       const currentRoles = prev.requiredRoles || [];
@@ -114,30 +131,30 @@ const SidebarManagement = () => {
         ...prev,
         requiredRoles: currentRoles.includes(role)
           ? currentRoles.filter(r => r !== role)
-          : [...currentRoles, role]
+          : [...currentRoles, role],
       };
     });
   };
-  
+
   // SubModule form handlers
   const handleSubModuleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setSubModuleFormData(prev => ({ ...prev, [name]: value }));
   };
-  
+
   const handleSubModuleNumberInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setSubModuleFormData(prev => ({ ...prev, [name]: parseInt(value) || 0 }));
   };
-  
+
   const handleSubModuleIconChange = (icon: keyof typeof iconMap) => {
     setSubModuleFormData(prev => ({ ...prev, icon }));
   };
-  
+
   const handleSubModuleCheckboxChange = (checked: boolean) => {
     setSubModuleFormData(prev => ({ ...prev, isActive: checked }));
   };
-  
+
   const handleSubModuleRoleToggle = (role: UserRole) => {
     setSubModuleFormData(prev => {
       const currentRoles = prev.requiredRoles || [];
@@ -145,16 +162,16 @@ const SidebarManagement = () => {
         ...prev,
         requiredRoles: currentRoles.includes(role)
           ? currentRoles.filter(r => r !== role)
-          : [...currentRoles, role]
+          : [...currentRoles, role],
       };
     });
   };
-  
+
   const handleSubModuleModuleChange = (moduleId: string) => {
-    setSubModuleFormData(prev => ({ 
-      ...prev, 
+    setSubModuleFormData(prev => ({
+      ...prev,
       moduleId,
-      parentId: undefined // Reset parent when module changes
+      parentId: undefined, // Reset parent when module changes
     }));
   };
 
@@ -168,7 +185,7 @@ const SidebarManagement = () => {
         iconSize: module.iconSize,
         requiredRoles: module.requiredRoles ? [...module.requiredRoles] : [],
         order: module.order,
-        isActive: module.isActive
+        isActive: module.isActive,
       });
     } else {
       setCurrentModule(null);
@@ -178,7 +195,7 @@ const SidebarManagement = () => {
         iconSize: 20,
         requiredRoles: [],
         order: modules.length > 0 ? Math.max(...modules.map(m => m.order || 0)) + 10 : 10,
-        isActive: true
+        isActive: true,
       });
     }
     setIsModuleDialogOpen(true);
@@ -197,7 +214,7 @@ const SidebarManagement = () => {
         requiredRoles: subModule.requiredRoles ? [...subModule.requiredRoles] : [],
         order: subModule.order,
         isActive: subModule.isActive,
-        parentId: subModule.parentId
+        parentId: subModule.parentId,
       });
     } else {
       setCurrentSubModule(null);
@@ -210,7 +227,7 @@ const SidebarManagement = () => {
         requiredRoles: [],
         order: subModules.length > 0 ? Math.max(...subModules.map(sm => sm.order || 0)) + 10 : 10,
         isActive: true,
-        parentId: undefined
+        parentId: undefined,
       });
     }
     setIsSubModuleDialogOpen(true);
@@ -238,7 +255,7 @@ const SidebarManagement = () => {
       if (currentModule) {
         // Update existing module
         const updated = await updateModule(currentModule.id, moduleFormData);
-        setModules(prev => prev.map(m => m.id === updated.id ? updated : m));
+        setModules(prev => prev.map(m => (m.id === updated.id ? updated : m)));
         toast.success('Module updated successfully');
       } else {
         // Create new module
@@ -264,11 +281,13 @@ const SidebarManagement = () => {
       if (currentSubModule) {
         // Update existing submodule
         const updated = await updateSubModule(currentSubModule.id, subModuleFormData);
-        setSubModules(prev => prev.map(sm => sm.id === updated.id ? updated : sm));
+        setSubModules(prev => prev.map(sm => (sm.id === updated.id ? updated : sm)));
         toast.success('Submodule updated successfully');
       } else {
         // Create new submodule
-        const created = await createSubModule(subModuleFormData as Omit<SidebarSubModuleItem, 'id'>);
+        const created = await createSubModule(
+          subModuleFormData as Omit<SidebarSubModuleItem, 'id'>
+        );
         setSubModules(prev => [...prev, created]);
         toast.success('Submodule created successfully');
       }
@@ -282,7 +301,7 @@ const SidebarManagement = () => {
   // Handle module deletion
   const handleModuleDelete = async () => {
     if (!currentModule) return;
-    
+
     try {
       await deleteModule(currentModule.id);
       setModules(prev => prev.filter(m => m.id !== currentModule.id));
@@ -299,12 +318,14 @@ const SidebarManagement = () => {
   // Handle submodule deletion
   const handleSubModuleDelete = async () => {
     if (!currentSubModule) return;
-    
+
     try {
       await deleteSubModule(currentSubModule.id);
       // Remove the submodule and all its children
       const childIds = getAllChildIds(currentSubModule.id);
-      setSubModules(prev => prev.filter(sm => sm.id !== currentSubModule.id && !childIds.includes(sm.id)));
+      setSubModules(prev =>
+        prev.filter(sm => sm.id !== currentSubModule.id && !childIds.includes(sm.id))
+      );
       toast.success('Submodule deleted successfully');
       setIsSubModuleDeleteDialogOpen(false);
     } catch (error) {
@@ -317,32 +338,33 @@ const SidebarManagement = () => {
   const getAllChildIds = (parentId: string): string[] => {
     const directChildren = subModules.filter(sm => sm.parentId === parentId);
     const childIds = directChildren.map(child => child.id);
-    
+
     directChildren.forEach(child => {
       childIds.push(...getAllChildIds(child.id));
     });
-    
+
     return childIds;
   };
 
   // Get potential parent submodules for a given module
   const getPotentialParents = (moduleId: string): SidebarSubModuleItem[] => {
-    return subModules.filter(sm => 
-      sm.moduleId === moduleId && 
-      (!currentSubModule || sm.id !== currentSubModule.id) &&
-      !isDescendantOf(sm.id, currentSubModule?.id || '')
+    return subModules.filter(
+      sm =>
+        sm.moduleId === moduleId &&
+        (!currentSubModule || sm.id !== currentSubModule.id) &&
+        !isDescendantOf(sm.id, currentSubModule?.id || '')
     );
   };
 
   // Check if a submodule is a descendant of another
   const isDescendantOf = (subModuleId: string, potentialAncestorId: string): boolean => {
     if (!potentialAncestorId) return false;
-    
+
     const subModule = subModules.find(sm => sm.id === subModuleId);
     if (!subModule || !subModule.parentId) return false;
-    
+
     if (subModule.parentId === potentialAncestorId) return true;
-    
+
     return isDescendantOf(subModule.parentId, potentialAncestorId);
   };
 
@@ -353,7 +375,7 @@ const SidebarManagement = () => {
       .sort((a, b) => (a.order || 0) - (b.order || 0))
       .map(sm => ({
         ...sm,
-        children: buildHierarchy(moduleId, sm.id)
+        children: buildHierarchy(moduleId, sm.id),
       }));
   };
 
@@ -393,20 +415,16 @@ const SidebarManagement = () => {
           </TableCell>
           <TableCell>{subModule.order}</TableCell>
           <TableCell>
-            <Badge variant={subModule.isActive ? "success" : "secondary"}>
-              {subModule.isActive ? "Active" : "Inactive"}
+            <Badge variant={subModule.isActive ? 'success' : 'secondary'}>
+              {subModule.isActive ? 'Active' : 'Inactive'}
             </Badge>
           </TableCell>
           <TableCell className="text-right">
-            <Button 
-              variant="ghost" 
-              size="icon"
-              onClick={() => openSubModuleDialog(subModule)}
-            >
+            <Button variant="ghost" size="icon" onClick={() => openSubModuleDialog(subModule)}>
               <Pencil className="h-4 w-4" />
             </Button>
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               size="icon"
               onClick={() => openSubModuleDeleteDialog(subModule)}
             >
@@ -414,7 +432,8 @@ const SidebarManagement = () => {
             </Button>
           </TableCell>
         </TableRow>
-        {subModule.children && subModule.children.map(child => renderSubModuleItem(child, depth + 1))}
+        {subModule.children &&
+          subModule.children.map(child => renderSubModuleItem(child, depth + 1))}
       </React.Fragment>
     );
   };
@@ -430,7 +449,7 @@ const SidebarManagement = () => {
           <TabsTrigger value="modules">Modules</TabsTrigger>
           <TabsTrigger value="submodules">Submodules</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="modules" className="space-y-4">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold">Main Modules</h2>
@@ -439,7 +458,7 @@ const SidebarManagement = () => {
               Add Module
             </Button>
           </div>
-          
+
           {isLoading ? (
             <div className="flex justify-center p-8">Loading...</div>
           ) : (
@@ -463,13 +482,16 @@ const SidebarManagement = () => {
                 ) : (
                   modules
                     .sort((a, b) => (a.order || 0) - (b.order || 0))
-                    .map((module) => (
+                    .map(module => (
                       <TableRow key={module.id}>
                         <TableCell>
                           <div className="flex items-center">
                             {module.icon && (
                               <div className="mr-2">
-                                {getIconComponent(module.icon as keyof typeof iconMap, module.iconSize)}
+                                {getIconComponent(
+                                  module.icon as keyof typeof iconMap,
+                                  module.iconSize
+                                )}
                               </div>
                             )}
                             {module.label}
@@ -490,20 +512,20 @@ const SidebarManagement = () => {
                         </TableCell>
                         <TableCell>{module.order}</TableCell>
                         <TableCell>
-                          <Badge variant={module.isActive ? "success" : "secondary"}>
-                            {module.isActive ? "Active" : "Inactive"}
+                          <Badge variant={module.isActive ? 'success' : 'secondary'}>
+                            {module.isActive ? 'Active' : 'Inactive'}
                           </Badge>
                         </TableCell>
                         <TableCell className="text-right">
-                          <Button 
-                            variant="ghost" 
+                          <Button
+                            variant="ghost"
                             size="icon"
                             onClick={() => openModuleDialog(module)}
                           >
                             <Pencil className="h-4 w-4" />
                           </Button>
-                          <Button 
-                            variant="ghost" 
+                          <Button
+                            variant="ghost"
                             size="icon"
                             onClick={() => openModuleDeleteDialog(module)}
                           >
@@ -517,7 +539,7 @@ const SidebarManagement = () => {
             </Table>
           )}
         </TabsContent>
-        
+
         <TabsContent value="submodules" className="space-y-4">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold">Submodules</h2>
@@ -526,23 +548,23 @@ const SidebarManagement = () => {
               Add Submodule
             </Button>
           </div>
-          
+
           {isLoading ? (
             <div className="flex justify-center p-8">Loading...</div>
           ) : (
             <div>
               <div className="mb-4">
                 <Label htmlFor="moduleFilter">Filter by Module</Label>
-                <Select 
-                  value={selectedModuleId || ''} 
-                  onValueChange={(value) => setSelectedModuleId(value || undefined)}
+                <Select
+                  value={selectedModuleId || ''}
+                  onValueChange={value => setSelectedModuleId(value || undefined)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="All Modules" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="">All Modules</SelectItem>
-                    {modules.map((module) => (
+                    {modules.map(module => (
                       <SelectItem key={module.id} value={module.id}>
                         {module.label}
                       </SelectItem>
@@ -550,7 +572,7 @@ const SidebarManagement = () => {
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -575,7 +597,9 @@ const SidebarManagement = () => {
                       .sort((a, b) => (a.order || 0) - (b.order || 0))
                       .map(module => (
                         <React.Fragment key={module.id}>
-                          {buildHierarchy(module.id).map(subModule => renderSubModuleItem(subModule))}
+                          {buildHierarchy(module.id).map(subModule =>
+                            renderSubModuleItem(subModule)
+                          )}
                         </React.Fragment>
                       ))
                   )}
@@ -590,9 +614,7 @@ const SidebarManagement = () => {
       <Dialog open={isModuleDialogOpen} onOpenChange={setIsModuleDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>
-              {currentModule ? 'Edit Module' : 'Create Module'}
-            </DialogTitle>
+            <DialogTitle>{currentModule ? 'Edit Module' : 'Create Module'}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
@@ -605,18 +627,18 @@ const SidebarManagement = () => {
                 placeholder="Module Label"
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="icon">Icon</Label>
-              <Select 
-                value={moduleFormData.icon} 
-                onValueChange={(value) => handleModuleIconChange(value as keyof typeof iconMap)}
+              <Select
+                value={moduleFormData.icon}
+                onValueChange={value => handleModuleIconChange(value as keyof typeof iconMap)}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select an icon" />
                 </SelectTrigger>
                 <SelectContent>
-                  {Object.keys(iconMap).map((icon) => (
+                  {Object.keys(iconMap).map(icon => (
                     <SelectItem key={icon} value={icon}>
                       {icon}
                     </SelectItem>
@@ -624,7 +646,7 @@ const SidebarManagement = () => {
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="iconSize">Icon Size</Label>
               <Input
@@ -636,7 +658,7 @@ const SidebarManagement = () => {
                 placeholder="20"
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="order">Order</Label>
               <Input
@@ -648,11 +670,11 @@ const SidebarManagement = () => {
                 placeholder="1"
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label>Required Roles</Label>
               <div className="grid grid-cols-2 gap-2">
-                {roles.map((role) => (
+                {roles.map(role => (
                   <div key={role} className="flex items-center space-x-2">
                     <Checkbox
                       id={`role-${role}`}
@@ -664,7 +686,7 @@ const SidebarManagement = () => {
                 ))}
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
                 <Checkbox
@@ -680,9 +702,7 @@ const SidebarManagement = () => {
             <Button variant="outline" onClick={() => setIsModuleDialogOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={handleModuleSubmit}>
-              {currentModule ? 'Update' : 'Create'}
-            </Button>
+            <Button onClick={handleModuleSubmit}>{currentModule ? 'Update' : 'Create'}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -691,22 +711,20 @@ const SidebarManagement = () => {
       <Dialog open={isSubModuleDialogOpen} onOpenChange={setIsSubModuleDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>
-              {currentSubModule ? 'Edit Sub Module' : 'Create Sub Module'}
-            </DialogTitle>
+            <DialogTitle>{currentSubModule ? 'Edit Sub Module' : 'Create Sub Module'}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
               <Label htmlFor="moduleId">Module</Label>
-              <Select 
-                value={subModuleFormData.moduleId} 
+              <Select
+                value={subModuleFormData.moduleId}
                 onValueChange={handleSubModuleModuleChange}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select a module" />
                 </SelectTrigger>
                 <SelectContent>
-                  {modules.map((module) => (
+                  {modules.map(module => (
                     <SelectItem key={module.id} value={module.id}>
                       {module.label}
                     </SelectItem>
@@ -714,12 +732,12 @@ const SidebarManagement = () => {
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="parentId">Parent (Optional)</Label>
-              <Select 
-                value={subModuleFormData.parentId || ''} 
-                onValueChange={(value) => handleSubModuleParentChange(value || undefined)}
+              <Select
+                value={subModuleFormData.parentId || ''}
+                onValueChange={value => handleSubModuleParentChange(value || undefined)}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select a parent" />
@@ -728,7 +746,7 @@ const SidebarManagement = () => {
                   <SelectItem value="">None</SelectItem>
                   {subModules
                     .filter(sm => sm.id !== currentSubModule?.id)
-                    .map((sm) => (
+                    .map(sm => (
                       <SelectItem key={sm.id} value={sm.id}>
                         {sm.label}
                       </SelectItem>
@@ -736,7 +754,7 @@ const SidebarManagement = () => {
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="label">Label</Label>
               <Input
@@ -747,7 +765,7 @@ const SidebarManagement = () => {
                 placeholder="Sub Module Label"
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="path">Path</Label>
               <Input
@@ -758,18 +776,18 @@ const SidebarManagement = () => {
                 placeholder="/example/path"
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="icon">Icon</Label>
-              <Select 
-                value={subModuleFormData.icon || 'fileText'} 
-                onValueChange={(value) => handleSubModuleIconChange(value as keyof typeof iconMap)}
+              <Select
+                value={subModuleFormData.icon || 'fileText'}
+                onValueChange={value => handleSubModuleIconChange(value as keyof typeof iconMap)}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select an icon" />
                 </SelectTrigger>
                 <SelectContent>
-                  {Object.keys(iconMap).map((icon) => (
+                  {Object.keys(iconMap).map(icon => (
                     <SelectItem key={icon} value={icon}>
                       {icon}
                     </SelectItem>
@@ -777,7 +795,7 @@ const SidebarManagement = () => {
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="iconSize">Icon Size</Label>
               <Input
@@ -789,7 +807,7 @@ const SidebarManagement = () => {
                 placeholder="16"
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="order">Order</Label>
               <Input
@@ -801,11 +819,11 @@ const SidebarManagement = () => {
                 placeholder="1"
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label>Required Roles</Label>
               <div className="grid grid-cols-2 gap-2">
-                {roles.map((role) => (
+                {roles.map(role => (
                   <div key={role} className="flex items-center space-x-2">
                     <Checkbox
                       id={`subrole-${role}`}
@@ -817,7 +835,7 @@ const SidebarManagement = () => {
                 ))}
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
                 <Checkbox

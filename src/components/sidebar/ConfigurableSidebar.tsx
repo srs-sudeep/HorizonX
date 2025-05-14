@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
-import { ChevronRight, Search } from 'lucide-react';
-import { useAuthStore } from '@/store/useAuthStore';
 import AppLogo from '@/components/AppLogo';
 import {
-  modulesConfig,
-  subModulesConfig,
-  getFilteredModules,
-  getFilteredSubModules,
-  getIconComponent,
+    getFilteredModules,
+    getFilteredSubModules,
+    getIconComponent,
+    subModulesConfig,
 } from '@/config/sidebar.config';
+import { cn } from '@/lib/utils';
+import { useAuthStore } from '@/store/useAuthStore';
 import { type SidebarModuleConfig, type SidebarSubModuleConfig } from '@/types';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ChevronRight, Search } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const ConfigurableSidebar = () => {
   const { currentRole, user } = useAuthStore();

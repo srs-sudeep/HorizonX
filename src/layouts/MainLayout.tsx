@@ -1,9 +1,10 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from '@/components/navbar/Navbar';
 import ModuleSidebar from '@/components/sidebar/ModuleSidebar';
-
+import { SidebarProvider } from '@/core/context/sidebarContext';
 const MainLayout = () => {
   return (
+    <SidebarProvider>
       <div className="flex h-screen overflow-hidden">
         <ModuleSidebar />
         <div className="flex-1 flex flex-col overflow-hidden">
@@ -23,6 +24,7 @@ const MainLayout = () => {
           </footer>
         </div>
       </div>
+    </SidebarProvider>
   );
 };
 
