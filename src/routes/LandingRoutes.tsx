@@ -5,6 +5,9 @@ import LandingLayout from '@/layouts/LandingLayout';
 
 // Landing pages
 const LandingPage = lazyLoad(() => import('@/views/landing/LandingPage'));
+const Terms = lazyLoad(() => import('@/views/landing/Terms'));
+const Privacy = lazyLoad(() => import('@/views/landing/Privacy'));
+const Support = lazyLoad(() => import('@/views/landing/Support'));
 
 // Wrapper component to handle landing page logic
 const LandingWrapper = () => {
@@ -22,6 +25,18 @@ const LandingRoutes = {
     {
       path: '',
       element: <LandingWrapper />,
+    },
+    {
+      path: 'terms',
+      element: <Terms />,
+    },
+    {
+      path: 'privacy',
+      element: <Privacy />,
+    },
+    {
+      path: 'support',
+      element: <Support />,
     },
   ],
 };

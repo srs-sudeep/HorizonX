@@ -2,6 +2,8 @@ import { Outlet } from 'react-router-dom';
 import Navbar from '@/components/navbar/Navbar';
 import ModuleSidebar from '@/components/sidebar/ModuleSidebar';
 import { SidebarProvider } from '@/core/context/sidebarContext';
+import MainFooter from '@/components/footer/MainFooter';
+
 const MainLayout = () => {
   return (
     <SidebarProvider>
@@ -12,16 +14,7 @@ const MainLayout = () => {
           <main className="flex-1 overflow-auto p-6 bg-background">
             <Outlet />
           </main>
-          <footer className="px-6 py-3 text-xs text-muted-foreground border-t bg-muted/30">
-            <div className="flex justify-between items-center">
-              <span>© 2025 Codename. All rights reserved.</span>
-              <div className="flex items-center space-x-4">
-                <span>Terms</span>
-                <span>Privacy</span>
-                <span>Support</span>
-              </div>
-            </div>
-          </footer>
+          <MainFooter />
         </div>
       </div>
     </SidebarProvider>
