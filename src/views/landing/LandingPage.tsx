@@ -1,29 +1,17 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '@/store/useAuthStore';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import { getDashboardLink } from '@/lib/redirect';
 
 const LandingPage = () => {
   const { isAuthenticated, user, currentRole } = useAuthStore();
 
   // Determine dashboard link based on user role
-  const getDashboardLink = () => {
+  const getLink = () => {
     if (!isAuthenticated || !user) return '/login';
     
-    const rolePaths: Record<string, string> = {
-      admin: '/admin/dashboard',
-      teacher: '/teacher/dashboard',
-      student: '/student/dashboard',
-      librarian: '/librarian/dashboard',
-      medical: '/medical/dashboard'
-    };
-    
-    return currentRole && rolePaths[currentRole] 
-      ? rolePaths[currentRole] 
-      : user.roles && user.roles.length > 0 
-        ? rolePaths[user.roles[0]] || '/dashboard'
-        : '/dashboard';
+    return getDashboardLink(currentRole? currentRole : user.roles[0]);
   };
 
   return (
@@ -38,7 +26,7 @@ const LandingPage = () => {
       <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
         {isAuthenticated ? (
           <Button asChild size="lg" className="px-8 text-lg h-12">
-            <Link to={getDashboardLink()} className="gap-2">
+            <Link to={getLink()} className="gap-2">
               Go to Dashboard <ArrowRight className="h-5 w-5" />
             </Link>
           </Button>

@@ -1,4 +1,3 @@
-import React from 'react';
 import lazyLoad from '@/lib/lazyLoad';
 import ErrorLayout from '@/layouts/ErrorLayout';
 

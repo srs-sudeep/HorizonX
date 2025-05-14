@@ -1,121 +1,6 @@
 import React from 'react';
-import { 
-  LayoutDashboard, 
-  Book, 
-  Library, 
-  Heart,
-  Settings,
-  Users,
-  FileText,
-  Calendar,
-  Building,
-  BarChart,
-  GraduationCap,
-  BookOpen,
-  Mail,
-  MessageSquare,
-  Bell,
-  Search,
-  ShoppingBag,
-  Home,
-  User,
-  Shield,
-  Briefcase,
-  Layers,
-  PieChart,
-  CreditCard,
-  HelpCircle,
-  FileQuestion,
-  Clipboard,
-  Newspaper,
-  Award,
-  Bookmark,
-  Truck,
-  Map,
-  Headphones,
-  Video,
-  Image,
-  Folder,
-  Database,
-  Server,
-  Code,
-  Terminal,
-  Cloud,
-  Lock,
-  Key
-} from 'lucide-react';
 import { type UserRole } from '@/store/useAuthStore';
-
-// Icon mapping for easy reference
-export const iconMap = {
-  dashboard: LayoutDashboard,
-  book: Book,
-  library: Library,
-  heart: Heart,
-  settings: Settings,
-  users: Users,
-  fileText: FileText,
-  calendar: Calendar,
-  building: Building,
-  barChart: BarChart,
-  graduationCap: GraduationCap,
-  bookOpen: BookOpen,
-  mail: Mail,
-  messageSquare: MessageSquare,
-  bell: Bell,
-  search: Search,
-  shoppingBag: ShoppingBag,
-  home: Home,
-  user: User,
-  shield: Shield,
-  briefcase: Briefcase,
-  layers: Layers,
-  pieChart: PieChart,
-  creditCard: CreditCard,
-  helpCircle: HelpCircle,
-  fileQuestion: FileQuestion,
-  clipboard: Clipboard,
-  newspaper: Newspaper,
-  award: Award,
-  bookmark: Bookmark,
-  truck: Truck,
-  map: Map,
-  headphones: Headphones,
-  video: Video,
-  image: Image,
-  folder: Folder,
-  database: Database,
-  server: Server,
-  code: Code,
-  terminal: Terminal,
-  cloud: Cloud,
-  lock: Lock,
-  key: Key
-};
-
-// Types for sidebar configuration
-export interface SidebarModuleConfig {
-  id: string;
-  label: string;
-  icon: keyof typeof iconMap;
-  iconSize?: number;
-  requiredRoles?: UserRole[];
-  order?: number;
-}
-
-export interface SidebarSubModuleConfig {
-  id: string;
-  moduleId: string;
-  label: string;
-  path: string;
-  icon?: keyof typeof iconMap;
-  iconSize?: number;
-  requiredRoles?: UserRole[];
-  badge?: number | (() => number);
-  order?: number;
-  children?: Omit<SidebarSubModuleConfig, 'moduleId'>[];
-}
-
+import {type SidebarModuleConfig, type SidebarSubModuleConfig, iconMap } from "@/types";
 // Main modules configuration
 export const modulesConfig: SidebarModuleConfig[] = [
   { 
@@ -213,6 +98,16 @@ export const subModulesConfig: SidebarSubModuleConfig[] = [
     label: 'User Management', 
     path: '/admin/users', 
     icon: 'users', 
+    iconSize: 16,
+    requiredRoles: ['admin'],
+    order: 10
+  },
+  { 
+    id: 'sidebar-management', 
+    moduleId: 'admin', 
+    label: 'Sidebar Management', 
+    path: '/admin/sidebar', 
+    icon: 'layoutSidebar', 
     iconSize: 16,
     requiredRoles: ['admin'],
     order: 20

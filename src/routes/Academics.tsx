@@ -5,13 +5,13 @@ import RoleBasedRoute from '@/core/guards/RoleBasedRoute';
 import MainLayout from '@/layouts/MainLayout';
 
 // Teacher pages
-const TeacherDashboard = lazyLoad(() => import('@/views/teacher/TeacherDashboard'));
+const TeacherDashboard = lazyLoad(() => import('@/views/dashboard/TeacherDashboard'));
 const TeacherCourses = lazyLoad(() => import('@/views/teacher/Courses'));
 // const TeacherStudents = lazyLoad(() => import('@/views/teacher/Students'));
 // const TeacherGrades = lazyLoad(() => import('@/views/teacher/Grades'));
 const TeacherProfile = lazyLoad(() => import('@/views/teacher/Profile'));
 
-const TeacherRoutes = {
+const AcademicsRoutes = {
   path: 'teacher',
   element: <MainLayout />,
   children: [
@@ -62,4 +62,4 @@ const TeacherRoutes = {
   ],
 };
 
-export default TeacherRoutes;
+export default AcademicsRoutes;

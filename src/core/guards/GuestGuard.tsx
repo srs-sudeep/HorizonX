@@ -1,8 +1,9 @@
 
 import React, { useEffect, useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
-import { useAuthStore, type UserRole } from '@/store/useAuthStore';
+import { Navigate } from 'react-router-dom';
+import { useAuthStore } from '@/store/useAuthStore';
 import { FullPageLoader } from '@/components/ui/loading-spinner';
+import {getDashboardLink} from '@/lib/redirect';
 
 interface GuestGuardProps {
   children: React.ReactNode;
@@ -11,7 +12,6 @@ interface GuestGuardProps {
 
 const GuestGuard = ({ children, redirectPath = 'role-dashboard' }: GuestGuardProps) => {
   const { isAuthenticated, user, currentRole, checkAuth } = useAuthStore();
-  const location = useLocation();
   const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
@@ -35,24 +35,15 @@ const GuestGuard = ({ children, redirectPath = 'role-dashboard' }: GuestGuardPro
   if (isAuthenticated && user) {
     // If redirectPath is 'role-dashboard', redirect to the user's role dashboard
     if (redirectPath === 'role-dashboard') {
-      // Get the first role and redirect to its dashboard
-      const rolePaths: Record<string, string> = {
-        admin: '/admin/dashboard',
-        teacher: '/teacher/dashboard',
-        student: '/student/dashboard',
-        librarian: '/librarian/dashboard',
-        medical: '/medical/dashboard'
-      };
-      
       // If there's a current role set, use that
-      if (currentRole && rolePaths[currentRole]) {
-        return <Navigate to={rolePaths[currentRole]} replace />;
+      if (currentRole) {
+        return <Navigate to={getDashboardLink(currentRole)} replace />;
       }
       
       // Otherwise use the first role from user.roles
       const defaultPath = user.roles && user.roles.length > 0 
-        ? rolePaths[user.roles[0]] || '/dashboard'
-        : '/dashboard';
+        ? getDashboardLink(user.roles[0]) || '/'
+        : '/';
         
       return <Navigate to={defaultPath} replace />;
     }

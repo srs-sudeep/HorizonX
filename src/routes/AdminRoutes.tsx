@@ -1,54 +1,33 @@
-import { Navigate } from 'react-router-dom';
-import lazyLoad from '@/lib/lazyLoad';
-import RoleBasedRoute from '@/core/guards/RoleBasedRoute';
+import { lazy } from 'react';
+import { type RouteObject } from 'react-router-dom';
 import MainLayout from '@/layouts/MainLayout';
+import RoleGuard from '@/core/guards/RoleGuard';
 
-// Admin pages
-const AdminDashboard = lazyLoad(() => import('@/views/admin/AdminDashboard'));
-const AdminUsers = lazyLoad(() => import('@/views/admin/Users'));
-const AdminSettings = lazyLoad(() => import('@/views/admin/Settings'));
-// const AdminReports = lazyLoad(() => import('@/views/admin/Reports'));
+// Lazy load admin views
+const UserManagement = lazy(() => import('@/views/admin/UserManagement'));
+const SidebarManagement = lazy(() => import('@/views/admin/SidebarManagement'));
+const SystemSettings = lazy(() => import('@/views/admin/SystemSettings'));
 
-const AdminRoutes = {
+const AdminRoutes: RouteObject = {
   path: 'admin',
-  element: <MainLayout />,
+  element: (
+    <RoleGuard roles={['admin']}>
+      <MainLayout />
+    </RoleGuard>
+  ),
   children: [
     {
-      path: '',
-      element: <Navigate to="/admin/dashboard" replace />,
-    },
-    {
-      path: 'dashboard',
-      element: (
-        <RoleBasedRoute allowedRoles={['admin']} fallbackPath="/unauthorized">
-          <AdminDashboard />
-        </RoleBasedRoute>
-      ),
-    },
-    {
       path: 'users',
-      element: (
-        <RoleBasedRoute allowedRoles={['admin']} fallbackPath="/unauthorized">
-          <AdminUsers />
-        </RoleBasedRoute>
-      ),
+      element: <UserManagement />,
+    },
+    {
+      path: 'sidebar',
+      element: <SidebarManagement />,
     },
     {
       path: 'settings',
-      element: (
-        <RoleBasedRoute allowedRoles={['admin']} fallbackPath="/unauthorized">
-          <AdminSettings />
-        </RoleBasedRoute>
-      ),
+      element: <SystemSettings />,
     },
-    // {
-    //   path: 'reports',
-    //   element: (
-    //     <RoleBasedRoute allowedRoles={['admin']} fallbackPath="/unauthorized">
-    //       <AdminReports />
-    //     </RoleBasedRoute>
-    //   ),
-    // },
   ],
 };
 
