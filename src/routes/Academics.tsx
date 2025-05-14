@@ -1,4 +1,3 @@
-import React from 'react';
 import { Navigate } from 'react-router-dom';
 import lazyLoad from '@/lib/lazyLoad';
 import RoleBasedRoute from '@/core/guards/RoleBasedRoute';
@@ -22,7 +21,7 @@ const AcademicsRoutes = {
     {
       path: 'dashboard',
       element: (
-        <RoleBasedRoute allowedRoles={['teacher']} fallbackPath="/unauthorized">
+        <RoleBasedRoute path="/teacher/dashboard">
           <TeacherDashboard />
         </RoleBasedRoute>
       ),
@@ -30,7 +29,7 @@ const AcademicsRoutes = {
     {
       path: 'courses',
       element: (
-        <RoleBasedRoute allowedRoles={['teacher']} fallbackPath="/unauthorized">
+        <RoleBasedRoute path="/teacher/courses">
           <TeacherCourses />
         </RoleBasedRoute>
       ),
@@ -54,7 +53,7 @@ const AcademicsRoutes = {
     {
       path: 'profile',
       element: (
-        <RoleBasedRoute allowedRoles={['teacher']} fallbackPath="/unauthorized">
+        <RoleBasedRoute path="/teacher/profile">
           <TeacherProfile />
         </RoleBasedRoute>
       ),
