@@ -45,6 +45,17 @@ export const sidebarData = {
       isActive: true,
     },
     {
+      id: 'user-management',
+      moduleId: 'admin',
+      label: 'User Management',
+      path: '/admin/users',
+      icon: 'users',
+      iconSize: 16,
+      requiredRoles: ['admin'],
+      order: 10,
+      isActive: true,
+    },
+    {
       id: 'teacher-dashboard',
       moduleId: 'dashboard',
       label: 'Teacher Dashboard',
