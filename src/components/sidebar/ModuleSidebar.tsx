@@ -1,8 +1,5 @@
-import {
-    getFilteredModules,
-    getHierarchicalSubModules
-} from '@/api/sidebarApi';
-import { type SidebarModuleItem, type HierarchicalSubModule,iconMap } from '@/types';
+import { getFilteredModules, getHierarchicalSubModules } from '@/api/sidebarApi';
+import { type SidebarModuleItem, type HierarchicalSubModule, iconMap } from '@/types';
 import { useAuthStore } from '@/store/useAuthStore';
 import AppLogo from '@/components/AppLogo';
 import { Badge } from '@/components/ui/badge';
@@ -32,33 +29,28 @@ const ModuleSidebar = () => {
   const { isOpen, closeSidebar } = useSidebar();
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, currentRole } = useAuthStore();
+  const { currentRole } = useAuthStore();
 
   // Fetch sidebar data based on user roles
   useEffect(() => {
     const fetchSidebarData = async () => {
       setIsLoading(true);
       try {
-        // Get user roles, prioritizing currentRole
-        const userRoles = currentRole
-          ? [currentRole, ...(user?.roles || []).filter(r => r !== currentRole)]
-          : user?.roles || [];
-
-        if (userRoles.length === 0) {
+        if (!currentRole) {
           setModules([]);
           setSubModulesMap({});
           return;
         }
 
         // Fetch modules filtered by user roles
-        const filteredModules = await getFilteredModules(userRoles);
+        const filteredModules = await getFilteredModules(currentRole);
         setModules(filteredModules);
 
         // Fetch hierarchical submodules for each module
         const subModulesData: Record<string, HierarchicalSubModule[]> = {};
 
         for (const module of filteredModules) {
-          const hierarchicalSubModules = await getHierarchicalSubModules(module.id, userRoles);
+          const hierarchicalSubModules = await getHierarchicalSubModules(module.id, currentRole);
           subModulesData[module.id] = hierarchicalSubModules;
         }
 
@@ -90,7 +82,7 @@ const ModuleSidebar = () => {
     };
 
     fetchSidebarData();
-  }, [user?.roles, currentRole, location.pathname]);
+  }, [currentRole, location.pathname]);
 
   // Check if a path is active
   const isActivePath = (path: string) => location.pathname === path;

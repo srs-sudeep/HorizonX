@@ -62,18 +62,18 @@ export const deleteSubModule = (id: string) => {
 };
 
 // Get filtered modules and submodules based on user roles
-export const getFilteredModules = (userRoles: UserRole[]) => {
+export const getFilteredModules = (currentRole: UserRole) => {
   return sidebarData.modules
     .filter(
       module =>
         module.isActive &&
         (module.requiredRoles.length === 0 ||
-          module.requiredRoles.some(role => userRoles.includes(role)))
+          module.requiredRoles.includes(currentRole))
     )
     .sort((a, b) => a.order - b.order);
 };
 
-export const getFilteredSubModules = (moduleId: string | undefined, userRoles: UserRole[]) => {
+export const getFilteredSubModules = (moduleId: string | undefined, currentRole: UserRole) => {
   const filtered = moduleId ? sidebarData.subModules.filter(sm => sm.moduleId === moduleId) : sidebarData.subModules;
 
   return filtered
@@ -81,7 +81,7 @@ export const getFilteredSubModules = (moduleId: string | undefined, userRoles: U
       subModule =>
         subModule.isActive &&
         (subModule.requiredRoles.length === 0 ||
-          subModule.requiredRoles.some(role => userRoles.includes(role)))
+          subModule.requiredRoles.includes(currentRole))
     )
     .sort((a, b) => a.order - b.order);
 };
@@ -89,9 +89,9 @@ export const getFilteredSubModules = (moduleId: string | undefined, userRoles: U
 // Helper to build a hierarchical structure for the sidebar
 export const getHierarchicalSubModules = (
   moduleId: string,
-  userRoles: UserRole[]
+  currentRole: UserRole,
 ): SidebarSubModuleTreeItem[] => {
-  const filtered = getFilteredSubModules(moduleId, userRoles);
+  const filtered = getFilteredSubModules(moduleId, currentRole);
 
   const topLevel = filtered.filter(item => !item.parentId);
 

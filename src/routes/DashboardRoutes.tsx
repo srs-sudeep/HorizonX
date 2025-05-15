@@ -33,7 +33,7 @@ const DashboardRoutes = {
     {
       path: 'medical',
       element: (
-        <RoleBasedRoute path="/dashboard/admin">
+        <RoleBasedRoute path="/dashboard/medical">
           <MedicalDashboard />
         </RoleBasedRoute>
       ),
