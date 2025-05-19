@@ -36,15 +36,12 @@ export function useRoleAccess(path: string): UseRoleAccessResult {
     // Handle role change navigation
     if (previousRoleRef.current && 
         currentRole && 
-        previousRoleRef.current !== currentRole) {
-      console.log(`Role changed from ${previousRoleRef.current} to ${currentRole}`);
-      
+        previousRoleRef.current !== currentRole) {      
       // Set transition flag to true
       isRoleTransitionRef.current = true;
       
       // Navigate to the appropriate dashboard for the new role
       const dashboardLink = getDashboardLink(currentRole);
-      console.log(`Navigating to ${dashboardLink}`);
       navigate(dashboardLink, { replace: true });
       
       // Update previous role
@@ -70,7 +67,6 @@ export function useRoleAccess(path: string): UseRoleAccessResult {
           
           // Skip permission check if we're in a role transition
           if (isRoleTransitionRef.current) {
-            console.log('Skipping permission check during role transition');
             isRoleTransitionRef.current = false;
             setHasAccess(true);
             setLoading(false);
@@ -83,7 +79,6 @@ export function useRoleAccess(path: string): UseRoleAccessResult {
           // Check if current path is allowed for current role
           const routePermission = permissions.find(p => p.path === path);
           const hasPermission = !!routePermission && routePermission.allowedRoles.includes(currentRole);
-          console.log(`Checking access for path: ${path}, role: ${currentRole}, hasAccess: ${hasPermission}`);
           setHasAccess(hasPermission);
         }
       } catch (error) {

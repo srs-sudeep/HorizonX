@@ -32,18 +32,16 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import UserAvatar from '@/components/UserAvatar';
 import { useSidebar } from '@/core/context/sidebarContext';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { getDashboardLink } from '@/lib/redirect';
 import { useAuthStore, type UserRole } from '@/store';
 import { ThemeSwitcher } from '@/theme';
 import { notifications } from '@/types';
 import { Bell, ChevronDown, HelpCircle, LogOut, Mail, Menu, Search, Settings, User } from 'lucide-react';
 import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useToast } from '@/components/ui/use-toast';
 
 const Navbar = () => {
   const { user, logout, setCurrentRole } = useAuthStore();
-  const navigate = useNavigate();
     const { toast } = useToast();
   const location = useLocation();
   const isMobile = useIsMobile();
@@ -58,14 +56,6 @@ const Navbar = () => {
       
       // Call setCurrentRole from auth store which handles the API call
       await setCurrentRole(role);
-      
-      // Navigate to the appropriate dashboard for the new role
-      const link = getDashboardLink(role);
-      console.log(link);
-    //   setTimeout(() => {
-    //     navigate(link, { replace: true });
-    //   }, 1000);
-    //   navigate(getDashboardLink(role), { replace: true });
       
     } catch (error) {
       console.error('Failed to change role:', error);
