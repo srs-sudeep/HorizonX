@@ -13,7 +13,7 @@
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
     "prepare": "husky",
-    "commit": "git-cz"
+    "commit": "git-cz c"
   },
   "config": {
     "commitizen": {
