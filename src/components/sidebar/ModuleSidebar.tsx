@@ -94,7 +94,7 @@ const ModuleSidebar = () => {
     };
 
     fetchSidebarData();
-  }, [currentRole, location.pathname, activeModule, hasActiveSubModule]);
+  }, [currentRole, location.pathname]);
 
   // Check if a path is active
   const isActivePath = (path: string) => location.pathname === path;
@@ -137,7 +137,7 @@ const ModuleSidebar = () => {
         }
       }
     }
-  }, [isLoading, modules, subModulesMap, location.pathname, hasActiveSubModule]);
+  }, [isLoading, modules, subModulesMap, location.pathname]);
 
   // Filter submodules based on search query
   const getFilteredBySearchSubModules = () => {
