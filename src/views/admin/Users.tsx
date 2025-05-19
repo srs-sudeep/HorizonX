@@ -1,6 +1,13 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { Plus, Search, Edit, Trash2, MoreHorizontal } from 'lucide-react';
 
 const Users = () => {
@@ -10,7 +17,13 @@ const Users = () => {
     { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'Teacher', status: 'Active' },
     { id: 3, name: 'Robert Johnson', email: 'robert@example.com', role: 'Admin', status: 'Active' },
     { id: 4, name: 'Emily Davis', email: 'emily@example.com', role: 'Student', status: 'Inactive' },
-    { id: 5, name: 'Michael Wilson', email: 'michael@example.com', role: 'Teacher', status: 'Active' },
+    {
+      id: 5,
+      name: 'Michael Wilson',
+      email: 'michael@example.com',
+      role: 'Teacher',
+      status: 'Active',
+    },
   ];
 
   return (
@@ -22,18 +35,15 @@ const Users = () => {
           Add User
         </Button>
       </div>
-      
+
       <div className="flex items-center space-x-2">
         <div className="relative flex-1">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search users..."
-            className="pl-8"
-          />
+          <Input placeholder="Search users..." className="pl-8" />
         </div>
         <Button variant="outline">Filter</Button>
       </div>
-      
+
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -46,17 +56,19 @@ const Users = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {users.map((user) => (
+            {users.map(user => (
               <TableRow key={user.id}>
                 <TableCell className="font-medium">{user.name}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.role}</TableCell>
                 <TableCell>
-                  <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                    user.status === 'Active' 
-                      ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300'
-                      : 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300'
-                  }`}>
+                  <span
+                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                      user.status === 'Active'
+                        ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300'
+                        : 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300'
+                    }`}
+                  >
                     {user.status}
                   </span>
                 </TableCell>

@@ -1,5 +1,4 @@
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 
 interface UserAvatarProps {
@@ -19,7 +18,7 @@ const UserAvatar = ({ name, role, imgUrl, className, showInfo = true }: UserAvat
     .slice(0, 2);
 
   return (
-    <div className={cn("flex items-center gap-2", className)}>
+    <div className={cn('flex items-center gap-2', className)}>
       <Avatar>
         <AvatarImage src={imgUrl} alt={name} />
         <AvatarFallback>{initials}</AvatarFallback>

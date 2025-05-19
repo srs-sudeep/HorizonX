@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Check } from 'lucide-react';
@@ -6,52 +5,52 @@ import { motion } from 'framer-motion';
 
 const plans = [
   {
-    name: "Community",
-    price: "Free",
-    description: "Perfect for individual developers and open source projects",
+    name: 'Community',
+    price: 'Free',
+    description: 'Perfect for individual developers and open source projects',
     features: [
-      "React & FastAPI core features",
-      "Basic authentication",
-      "Development environment",
-      "Community support"
+      'React & FastAPI core features',
+      'Basic authentication',
+      'Development environment',
+      'Community support',
     ],
     mostPopular: false,
-    buttonText: "Get Started",
-    buttonVariant: "outline" as const
+    buttonText: 'Get Started',
+    buttonVariant: 'outline' as const,
   },
   {
-    name: "Pro",
-    price: "$29",
-    period: "/month",
-    description: "Ideal for small teams and growing projects",
+    name: 'Pro',
+    price: '$29',
+    period: '/month',
+    description: 'Ideal for small teams and growing projects',
     features: [
-      "Everything in Community",
-      "Advanced authentication",
-      "Database migrations",
-      "API documentation",
-      "Email support",
-      "CI/CD integration"
+      'Everything in Community',
+      'Advanced authentication',
+      'Database migrations',
+      'API documentation',
+      'Email support',
+      'CI/CD integration',
     ],
     mostPopular: true,
-    buttonText: "Start Free Trial",
-    buttonVariant: "default" as const
+    buttonText: 'Start Free Trial',
+    buttonVariant: 'default' as const,
   },
   {
-    name: "Enterprise",
-    price: "Custom",
-    description: "For large organizations with unique requirements",
+    name: 'Enterprise',
+    price: 'Custom',
+    description: 'For large organizations with unique requirements',
     features: [
-      "Everything in Pro",
-      "Custom integrations",
-      "Dedicated support",
-      "SLA guarantees",
-      "Onboarding assistance",
-      "Training sessions"
+      'Everything in Pro',
+      'Custom integrations',
+      'Dedicated support',
+      'SLA guarantees',
+      'Onboarding assistance',
+      'Training sessions',
     ],
     mostPopular: false,
-    buttonText: "Contact Sales",
-    buttonVariant: "outline" as const
-  }
+    buttonText: 'Contact Sales',
+    buttonVariant: 'outline' as const,
+  },
 ];
 
 export const Pricing = () => {
@@ -70,7 +69,9 @@ export const Pricing = () => {
             <button
               onClick={() => setBillingCycle('monthly')}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                billingCycle === 'monthly' ? 'bg-white text-black shadow-sm' : 'text-muted-foreground'
+                billingCycle === 'monthly'
+                  ? 'bg-white text-black shadow-sm'
+                  : 'text-muted-foreground'
               }`}
             >
               Monthly
@@ -78,7 +79,9 @@ export const Pricing = () => {
             <button
               onClick={() => setBillingCycle('annual')}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                billingCycle === 'annual' ? 'bg-white text-black shadow-sm' : 'text-muted-foreground'
+                billingCycle === 'annual'
+                  ? 'bg-white text-black shadow-sm'
+                  : 'text-muted-foreground'
               }`}
             >
               Annually
@@ -106,7 +109,7 @@ export const Pricing = () => {
                   </div>
                 </div>
               )}
-              
+
               <div className="p-6">
                 <h3 className="text-xl font-bold">{plan.name}</h3>
                 <div className="mt-4 flex items-baseline">
@@ -114,7 +117,7 @@ export const Pricing = () => {
                   {plan.period && <span className="ml-1 text-muted-foreground">{plan.period}</span>}
                 </div>
                 <p className="mt-2 text-muted-foreground text-sm">{plan.description}</p>
-                
+
                 <div className="mt-6 space-y-3">
                   {plan.features.map((feature, idx) => (
                     <div key={idx} className="flex items-center">
@@ -123,7 +126,7 @@ export const Pricing = () => {
                     </div>
                   ))}
                 </div>
-                
+
                 <div className="mt-8">
                   <Button variant={plan.buttonVariant} className="w-full" size="lg">
                     {plan.buttonText}
@@ -133,9 +136,13 @@ export const Pricing = () => {
             </motion.div>
           ))}
         </div>
-        
+
         <div className="mt-12 text-center text-sm text-muted-foreground">
-          Need a custom plan? <a href="#" className="text-primary hover:underline">Contact our sales team</a> for more information.
+          Need a custom plan?{' '}
+          <a href="#" className="text-primary hover:underline">
+            Contact our sales team
+          </a>{' '}
+          for more information.
         </div>
       </div>
     </section>

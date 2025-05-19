@@ -1,7 +1,6 @@
-
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 
 const YearlyBreakup = () => {
   return (
@@ -29,25 +28,25 @@ const YearlyBreakup = () => {
             {/* Progress circle */}
             <div className="absolute inset-0 -rotate-90">
               <svg className="h-full w-full" viewBox="0 0 100 100">
-                <circle 
-                  className="text-blue-100" 
+                <circle
+                  className="text-blue-100"
                   strokeWidth="10"
-                  stroke="currentColor" 
-                  fill="transparent" 
-                  r="40" 
-                  cx="50" 
-                  cy="50" 
+                  stroke="currentColor"
+                  fill="transparent"
+                  r="40"
+                  cx="50"
+                  cy="50"
                 />
-                <circle 
-                  className="text-blue-500" 
-                  strokeWidth="10" 
-                  strokeDasharray="251.2" 
-                  strokeDashoffset="75" 
-                  stroke="currentColor" 
-                  fill="transparent" 
-                  r="40" 
-                  cx="50" 
-                  cy="50" 
+                <circle
+                  className="text-blue-500"
+                  strokeWidth="10"
+                  strokeDasharray="251.2"
+                  strokeDashoffset="75"
+                  stroke="currentColor"
+                  fill="transparent"
+                  r="40"
+                  cx="50"
+                  cy="50"
                 />
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">

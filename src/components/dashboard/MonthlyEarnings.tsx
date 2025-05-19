@@ -1,7 +1,14 @@
-
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from 'recharts';
 
 // Sample data for the chart
 const data = [
@@ -23,10 +30,33 @@ const MonthlyEarnings = () => {
           <CardTitle className="text-lg font-medium">Monthly Earnings</CardTitle>
         </div>
         <button className="bg-blue-100 text-blue-500 rounded-full p-2">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M12.0001 17.3802C11.5601 17.3802 11.2001 17.0302 11.2001 16.5802C11.2001 16.1302 11.5601 15.7802 12.0001 15.7802C12.4401 15.7802 12.8001 16.1302 12.8001 16.5802C12.8001 17.0302 12.4401 17.3802 12.0001 17.3802Z" fill="currentColor"/>
-            <path d="M12 13.98V7.97998" stroke="currentColor" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeMiterlimit="10"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M12.0001 17.3802C11.5601 17.3802 11.2001 17.0302 11.2001 16.5802C11.2001 16.1302 11.5601 15.7802 12.0001 15.7802C12.4401 15.7802 12.8001 16.1302 12.8001 16.5802C12.8001 17.0302 12.4401 17.3802 12.0001 17.3802Z"
+              fill="currentColor"
+            />
+            <path
+              d="M12 13.98V7.97998"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeMiterlimit="10"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </button>
       </CardHeader>
@@ -41,23 +71,20 @@ const MonthlyEarnings = () => {
 
         <div className="h-[120px] mt-6">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart 
-              data={data}
-              margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
-            >
+            <AreaChart data={data} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorMonthly" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#0EA5E9" stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor="#0EA5E9" stopOpacity={0}/>
+                  <stop offset="5%" stopColor="#0EA5E9" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#0EA5E9" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <Tooltip />
-              <Area 
-                type="monotone" 
-                dataKey="value" 
-                stroke="#0EA5E9" 
-                fillOpacity={1} 
-                fill="url(#colorMonthly)" 
+              <Area
+                type="monotone"
+                dataKey="value"
+                stroke="#0EA5E9"
+                fillOpacity={1}
+                fill="url(#colorMonthly)"
               />
             </AreaChart>
           </ResponsiveContainer>

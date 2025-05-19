@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const ProductsSection = () => {
   return (
@@ -11,9 +10,9 @@ const ProductsSection = () => {
       </CardHeader>
       <CardContent className="flex flex-col">
         <div className="mt-4 bg-white/10 rounded-lg p-4">
-          <img 
-            src="https://placehold.co/100x60/white/white?text=Interface" 
-            alt="Product interface" 
+          <img
+            src="https://placehold.co/100x60/white/white?text=Interface"
+            alt="Product interface"
             className="w-full h-auto rounded-md"
           />
           <div className="mt-4">

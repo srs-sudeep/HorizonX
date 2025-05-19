@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { cn } from '@/lib/utils';
 
@@ -12,12 +11,10 @@ interface StatCardProps {
 
 const StatCard = ({ icon, title, value, className, iconColor }: StatCardProps) => {
   return (
-    <div className={cn("stat-card", className)}>
+    <div className={cn('stat-card', className)}>
       <div className="flex items-start justify-between">
         <p className="stat-title">{title}</p>
-        <div className={cn("p-2 rounded-md", iconColor || "bg-blue-100")}>
-          {icon}
-        </div>
+        <div className={cn('p-2 rounded-md', iconColor || 'bg-blue-100')}>{icon}</div>
       </div>
       <p className="stat-value">{value}</p>
     </div>

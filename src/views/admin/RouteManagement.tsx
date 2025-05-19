@@ -1,29 +1,29 @@
 import {
-    createRoute,
-    deleteRoute,
-    getRoutes,
-    RouteConfig,
-    updateRoute,
+  createRoute,
+  deleteRoute,
+  getRoutes,
+  RouteConfig,
+  updateRoute,
 } from '@/api/mockApi/routes';
 import { getAllRoles } from '@/api/mockApi/users';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from '@/components/ui/table';
 import { type UserRole } from '@/store/useAuthStore';
 import { Pencil, PlusCircle, Search, Trash2 } from 'lucide-react';

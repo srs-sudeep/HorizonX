@@ -9,7 +9,6 @@ const MedicalDashboard = lazyLoad(() => import('@/views/dashboard/MedicalDashboa
 const StudentDashboard = lazyLoad(() => import('@/views/dashboard/StudentDashboard'));
 const TeacherDashboard = lazyLoad(() => import('@/views/dashboard/TeacherDashboard'));
 
-
 const DashboardRoutes = {
   path: 'dashboard',
   element: <MainLayout />,
@@ -37,14 +36,16 @@ const DashboardRoutes = {
           <MedicalDashboard />
         </RoleBasedRoute>
       ),
-    },{
+    },
+    {
       path: 'student',
       element: (
         <RoleBasedRoute path="/dashboard/student">
           <StudentDashboard />
         </RoleBasedRoute>
       ),
-    },{
+    },
+    {
       path: 'teacher',
       element: (
         <RoleBasedRoute path="/dashboard/teacher">

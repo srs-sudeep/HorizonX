@@ -1,31 +1,31 @@
 import AppLogo from '@/components/AppLogo';
 import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbSeparator,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
 import {
-    Drawer,
-    DrawerContent,
-    DrawerHeader,
-    DrawerTitle,
-    DrawerTrigger,
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
 } from '@/components/ui/drawer';
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuPortal,
-    DropdownMenuSeparator,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -35,14 +35,24 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useAuthStore, type UserRole } from '@/store';
 import { ThemeSwitcher } from '@/theme';
 import { notifications } from '@/types';
-import { Bell, ChevronDown, HelpCircle, LogOut, Mail, Menu, Search, Settings, User } from 'lucide-react';
+import {
+  Bell,
+  ChevronDown,
+  HelpCircle,
+  LogOut,
+  Mail,
+  Menu,
+  Search,
+  Settings,
+  User,
+} from 'lucide-react';
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useToast } from '@/components/ui/use-toast';
 
 const Navbar = () => {
   const { user, logout, setCurrentRole } = useAuthStore();
-    const { toast } = useToast();
+  const { toast } = useToast();
   const location = useLocation();
   const isMobile = useIsMobile();
   const { toggleSidebar } = useSidebar();
@@ -50,13 +60,12 @@ const Navbar = () => {
 
   const handleRoleChange = async (role: UserRole) => {
     if (user?.currentRole === role) return; // Skip if already on this role
-    
+
     try {
       setIsChangingRole(true);
-      
+
       // Call setCurrentRole from auth store which handles the API call
       await setCurrentRole(role);
-      
     } catch (error) {
       console.error('Failed to change role:', error);
       toast({

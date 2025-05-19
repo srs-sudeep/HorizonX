@@ -42,7 +42,7 @@
   --color-sidebar-border: hsl(var(--sidebar-border));
   --color-sidebar-ring: hsl(var(--sidebar-ring));
 
-  --color-navbar : hsl(var(--navbar));
+  --color-navbar: hsl(var(--navbar));
   --color-navbar-foreground: hsl(var(--navbar-foreground));
 
   --color-blur-theme: hsl(var(--blur-theme));
@@ -220,7 +220,7 @@
   ---break---
 */
 @theme {
-  --blur-theme: 30px; 
+  --blur-theme: 30px;
 }
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);

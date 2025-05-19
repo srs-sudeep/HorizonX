@@ -17,7 +17,6 @@ const navLinks = [
 ];
 
 export const LandingNavbar = () => {
-
   const { isAuthenticated, currentRole } = useAuthStore();
   const [scroll, setScroll] = useState(false);
 
@@ -57,9 +56,9 @@ export const LandingNavbar = () => {
                   Login <ArrowRight className="h-5 w-5" />
                 </Link>
               </Button>
-               <Button asChild size="lg" variant="outline" className="px-8 text-lg h-12">
-              <Link to="/register">Get Started</Link>
-            </Button>
+              <Button asChild size="lg" variant="outline" className="px-8 text-lg h-12">
+                <Link to="/register">Get Started</Link>
+              </Button>
             </div>
           ) : (
             <Button asChild size="lg" className="px-8 text-lg h-12">

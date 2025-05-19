@@ -29,7 +29,6 @@ export interface SidebarSubModuleTreeItem extends SidebarSubModuleItem {
   children?: SidebarSubModuleTreeItem[];
 }
 
-
 // Interface for hierarchical submodules with children
 export interface HierarchicalSubModule extends SidebarSubModuleItem {
   children?: HierarchicalSubModule[];

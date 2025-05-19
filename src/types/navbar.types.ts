@@ -45,6 +45,5 @@ export const notifications: NotificationProps[] = [
     message: 'Payment for order #12342 was successful',
     time: 'Yesterday',
     read: true,
-  }
-
+  },
 ];

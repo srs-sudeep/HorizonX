@@ -1,33 +1,33 @@
 import {
-    assignRole,
-    createUser,
-    deleteUser,
-    getAllRoles,
-    getUsers,
-    removeRole,
-    updateUser,
-    User,
+  assignRole,
+  createUser,
+  deleteUser,
+  getAllRoles,
+  getUsers,
+  removeRole,
+  updateUser,
+  User,
 } from '@/api/mockApi/users';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from '@/components/ui/table';
 import { UserRole } from '@/store/useAuthStore';
 import { Pencil, Search, Shield, Trash2, UserPlus } from 'lucide-react';

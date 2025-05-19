@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Users, Calendar, FileText, Heart } from 'lucide-react';
 import StatCard from '@/components/dashboard/StatCard';
@@ -7,29 +6,29 @@ const MedicalDashboard = () => {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Medical Dashboard</h1>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard 
-          title="Patients Today" 
-          value="24" 
+        <StatCard
+          title="Patients Today"
+          value="24"
           icon={<Users className="h-5 w-5 text-blue-500" />}
           iconColor="bg-blue-100"
         />
-        <StatCard 
-          title="Appointments" 
-          value="18" 
+        <StatCard
+          title="Appointments"
+          value="18"
           icon={<Calendar className="h-5 w-5 text-yellow-500" />}
           iconColor="bg-yellow-100"
         />
-        <StatCard 
-          title="Medical Records" 
-          value="1,254" 
+        <StatCard
+          title="Medical Records"
+          value="1,254"
           icon={<FileText className="h-5 w-5 text-green-500" />}
           iconColor="bg-green-100"
         />
-        <StatCard 
-          title="Critical Cases" 
-          value="3" 
+        <StatCard
+          title="Critical Cases"
+          value="3"
           icon={<Heart className="h-5 w-5 text-red-500" />}
           iconColor="bg-red-100"
         />
@@ -49,11 +48,11 @@ const MedicalDashboard = () => {
                   <p className="text-sm text-muted-foreground">Scheduled at {i + 9}:00 AM</p>
                 </div>
                 <div className="ml-auto text-xs">
-                  <span className={`py-1 px-2 rounded-full ${
-                    i === 0 
-                      ? "bg-green-100 text-green-700"
-                      : "bg-blue-100 text-blue-700"
-                  }`}>
+                  <span
+                    className={`py-1 px-2 rounded-full ${
+                      i === 0 ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'
+                    }`}
+                  >
                     {i === 0 ? 'Current' : 'Upcoming'}
                   </span>
                 </div>
@@ -61,7 +60,7 @@ const MedicalDashboard = () => {
             ))}
           </div>
         </div>
-        
+
         <div className="border rounded-lg p-4">
           <h2 className="text-xl font-medium mb-4">Recent Patient Updates</h2>
           <div className="space-y-4">

@@ -3,11 +3,7 @@
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2020",
     "useDefineForClassFields": true,
-    "lib": [
-      "ES2020",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
     /* Bundler mode */
@@ -19,48 +15,20 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@/components/*": [
-        "./src/components/*"
-      ],
-      "@/core/*": [
-        "./src/core/*"
-      ],
-      "@/views/*": [
-        "./src/views/*"
-      ],
-      "@/layouts/*": [
-        "./src/layouts/*"
-      ],
-      "@/hooks/*": [
-        "./src/hooks/*"
-      ],
-      "@/store/*": [
-        "src/store/*"
-      ],
-      "@/theme/*": [
-        "./src/theme/*"
-      ],
-      "@/types/*": [
-        "./src/types/*"
-      ],
-      "@/utils/*": [
-        "./src/utils/*"
-      ],
-      "@/config/*": [
-        "./src/config/*"
-      ],
-      "@/api/*": [
-        "./src/api/*"
-      ],
-      "@/assets/*": [
-        "./src/assets/*"
-      ],
-      "@/lib/*": [
-        "./src/lib/*"
-      ]
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/core/*": ["./src/core/*"],
+      "@/views/*": ["./src/views/*"],
+      "@/layouts/*": ["./src/layouts/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/store/*": ["src/store/*"],
+      "@/theme/*": ["./src/theme/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/config/*": ["./src/config/*"],
+      "@/api/*": ["./src/api/*"],
+      "@/assets/*": ["./src/assets/*"],
+      "@/lib/*": ["./src/lib/*"]
     },
     /* Linting */
     "strict": true,
@@ -70,7 +38,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }

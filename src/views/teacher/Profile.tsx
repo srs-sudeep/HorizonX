@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 const ProfilePage = () => {
@@ -13,7 +12,7 @@ const ProfilePage = () => {
           <div className="flex-1">
             <h2 className="text-xl font-bold">Mathew Thompson</h2>
             <p className="text-gray-500 mb-4">UI/UX Designer</p>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <div>
                 <p className="text-sm text-gray-500">Email</p>
@@ -32,7 +31,7 @@ const ProfilePage = () => {
                 <p>Design</p>
               </div>
             </div>
-            
+
             <div className="flex gap-2">
               <button className="bg-primary text-white px-4 py-2 rounded-md">Edit Profile</button>
               <button className="border border-gray-300 px-4 py-2 rounded-md">View Details</button>

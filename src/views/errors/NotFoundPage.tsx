@@ -1,4 +1,3 @@
-
 const NotFoundPage = () => {
   return (
     <div className="text-center">

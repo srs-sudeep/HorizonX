@@ -3,30 +3,37 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { useToast } from '@/components/ui/use-toast';
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  
+
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email) {
       toast({
-        title: "Error",
-        description: "Please enter your email address",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Please enter your email address',
+        variant: 'destructive',
       });
       return;
     }
-    
+
     setIsLoading(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       setIsSubmitted(true);
@@ -48,17 +55,17 @@ const ForgotPasswordPage = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input 
-                  id="email" 
-                  type="email" 
-                  placeholder="name@example.com" 
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="name@example.com"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={e => setEmail(e.target.value)}
                   required
                 />
               </div>
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Sending..." : "Send Reset Link"}
+                {isLoading ? 'Sending...' : 'Send Reset Link'}
               </Button>
             </form>
           ) : (
@@ -78,7 +85,7 @@ const ForgotPasswordPage = () => {
         </CardContent>
         <CardFooter className="flex justify-center">
           <p className="text-sm text-muted-foreground">
-            Remember your password?{" "}
+            Remember your password?{' '}
             <Link to="/login" className="text-primary hover:underline">
               Log in
             </Link>

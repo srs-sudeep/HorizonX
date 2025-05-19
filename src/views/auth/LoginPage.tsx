@@ -33,7 +33,7 @@ const LoginPage: React.FC = () => {
     try {
       // Call login directly from useAuthStore which will handle the API call
       await login(email, password);
-      
+
       toast({
         title: 'Success',
         description: 'You have successfully logged in',

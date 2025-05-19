@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
@@ -11,66 +10,71 @@ type Testimonial = {
 
 const testimonials: Testimonial[] = [
   {
-    quote: "HorizonX has completely transformed our development process. We've cut our time-to-market in half and dramatically improved code quality.",
-    author: "Sarah Johnson",
-    role: "CTO",
-    company: "DataStream Inc.",
+    quote:
+      "HorizonX has completely transformed our development process. We've cut our time-to-market in half and dramatically improved code quality.",
+    author: 'Sarah Johnson',
+    role: 'CTO',
+    company: 'DataStream Inc.',
   },
   {
-    quote: "The most impressive part of HorizonX is how it scales with your team. We started with 3 developers and now have 30, and it's just as effective.",
-    author: "Michael Chen",
-    role: "Lead Developer",
-    company: "TechFusion",
+    quote:
+      "The most impressive part of HorizonX is how it scales with your team. We started with 3 developers and now have 30, and it's just as effective.",
+    author: 'Michael Chen',
+    role: 'Lead Developer',
+    company: 'TechFusion',
   },
   {
-    quote: "We evaluated several boilerplates for our startup, but HorizonX stood out with its thoughtful architecture and developer experience.",
-    author: "Priya Patel",
-    role: "Engineering Manager",
-    company: "NovaTech Solutions",
+    quote:
+      'We evaluated several boilerplates for our startup, but HorizonX stood out with its thoughtful architecture and developer experience.',
+    author: 'Priya Patel',
+    role: 'Engineering Manager',
+    company: 'NovaTech Solutions',
   },
   {
-    quote: "Moving our legacy app to HorizonX was surprisingly smooth. The documentation is excellent and the community is incredibly helpful.",
-    author: "David Rodriguez",
-    role: "Software Architect",
-    company: "Elevate Digital",
+    quote:
+      'Moving our legacy app to HorizonX was surprisingly smooth. The documentation is excellent and the community is incredibly helpful.',
+    author: 'David Rodriguez',
+    role: 'Software Architect',
+    company: 'Elevate Digital',
   },
   {
-    quote: "HorizonX's built-in performance optimization saved us countless hours. Our app is faster and our team is more productive.",
-    author: "Emma Wilson",
-    role: "VP of Engineering",
-    company: "GrowthForge",
+    quote:
+      "HorizonX's built-in performance optimization saved us countless hours. Our app is faster and our team is more productive.",
+    author: 'Emma Wilson',
+    role: 'VP of Engineering',
+    company: 'GrowthForge',
   },
 ];
 
 export const Testimonials = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
   useEffect(() => {
     const scrollSpeed = 0.5;
     let animationFrameId: number;
     let scrollPos = 0;
-    
+
     const scroll = () => {
       if (!containerRef.current) return;
-      
+
       scrollPos += scrollSpeed;
       const maxScroll = containerRef.current.scrollWidth / 2;
-      
+
       if (scrollPos >= maxScroll) {
         scrollPos = 0;
       }
-      
+
       containerRef.current.scrollLeft = scrollPos;
       animationFrameId = requestAnimationFrame(scroll);
     };
-    
+
     scroll();
-    
+
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
-  
+
   return (
     <section id="testimonials" className="py-20 overflow-hidden">
       <div className="container">
@@ -81,7 +85,7 @@ export const Testimonials = () => {
           </p>
         </div>
       </div>
-      
+
       <div ref={containerRef} className="relative w-full overflow-x-hidden">
         <div className="flex gap-6 py-4 w-max animate-scroll">
           {/* First set of testimonials */}
@@ -97,7 +101,9 @@ export const Testimonials = () => {
                 <p className="text-lg mb-4">{testimonial.quote}</p>
                 <footer>
                   <p className="font-semibold">{testimonial.author}</p>
-                  <p className="text-sm text-muted-foreground">{testimonial.role}, {testimonial.company}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {testimonial.role}, {testimonial.company}
+                  </p>
                 </footer>
               </blockquote>
             </motion.div>

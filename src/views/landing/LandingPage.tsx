@@ -16,7 +16,7 @@ const LandingPage = () => {
         <TechStack />
         <CaseStudies />
         <Testimonials />
-        <Pricing /> 
+        <Pricing />
         <OpenSource />
         <CallToAction />
       </main>

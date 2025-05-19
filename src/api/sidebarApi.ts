@@ -1,6 +1,10 @@
 // Mock API for sidebar configuration
 import { type UserRole } from '@/store/useAuthStore';
-import { type SidebarModuleItem, type SidebarSubModuleItem, type SidebarSubModuleTreeItem } from '@/types/Sidebar.types';
+import {
+  type SidebarModuleItem,
+  type SidebarSubModuleItem,
+  type SidebarSubModuleTreeItem,
+} from '@/types/Sidebar.types';
 import { sidebarData } from '@/api/mockApi/sidebar';
 
 export const getModules = () => {
@@ -32,7 +36,9 @@ export const deleteModule = (id: string) => {
   return Promise.resolve(deleted);
 };
 export const getSubModules = (moduleId?: string) => {
-  const filtered = moduleId ? sidebarData.subModules.filter(sm => sm.moduleId === moduleId) : sidebarData.subModules;
+  const filtered = moduleId
+    ? sidebarData.subModules.filter(sm => sm.moduleId === moduleId)
+    : sidebarData.subModules;
   return Promise.resolve([...filtered]);
 };
 export const getSubModuleById = (id: string) => {
@@ -67,21 +73,21 @@ export const getFilteredModules = (currentRole: UserRole) => {
     .filter(
       module =>
         module.isActive &&
-        (module.requiredRoles.length === 0 ||
-          module.requiredRoles.includes(currentRole))
+        (module.requiredRoles.length === 0 || module.requiredRoles.includes(currentRole))
     )
     .sort((a, b) => a.order - b.order);
 };
 
 export const getFilteredSubModules = (moduleId: string | undefined, currentRole: UserRole) => {
-  const filtered = moduleId ? sidebarData.subModules.filter(sm => sm.moduleId === moduleId) : sidebarData.subModules;
+  const filtered = moduleId
+    ? sidebarData.subModules.filter(sm => sm.moduleId === moduleId)
+    : sidebarData.subModules;
 
   return filtered
     .filter(
       subModule =>
         subModule.isActive &&
-        (subModule.requiredRoles.length === 0 ||
-          subModule.requiredRoles.includes(currentRole))
+        (subModule.requiredRoles.length === 0 || subModule.requiredRoles.includes(currentRole))
     )
     .sort((a, b) => a.order - b.order);
 };
@@ -89,7 +95,7 @@ export const getFilteredSubModules = (moduleId: string | undefined, currentRole:
 // Helper to build a hierarchical structure for the sidebar
 export const getHierarchicalSubModules = (
   moduleId: string,
-  currentRole: UserRole,
+  currentRole: UserRole
 ): SidebarSubModuleTreeItem[] => {
   const filtered = getFilteredSubModules(moduleId, currentRole);
 
@@ -110,4 +116,3 @@ export const getHierarchicalSubModules = (
 
   return buildTree(topLevel);
 };
-

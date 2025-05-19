@@ -1,41 +1,41 @@
 import {
-    createModule,
-    createSubModule,
-    deleteModule,
-    deleteSubModule,
-    getModules,
-    getSubModules,
-    SidebarModuleItem,
-    SidebarSubModuleItem,
-    updateModule,
-    updateSubModule,
+  createModule,
+  createSubModule,
+  deleteModule,
+  deleteSubModule,
+  getModules,
+  getSubModules,
+  SidebarModuleItem,
+  SidebarSubModuleItem,
+  updateModule,
+  updateSubModule,
 } from '@/api/mockApi/sidebar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@/components/ui/select';
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { UserRole } from '@/store/useAuthStore';

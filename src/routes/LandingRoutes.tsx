@@ -11,8 +11,8 @@ const Support = lazyLoad(() => import('@/views/landing/Support'));
 
 // Wrapper component to handle landing page logic
 const LandingWrapper = () => {
-//   const { isAuthenticated, user } = useAuthStore();
-  
+  //   const { isAuthenticated, user } = useAuthStore();
+
   // If authenticated, stay on landing page (as per requirements)
   // This is different from most apps where you'd redirect to dashboard
   return <LandingPage />;

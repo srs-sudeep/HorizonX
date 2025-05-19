@@ -1,7 +1,7 @@
-import { 
-  LayoutDashboard, 
-  Book, 
-  Library, 
+import {
+  LayoutDashboard,
+  Book,
+  Library,
   Heart,
   Settings,
   Users,
@@ -41,7 +41,7 @@ import {
   Terminal,
   Cloud,
   Lock,
-  Key
+  Key,
 } from 'lucide-react';
 export const iconMap = {
   dashboard: LayoutDashboard,
@@ -86,5 +86,5 @@ export const iconMap = {
   terminal: Terminal,
   cloud: Cloud,
   lock: Lock,
-  key: Key
+  key: Key,
 };
