@@ -1,6 +1,4 @@
 import { getFilteredModules, getHierarchicalSubModules } from '@/api/sidebarApi';
-import { type SidebarModuleItem, type HierarchicalSubModule, iconMap } from '@/types';
-import { useAuthStore } from '@/store/useAuthStore';
 import AppLogo from '@/components/AppLogo';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -8,9 +6,11 @@ import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet';
 import { useSidebar } from '@/core/context/sidebarContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
+import { useAuthStore } from '@/store/useAuthStore';
+import { type HierarchicalSubModule, iconMap, type SidebarModuleItem } from '@/types';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronRight, Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 // Helper function to get icon component
 const getIconComponent = (iconName: keyof typeof iconMap, size: number = 24) => {
@@ -30,7 +30,19 @@ const ModuleSidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { currentRole } = useAuthStore();
-
+  // Check if a module has any active submodule
+  const hasActiveSubModule = useCallback(
+    (subModules: HierarchicalSubModule[], path: string): boolean => {
+      for (const subModule of subModules) {
+        if (path.startsWith(subModule.path)) return true;
+        if (subModule.children?.length) {
+          if (hasActiveSubModule(subModule.children, path)) return true;
+        }
+      }
+      return false;
+    },
+    [] // Add any real dependencies here if needed
+  );
   // Fetch sidebar data based on user roles
   useEffect(() => {
     const fetchSidebarData = async () => {
@@ -82,30 +94,13 @@ const ModuleSidebar = () => {
     };
 
     fetchSidebarData();
-  }, [currentRole, location.pathname]);
+  }, [currentRole, location.pathname, activeModule, hasActiveSubModule]);
 
   // Check if a path is active
   const isActivePath = (path: string) => location.pathname === path;
 
   // Check if a path is active or a parent path
   const isActiveOrParent = (path: string) => location.pathname.startsWith(path);
-
-  // Check if a module has any active submodule
-  const hasActiveSubModule = (subModules: HierarchicalSubModule[], path: string) => {
-    for (const subModule of subModules) {
-      if (path.startsWith(subModule.path)) {
-        return true;
-      }
-
-      if (subModule.children && subModule.children.length > 0) {
-        if (hasActiveSubModule(subModule.children, path)) {
-          return true;
-        }
-      }
-    }
-
-    return false;
-  };
 
   // Toggle expanded state for items with children
   const toggleExpanded = (itemId: string) => {
@@ -142,7 +137,7 @@ const ModuleSidebar = () => {
         }
       }
     }
-  }, [isLoading, modules, subModulesMap, location.pathname]);
+  }, [isLoading, modules, subModulesMap, location.pathname, hasActiveSubModule]);
 
   // Filter submodules based on search query
   const getFilteredBySearchSubModules = () => {
@@ -282,7 +277,7 @@ const ModuleSidebar = () => {
               transition={{ duration: 0.2 }}
               className="w-64 h-full bg-sidebar flex flex-col"
             >
-              <AppLogo name className = "m-2 pt-3" />
+              <AppLogo name className="m-2 pt-3" />
               {/* Header with module name */}
               <div className="h-16 flex items-center px-4 border-b border-sidebar-border">
                 <h2 className="text-lg font-medium text-sidebar-foreground">
@@ -358,8 +353,7 @@ const ModuleSidebar = () => {
     <>
       {isMobile ? (
         <Sheet open={isOpen} onOpenChange={closeSidebar}>
-        <SheetTitle hidden>
-        </SheetTitle>
+          <SheetTitle hidden></SheetTitle>
           <SheetContent
             side="left"
             className="p-0 w-[280px] bg-sidebar border-r border-sidebar-border"
@@ -367,9 +361,9 @@ const ModuleSidebar = () => {
             {sideBarcontent}
           </SheetContent>
         </Sheet>
-      ) : 
-      sideBarcontent
-      }
+      ) : (
+        sideBarcontent
+      )}
     </>
   );
 };

@@ -51,6 +51,7 @@
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-empty-interface": "off",
     "@typescript-eslint/no-empty-function": "off",
+    "react-refresh/only-export-components": "off",
     "no-console": ["warn", { "allow": ["warn", "error"] }]
   },
   "settings": {

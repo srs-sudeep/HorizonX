@@ -49,7 +49,7 @@ export const useAuthStore = create<AuthState>()(
             refreshToken,
             currentRole: user.currentRole || user.roles[0],
           });
-          
+
           return user;
         } catch (error) {
           console.error('Login failed:', error);
@@ -83,6 +83,10 @@ export const useAuthStore = create<AuthState>()(
 
       checkAuth: async () => {
         const { accessToken, refreshToken } = get();
+        if (!accessToken) {
+          set({ isAuthenticated: false, user: null });
+          return false;
+        }
 
         if (!refreshToken) {
           set({ isAuthenticated: false, user: null });
@@ -116,11 +120,11 @@ export const useAuthStore = create<AuthState>()(
 
       refreshTokens: async () => {
         const { refreshToken } = get();
-        
+
         if (!refreshToken) {
           return false;
         }
-        
+
         try {
           const tokens = await authApi.refreshToken(refreshToken);
           set({
@@ -137,14 +141,14 @@ export const useAuthStore = create<AuthState>()(
 
       setCurrentRole: async role => {
         const { user, accessToken } = get();
-        
+
         // Ensure the user has this role
         if (user && user.roles.includes(role) && accessToken) {
           try {
             // Call API to change role and get new tokens
-            const { accessToken: newAccessToken, refreshToken: newRefreshToken } = 
+            const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
               await authApi.changeRole(accessToken, role);
-            
+
             // Update both currentRole and user.currentRole to ensure consistency
             set({
               currentRole: role,
@@ -155,9 +159,6 @@ export const useAuthStore = create<AuthState>()(
                 currentRole: role,
               },
             });
-            
-            // Log for debugging
-            console.log(`Role set to: ${role}`);
           } catch (error) {
             console.error('Role change failed:', error);
           }

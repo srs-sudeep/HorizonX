@@ -12,7 +12,7 @@ export interface User {
 }
 
 // Initial mock data
-let users: User[] = [
+const users: User[] = [
   {
     id: '1',
     name: 'Admin User',

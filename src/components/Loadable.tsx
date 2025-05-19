@@ -12,8 +12,10 @@ const LoadingFallback = () => (
  * @param Component - The lazy-loaded component
  * @returns The component wrapped with Suspense
  */
-const Loadable = (Component: React.LazyExoticComponent<any>) => (props: any) => {
-  return (
+const Loadable = <P extends object>(
+  Component: React.LazyExoticComponent<React.ComponentType<P>>
+) => {
+  return (props: P) => (
     <Suspense fallback={<LoadingFallback />}>
       <Component {...props} />
     </Suspense>

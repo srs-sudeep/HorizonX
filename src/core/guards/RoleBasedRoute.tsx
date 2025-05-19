@@ -22,7 +22,6 @@ const RoleBasedRoute = ({
   }
 
   if (!hasAccess) {
-    console.log(hasAccess)
     return <Navigate to={fallbackPath} state={{ from: location.pathname }} replace />;
   }
 

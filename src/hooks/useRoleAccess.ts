@@ -34,16 +34,14 @@ export function useRoleAccess(path: string): UseRoleAccessResult {
     }
 
     // Handle role change navigation
-    if (previousRoleRef.current && 
-        currentRole && 
-        previousRoleRef.current !== currentRole) {      
+    if (previousRoleRef.current && currentRole && previousRoleRef.current !== currentRole) {
       // Set transition flag to true
       isRoleTransitionRef.current = true;
-      
+
       // Navigate to the appropriate dashboard for the new role
       const dashboardLink = getDashboardLink(currentRole);
       navigate(dashboardLink, { replace: true });
-      
+
       // Update previous role
       previousRoleRef.current = currentRole;
       return;
@@ -64,7 +62,7 @@ export function useRoleAccess(path: string): UseRoleAccessResult {
           if (previousRoleRef.current !== currentRole) {
             previousRoleRef.current = currentRole;
           }
-          
+
           // Skip permission check if we're in a role transition
           if (isRoleTransitionRef.current) {
             isRoleTransitionRef.current = false;
@@ -72,13 +70,14 @@ export function useRoleAccess(path: string): UseRoleAccessResult {
             setLoading(false);
             return;
           }
-          
+
           const permissions = await fetchRoutePermissions(currentRole);
           setRoutePermissions(permissions);
-          
+
           // Check if current path is allowed for current role
           const routePermission = permissions.find(p => p.path === path);
-          const hasPermission = !!routePermission && routePermission.allowedRoles.includes(currentRole);
+          const hasPermission =
+            !!routePermission && routePermission.allowedRoles.includes(currentRole);
           setHasAccess(hasPermission);
         }
       } catch (error) {
@@ -91,7 +90,7 @@ export function useRoleAccess(path: string): UseRoleAccessResult {
 
     setLoading(true);
     checkAccess();
-  }, [currentRole, roleToSet, user, path, navigate]);
+  }, [currentRole, roleToSet, user, path, navigate, checkAuth, setCurrentRole]);
 
   // Function to switch to an allowed role for a given path
   const switchToAllowedRole = async (targetPath: string): Promise<boolean> => {
@@ -107,7 +106,7 @@ export function useRoleAccess(path: string): UseRoleAccessResult {
     // Find a permission that matches the target path
     const permission = allPermissions.find(p => p.path === targetPath);
     if (!permission) {
-      console.log(`No permission found for path: ${targetPath}`);
+      console.error(`No permission found for path: ${targetPath}`);
       return false;
     }
 
@@ -117,12 +116,11 @@ export function useRoleAccess(path: string): UseRoleAccessResult {
     ) as UserRole | undefined;
 
     if (allowedRole) {
-      console.log(`Switching to role: ${allowedRole} for path: ${targetPath}`);
       await setCurrentRole(allowedRole);
       return true;
     }
 
-    console.log(`No allowed role found for path: ${targetPath}`);
+    console.error(`No allowed role found for path: ${targetPath}`);
     return false;
   };
 
