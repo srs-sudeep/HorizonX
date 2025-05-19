@@ -1,7 +1,7 @@
 import { fetchRoutePermissions, type RouteAccess } from '@/api/routesApi';
 import { getDashboardLink } from '@/lib/redirect';
 import { useAuthStore, type UserRole } from '@/store/useAuthStore';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface UseRoleAccessResult {
@@ -20,11 +20,35 @@ export function useRoleAccess(path: string): UseRoleAccessResult {
 
   // Flag to defer role setting
   const [roleToSet, setRoleToSet] = useState<UserRole | null>(null);
+  // Track previous role to detect changes
+  const previousRoleRef = useRef<UserRole | null>(null);
+  // Flag to skip permission check during role transition
+  const isRoleTransitionRef = useRef(false);
 
   useEffect(() => {
+    // Handle role setting first
     if (roleToSet) {
       setCurrentRole(roleToSet);
       setRoleToSet(null);
+      return;
+    }
+
+    // Handle role change navigation
+    if (previousRoleRef.current && 
+        currentRole && 
+        previousRoleRef.current !== currentRole) {
+      console.log(`Role changed from ${previousRoleRef.current} to ${currentRole}`);
+      
+      // Set transition flag to true
+      isRoleTransitionRef.current = true;
+      
+      // Navigate to the appropriate dashboard for the new role
+      const dashboardLink = getDashboardLink(currentRole);
+      console.log(`Navigating to ${dashboardLink}`);
+      navigate(dashboardLink, { replace: true });
+      
+      // Update previous role
+      previousRoleRef.current = currentRole;
       return;
     }
 
@@ -32,18 +56,35 @@ export function useRoleAccess(path: string): UseRoleAccessResult {
       try {
         await checkAuth();
 
-        // Delay role set to next render cycle
+        // Delay role set to next render cycle if no current role
         if (!currentRole && user?.roles?.length) {
           setRoleToSet(user.roles[0]);
           return;
         }
 
         if (currentRole) {
+          // Initialize previous role if not set
+          if (previousRoleRef.current !== currentRole) {
+            previousRoleRef.current = currentRole;
+          }
+          
+          // Skip permission check if we're in a role transition
+          if (isRoleTransitionRef.current) {
+            console.log('Skipping permission check during role transition');
+            isRoleTransitionRef.current = false;
+            setHasAccess(true);
+            setLoading(false);
+            return;
+          }
+          
           const permissions = await fetchRoutePermissions(currentRole);
           setRoutePermissions(permissions);
-
+          
+          // Check if current path is allowed for current role
           const routePermission = permissions.find(p => p.path === path);
-          setHasAccess(!!routePermission && routePermission.allowedRoles.includes(currentRole));
+          const hasPermission = !!routePermission && routePermission.allowedRoles.includes(currentRole);
+          console.log(`Checking access for path: ${path}, role: ${currentRole}, hasAccess: ${hasPermission}`);
+          setHasAccess(hasPermission);
         }
       } catch (error) {
         console.error('Role access check failed:', error);
@@ -55,25 +96,38 @@ export function useRoleAccess(path: string): UseRoleAccessResult {
 
     setLoading(true);
     checkAccess();
-  }, [currentRole, roleToSet, user, path]);
+  }, [currentRole, roleToSet, user, path, navigate]);
 
   // Function to switch to an allowed role for a given path
   const switchToAllowedRole = async (targetPath: string): Promise<boolean> => {
     if (!user?.roles?.length) return false;
 
-    const permission = routePermissions.find(p => p.path === targetPath);
-    if (!permission) return false;
+    // Get permissions for all user roles to find which one has access
+    const allPermissions = [];
+    for (const role of user.roles) {
+      const rolePermissions = await fetchRoutePermissions(role as UserRole);
+      allPermissions.push(...rolePermissions);
+    }
 
+    // Find a permission that matches the target path
+    const permission = allPermissions.find(p => p.path === targetPath);
+    if (!permission) {
+      console.log(`No permission found for path: ${targetPath}`);
+      return false;
+    }
+
+    // Find a role that has access to this path
     const allowedRole = user.roles.find(role =>
       permission.allowedRoles.includes(role as UserRole)
     ) as UserRole | undefined;
 
     if (allowedRole) {
-      setCurrentRole(allowedRole);
-      navigate(getDashboardLink(allowedRole), { replace: true });
+      console.log(`Switching to role: ${allowedRole} for path: ${targetPath}`);
+      await setCurrentRole(allowedRole);
       return true;
     }
 
+    console.log(`No allowed role found for path: ${targetPath}`);
     return false;
   };
 

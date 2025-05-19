@@ -6,6 +6,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { useAuthStore } from '@/store/useAuthStore';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { authApi } from '@/api/authApi';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -31,7 +32,9 @@ const LoginPage: React.FC = () => {
     setIsLoading(true);
 
     try {
+      // Call login directly from useAuthStore which will handle the API call
       await login(email, password);
+      
       toast({
         title: 'Success',
         description: 'You have successfully logged in',

@@ -37,18 +37,46 @@ import { useAuthStore, type UserRole } from '@/store';
 import { ThemeSwitcher } from '@/theme';
 import { notifications } from '@/types';
 import { Bell, ChevronDown, HelpCircle, LogOut, Mail, Menu, Search, Settings, User } from 'lucide-react';
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useToast } from '@/components/ui/use-toast';
+
 const Navbar = () => {
   const { user, logout, setCurrentRole } = useAuthStore();
   const navigate = useNavigate();
+    const { toast } = useToast();
   const location = useLocation();
   const isMobile = useIsMobile();
   const { toggleSidebar } = useSidebar();
+  const [isChangingRole, setIsChangingRole] = useState(false);
 
-  const handleRoleChange = (role: UserRole) => {
-    setCurrentRole(role);
-    navigate(getDashboardLink(role), { replace: true });
+  const handleRoleChange = async (role: UserRole) => {
+    if (user?.currentRole === role) return; // Skip if already on this role
+    
+    try {
+      setIsChangingRole(true);
+      
+      // Call setCurrentRole from auth store which handles the API call
+      await setCurrentRole(role);
+      
+      // Navigate to the appropriate dashboard for the new role
+      const link = getDashboardLink(role);
+      console.log(link);
+    //   setTimeout(() => {
+    //     navigate(link, { replace: true });
+    //   }, 1000);
+    //   navigate(getDashboardLink(role), { replace: true });
+      
+    } catch (error) {
+      console.error('Failed to change role:', error);
+      toast({
+        title: 'Role Change Failed',
+        description: 'Unable to switch roles. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsChangingRole(false);
+    }
   };
 
   // Get current page name from path
@@ -134,7 +162,11 @@ const Navbar = () => {
                           size="sm"
                           className="w-full capitalize"
                           onClick={() => handleRoleChange(role)}
+                          disabled={isChangingRole}
                         >
+                          {role === user.currentRole && isChangingRole ? (
+                            <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                          ) : null}
                           {role}
                         </Button>
                       ))}
@@ -301,7 +333,11 @@ const Navbar = () => {
                             className={
                               role === user.currentRole ? 'bg-primary/10 text-primary' : ''
                             }
+                            disabled={isChangingRole}
                           >
+                            {role === user.currentRole && isChangingRole ? (
+                              <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                            ) : null}
                             <span className="capitalize">{role}</span>
                             {role === user.currentRole && (
                               <span className="ml-auto h-1.5 w-1.5 rounded-full bg-primary"></span>

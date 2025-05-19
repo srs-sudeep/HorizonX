@@ -10,21 +10,23 @@ export interface User {
   email: string;
   roles: UserRole[];
   avatar?: string;
-  currentRole?: string;
+  currentRole?: UserRole;
 }
 
 interface AuthState {
   isAuthenticated: boolean;
   user: User | null;
-  token: string | null;
+  accessToken: string | null;
+  refreshToken: string | null;
   currentRole: UserRole | null;
 
   // Actions
   login: (email: string, password: string) => Promise<User | null>;
-  loginWithUser: (user: User) => void;
+  loginWithUser: (user: User, accessToken: string, refreshToken: string) => void;
   logout: () => void;
   checkAuth: () => Promise<boolean>;
-  setCurrentRole: (role: UserRole) => void;
+  setCurrentRole: (role: UserRole) => Promise<void>;
+  refreshTokens: () => Promise<boolean>;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -32,44 +34,37 @@ export const useAuthStore = create<AuthState>()(
     (set, get) => ({
       isAuthenticated: false,
       user: null,
-      token: null,
+      accessToken: null,
+      refreshToken: null,
       currentRole: null,
 
       login: async (email, password) => {
         try {
-          const { user } = await authApi.login(email, password);
-
-          // Set the current role to the first role
-          const currentRole = user.roles[0];
-
-          // Update user with currentRole for consistency
-          const updatedUser = {
-            ...user,
-            currentRole,
-          };
+          const { user, accessToken, refreshToken } = await authApi.login(email, password);
 
           set({
             isAuthenticated: true,
-            user: updatedUser,
-            token: 'mock-jwt-token',
-            currentRole,
+            user,
+            accessToken,
+            refreshToken,
+            currentRole: user.currentRole || user.roles[0],
           });
           
-          // Return the user for convenience
-          return updatedUser;
+          return user;
         } catch (error) {
           console.error('Login failed:', error);
           throw new Error('Invalid credentials');
         }
       },
 
-      loginWithUser: user => {
-        const currentRole = user.roles[0];
+      loginWithUser: (user, accessToken, refreshToken) => {
+        const currentRole = user.currentRole || user.roles[0];
 
         set({
           isAuthenticated: true,
           user,
-          token: 'mock-jwt-token',
+          accessToken,
+          refreshToken,
           currentRole,
         });
       },
@@ -79,16 +74,17 @@ export const useAuthStore = create<AuthState>()(
           set({
             isAuthenticated: false,
             user: null,
-            token: null,
+            accessToken: null,
+            refreshToken: null,
             currentRole: null,
           });
         });
       },
 
       checkAuth: async () => {
-        const { token } = get();
+        const { accessToken, refreshToken } = get();
 
-        if (!token) {
+        if (!refreshToken) {
           set({ isAuthenticated: false, user: null });
           return false;
         }
@@ -101,38 +97,72 @@ export const useAuthStore = create<AuthState>()(
             set({
               isAuthenticated: true,
               user,
-              currentRole: user.roles[0],
+              currentRole: user.currentRole || user.roles[0],
+              // Note: getCurrentUser already refreshes tokens if needed
+              accessToken: localStorage.getItem('auth-access-token'),
+              refreshToken: localStorage.getItem('auth-refresh-token'),
             });
             return true;
           } else {
-            set({ isAuthenticated: false, user: null, token: null });
+            set({ isAuthenticated: false, user: null, accessToken: null, refreshToken: null });
             return false;
           }
         } catch (error) {
           console.error('Auth check failed:', error);
-          set({ isAuthenticated: false, user: null, token: null });
+          set({ isAuthenticated: false, user: null, accessToken: null, refreshToken: null });
           return false;
         }
       },
 
-      setCurrentRole: role => {
-        const { user } = get();
+      refreshTokens: async () => {
+        const { refreshToken } = get();
+        
+        if (!refreshToken) {
+          return false;
+        }
+        
+        try {
+          const tokens = await authApi.refreshToken(refreshToken);
+          set({
+            accessToken: tokens.accessToken,
+            refreshToken: tokens.refreshToken,
+          });
+          return true;
+        } catch (error) {
+          console.error('Token refresh failed:', error);
+          set({ isAuthenticated: false, user: null, accessToken: null, refreshToken: null });
+          return false;
+        }
+      },
+
+      setCurrentRole: async role => {
+        const { user, accessToken } = get();
         
         // Ensure the user has this role
-        if (user && user.roles.includes(role)) {
-          // Update both currentRole and user.currentRole to ensure consistency
-          set({
-            currentRole: role,
-            user: {
-              ...user,
+        if (user && user.roles.includes(role) && accessToken) {
+          try {
+            // Call API to change role and get new tokens
+            const { accessToken: newAccessToken, refreshToken: newRefreshToken } = 
+              await authApi.changeRole(accessToken, role);
+            
+            // Update both currentRole and user.currentRole to ensure consistency
+            set({
               currentRole: role,
-            },
-          });
-          
-          // Log for debugging
-          console.log(`Role set to: ${role}`);
+              accessToken: newAccessToken,
+              refreshToken: newRefreshToken,
+              user: {
+                ...user,
+                currentRole: role,
+              },
+            });
+            
+            // Log for debugging
+            console.log(`Role set to: ${role}`);
+          } catch (error) {
+            console.error('Role change failed:', error);
+          }
         } else {
-          console.error('User does not have the specified role');
+          console.error('User does not have the specified role or no access token');
         }
       },
     }),
@@ -141,7 +171,8 @@ export const useAuthStore = create<AuthState>()(
       partialize: state => ({
         isAuthenticated: state.isAuthenticated,
         user: state.user,
-        token: state.token,
+        accessToken: state.accessToken,
+        refreshToken: state.refreshToken,
         currentRole: state.currentRole,
       }),
     }
