@@ -5,6 +5,7 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
 import react from 'eslint-plugin-react';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
+import unusedImports from 'eslint-plugin-unused-imports';
 
 export default tseslint.config(
   {
@@ -26,6 +27,7 @@ export default tseslint.config(
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
+      parser: tseslint.parser,
       ecmaVersion: 2021,
       globals: {
         ...globals.browser,
@@ -44,16 +46,28 @@ export default tseslint.config(
       'react-refresh': reactRefresh,
       '@typescript-eslint': tseslint.plugin,
       'jsx-a11y': jsxA11y,
+      'unused-imports': unusedImports,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
+      'react-hooks/exhaustive-deps': 'off',
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {
-          argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
+          argsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
+      ],
+      'unused-imports/no-unused-vars': [
+        'warn',
+        {
+          varsIgnorePattern: '^_',
+          argsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
         },
       ],
       '@typescript-eslint/no-explicit-any': 'off',
@@ -62,6 +76,7 @@ export default tseslint.config(
       '@typescript-eslint/no-empty-interface': 'off',
       '@typescript-eslint/no-empty-function': 'off',
       '@typescript-eslint/no-empty-object-type': 'off',
+      '@typescript-eslint/no-unused-expressions': 'off',
       'no-console': ['warn', { allow: ['warn', 'error'] }],
     },
     settings: {

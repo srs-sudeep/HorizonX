@@ -347,6 +347,7 @@ const SidebarManagement = () => {
   };
 
   // Get potential parent submodules for a given module
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, unused-imports/no-unused-vars
   const getPotentialParents = (moduleId: string): SidebarSubModuleItem[] => {
     return subModules.filter(
       sm =>

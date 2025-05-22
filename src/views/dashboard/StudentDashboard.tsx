@@ -1,4 +1,3 @@
-import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BookOpen, Calendar, Clock, FileText } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';

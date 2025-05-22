@@ -11,7 +11,7 @@ interface StatCardProps {
 
 const StatCard = ({ icon, title, value, className, iconColor }: StatCardProps) => {
   return (
-    <div className={cn('stat-card', className)}>
+    <div className={cn('stat-card border p-4 ', className)}>
       <div className="flex items-start justify-between">
         <p className="stat-title">{title}</p>
         <div className={cn('p-2 rounded-md', iconColor || 'bg-blue-100')}>{icon}</div>

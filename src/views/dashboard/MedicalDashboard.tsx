@@ -1,4 +1,3 @@
-import React from 'react';
 import { Users, Calendar, FileText, Heart } from 'lucide-react';
 import StatCard from '@/components/dashboard/StatCard';
 
