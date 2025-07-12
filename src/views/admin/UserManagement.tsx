@@ -21,16 +21,10 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import { UserRole } from '@/store/useAuthStore';
-import { Pencil, Search, Shield, Trash2, UserPlus } from 'lucide-react';
+import { FilterConfig } from '@/types/filterType.types';
+import { HorizonXTable } from '@/components/horizonXTable';
+import { Pencil, Shield, Trash2, UserPlus } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -39,6 +33,8 @@ const UserManagement = () => {
   const [roles, setRoles] = useState<UserRole[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string[]>([]);
+  const [rolesFilter, setRolesFilter] = useState<string[]>([]);
 
   // User dialog state
   const [isUserDialogOpen, setIsUserDialogOpen] = useState(false);
@@ -72,12 +68,112 @@ const UserManagement = () => {
     loadData();
   }, []);
 
-  // Filter users based on search query
-  const filteredUsers = users.filter(
-    user =>
-      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Get initials for avatar fallback
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(part => part[0])
+      .join('')
+      .toUpperCase()
+      .substring(0, 2);
+  };
+
+  // Filter configuration for HorizonXTable
+  const filterConfig: FilterConfig[] = [
+    {
+      column: 'isActive',
+      type: 'dropdown',
+      options: ['Active', 'Inactive'],
+      value: statusFilter.length > 0 ? statusFilter[0] : undefined,
+      onChange: (val: string) => setStatusFilter(val ? [val] : []),
+    },
+    {
+      column: 'roles',
+      type: 'multi-select',
+      options: roles,
+      value: rolesFilter,
+      onChange: (val: string[]) => setRolesFilter(val),
+    },
+  ];
+
+  // Custom render functions for table columns
+  const customRender = {
+    name: (value: string, row: Record<string, any>) => (
+      <div className="flex items-center space-x-3">
+        <Avatar>
+          <AvatarImage src={row.avatar} />
+          <AvatarFallback>{getInitials(value)}</AvatarFallback>
+        </Avatar>
+        <div>
+          <p className="font-medium">{value}</p>
+          <p className="text-xs text-muted-foreground">
+            Created {new Date(row.createdAt).toLocaleDateString()}
+          </p>
+        </div>
+      </div>
+    ),
+    roles: (value: UserRole[]) => (
+      <div className="flex flex-wrap gap-1">
+        {value.map(role => (
+          <Badge key={role} variant="outline" className="capitalize">
+            {role}
+          </Badge>
+        ))}
+      </div>
+    ),
+    isActive: (value: boolean) => (
+      <span
+        className={`px-2 py-1 rounded-full text-xs font-medium ${
+          value ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+        }`}
+      >
+        {value ? 'Active' : 'Inactive'}
+      </span>
+    ),
+    actions: (value: any, row: Record<string, any>) => (
+      <div className="flex items-center gap-1">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={(e) => {
+            e.stopPropagation();
+            openRoleDialog(row as User);
+          }}
+          title="Manage Roles"
+        >
+          <Shield className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={(e) => {
+            e.stopPropagation();
+            openUserDialog(row as User);
+          }}
+          title="Edit User"
+        >
+          <Pencil className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={(e) => {
+            e.stopPropagation();
+            openUserDeleteDialog(row as User);
+          }}
+          title="Delete User"
+        >
+          <Trash2 className="h-4 w-4" />
+        </Button>
+      </div>
+    ),
+  };
+
+  // Transform users data to include actions column
+  const tableData = users.map(user => ({
+    ...user,
+    actions: null, // Will be rendered by customRender
+  }));
 
   // User form handlers
   const handleUserInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -215,124 +311,26 @@ const UserManagement = () => {
     }
   };
 
-  // Get initials for avatar fallback
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map(part => part[0])
-      .join('')
-      .toUpperCase()
-      .substring(0, 2);
-  };
-
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">User Management</h1>
-        <Button onClick={() => openUserDialog()}>
-          <UserPlus className="mr-2 h-4 w-4" />
-          Add User
-        </Button>
-      </div>
-
-      <div className="flex items-center space-x-2">
-        <Search className="h-4 w-4 text-muted-foreground" />
-        <Input
-          placeholder="Search users..."
-          value={searchQuery}
-          onChange={e => setSearchQuery(e.target.value)}
-          className="max-w-sm"
-        />
-      </div>
-
-      {isLoading ? (
-        <div className="flex justify-center p-8">Loading...</div>
-      ) : (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>User</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Roles</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredUsers.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={5} className="text-center">
-                  No users found
-                </TableCell>
-              </TableRow>
-            ) : (
-              filteredUsers.map(user => (
-                <TableRow key={user.id}>
-                  <TableCell>
-                    <div className="flex items-center space-x-3">
-                      <Avatar>
-                        <AvatarImage src={user.avatar} />
-                        <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="font-medium">{user.name}</p>
-                        <p className="text-xs text-muted-foreground">
-                          Created {new Date(user.createdAt).toLocaleDateString()}
-                        </p>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>
-                    <div className="flex flex-wrap gap-1">
-                      {user.roles.map(role => (
-                        <Badge key={role} variant="outline" className="capitalize">
-                          {role}
-                        </Badge>
-                      ))}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs ${
-                        user.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                      }`}
-                    >
-                      {user.isActive ? 'Active' : 'Inactive'}
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => openRoleDialog(user)}
-                      title="Manage Roles"
-                    >
-                      <Shield className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => openUserDialog(user)}
-                      title="Edit User"
-                    >
-                      <Pencil className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => openUserDeleteDialog(user)}
-                      title="Delete User"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      )}
+      <HorizonXTable
+        data={tableData}
+        customRender={customRender}
+        isLoading={isLoading}
+        filterConfig={filterConfig}
+        tableHeading="User Management"
+        headerActions={
+          <Button onClick={() => openUserDialog()}>
+            <UserPlus className="mr-2 h-4 w-4" />
+            Add User
+          </Button>
+        }
+        onRowClick={(row) => {
+          // Optional: Handle row click if needed
+          console.log('Row clicked:', row);
+        }}
+        className="w-full"
+      />
 
       {/* User Dialog */}
       <Dialog open={isUserDialogOpen} onOpenChange={setIsUserDialogOpen}>
