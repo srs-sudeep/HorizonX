@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components';
 import { cn } from '@/lib/utils';
 
 interface UserAvatarProps {
@@ -9,7 +9,7 @@ interface UserAvatarProps {
   showInfo?: boolean;
 }
 
-const UserAvatar = ({ name, role, imgUrl, className, showInfo = true }: UserAvatarProps) => {
+export const UserAvatar = ({ name, role, imgUrl, className, showInfo = true }: UserAvatarProps) => {
   const initials = name
     .split(' ')
     .map(part => part[0])
@@ -32,5 +32,3 @@ const UserAvatar = ({ name, role, imgUrl, className, showInfo = true }: UserAvat
     </div>
   );
 };
-
-export default UserAvatar;

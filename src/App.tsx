@@ -1,32 +1,47 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter, BrowserRouter } from 'react-router-dom';
 import Router from '@/routes';
-import { Toaster } from '@/components/ui/toaster';
 import { Toaster as Sonner } from '@/components/ui/sonner';
-import { TooltipProvider } from '@/components/ui/tooltip';
+import { TooltipProvider, Toaster, TypographyProvider } from '@/components';
 import { ThemeProvider } from '@/theme';
+import { HelmetProvider } from 'react-helmet-async';
+
+// Extend the Window interface to include 'electron'
+declare global {
+  interface Window {
+    electron?: unknown;
+  }
+}
 
 function App() {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
         refetchOnWindowFocus: false,
-        retry: 1,
+        retry: 0,
       },
     },
   });
 
+  // Check if running in Electron
+  const isElectron = import.meta.env.VITE_IS_ELECTRON === 'true';
+  const RouterComponent = isElectron ? HashRouter : BrowserRouter;
+
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Router />
-          </BrowserRouter>
-        </TooltipProvider>
-      </ThemeProvider>
+      <HelmetProvider>
+        <ThemeProvider>
+          <TypographyProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <RouterComponent>
+                <Router />
+              </RouterComponent>
+            </TooltipProvider>
+          </TypographyProvider>
+        </ThemeProvider>
+      </HelmetProvider>
     </QueryClientProvider>
   );
 }

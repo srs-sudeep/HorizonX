@@ -1,88 +1,49 @@
-import { Button } from '@/components/ui/button';
-import { ArrowRight, Github } from 'lucide-react';
-
+import { logos } from '@/assets';
 export const Hero = () => {
   return (
-    <section className="relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24">
-      <div className="container relative z-10">
-        <div className="blur-container">
-          <div className="max-w-3xl mx-auto text-center mb-10 relative z-10">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight leading-tight gradient-text">
-              Supercharge Your React & FastAPI Development
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              HorizonX is a high-performance, full-stack boilerplate that combines React with
-              FastAPI, enabling rapid development of scalable microservice applications.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button size="lg" className="gap-2">
-                Get Started <ArrowRight size={18} />
-              </Button>
-              <Button size="lg" variant="outline" className="gap-2">
-                <Github size={18} /> Star on GitHub
-              </Button>
-            </div>
+    <div className="min-h-screen bg-gradient-to-br from-white via-slate-100 to-white text-gray-900 dark:from-black dark:via-gray-900 dark:to-black dark:text-white">
+      <div className="relative w-full h-screen overflow-hidden">
+        {/* SVG Background Images */}
+        <img
+          src={logos.short.light}
+          alt="Seamless Background"
+          className="absolute inset-0 w-full h-full object-cover z-0 opacity-20 dark:hidden"
+        />
+        <img
+          src={logos.short.dark}
+          alt="Seamless Background"
+          className="absolute inset-0 w-full h-full object-cover z-0 opacity-25 hidden dark:block"
+        />
 
-            <div className="mt-8 flex items-center justify-center text-sm text-muted-foreground">
-              <div className="flex -space-x-2 mr-3">
-                {[...Array(5)].map((_, i) => (
-                  <div
-                    key={i}
-                    className={`w-8 h-8 rounded-full border-2 border-background bg-horizonx-${200 + i * 100}`}
-                  ></div>
-                ))}
-              </div>
-              <span>
-                <strong className="font-medium text-foreground">2,500+</strong> developers already
-                using HorizonX
-              </span>
-            </div>
-          </div>
-        </div>
+        {/* Subtle Pattern */}
+        <div className="absolute inset-0 opacity-10 z-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23000000%22%20fill-opacity%3D%220.05%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] dark:bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.03%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] animate-pulse" />
 
-        {/* Code preview */}
-        <div className="mx-auto max-w-4xl mt-12 bg-black/80 backdrop-blur-md rounded-xl border border-horizonx-700/20 shadow-lg overflow-hidden">
-          <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
-            <div className="w-3 h-3 rounded-full bg-red-500"></div>
-            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-            <div className="w-3 h-3 rounded-full bg-green-500"></div>
-            <span className="text-white/70 text-sm">example.tsx</span>
-          </div>
-          <pre className="p-4 text-sm overflow-x-auto text-green-300">
-            <code>{`// HorizonX makes it simple to integrate React with FastAPI
-import { useQuery } from '@tanstack/react-query';
-import { create } from 'zustand';
+        {/* Overlay */}
+        <div className="absolute inset-0 z-10 bg-gradient-to-b from-white/80 via-white/40 to-white/90 dark:from-black/90 dark:via-black/40 dark:to-black/90" />
 
-// Define your store with Zustand
-const useStore = create((set) => ({
-  user: null,
-  setUser: (user) => set({ user }),
-}));
+        {/* Floating Elements */}
 
-// Use TanStack Query for data fetching
-export const UserProfile = () => {
-  const { user, setUser } = useStore();
-  
-  const { data, isLoading } = useQuery({
-    queryKey: ['user'],
-    queryFn: async () => {
-      const res = await fetch('/api/user');
-      return res.json();
-    },
-  });
+        <div className="absolute top-20 left-10 w-20 h-20 rounded-full blur-xl animate-pulse z-10 bg-[#e3eafc]/40 dark:bg-[#2d3c6b]/30" />
+        <div className="absolute bottom-32 right-16 w-32 h-32 rounded-full blur-xl animate-pulse delay-700 z-10 bg-[#eee6fa]/40 dark:bg-[#3e2d60]/30" />
+        <div className="absolute top-1/2 left-1/4 w-16 h-16 rounded-full blur-xl animate-pulse delay-1000 z-10 bg-[#e7e9f7]/40 dark:bg-[#2e314f]/30" />
 
-  return (
-    <div className="p-6 rounded-lg bg-white shadow-md">
-      <h2 className="text-2xl font-bold">Welcome, {data?.name}</h2>
-      {/* Your component content */}
-    </div>
-  );
-}`}</code>
-          </pre>
+        {/* Main Content */}
+        <div className="relative z-20 flex flex-col items-center justify-center h-full text-center px-4">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-tight mb-6 animate-slide-up">
+            <span className="bg-primary bg-clip-text text-transparent">HorizonX</span>
+          </h1>
+          <p className="text-xl md:text-2xl lg:text-3xl max-w-4xl mb-12 leading-relaxed animate-slide-up delay-200 text-muted-foreground">
+            One Platform. Every Service.{' '}
+            <span className="font-semibold text-primary">Zero Hassle.</span>
+          </p>
+          <a
+            href="/signup"
+            className="inline-block px-8 py-4 rounded-xl bg-primary text-primary-foreground text-xl font-bold shadow-lg hover:bg-primary/90 transition-all duration-200 animate-slide-up delay-300"
+          >
+            Sign up for free
+          </a>
         </div>
       </div>
-
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-horizonx-400/20 via-background to-background"></div>
-    </section>
+    </div>
   );
 };

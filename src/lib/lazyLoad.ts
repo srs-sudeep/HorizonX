@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import Loadable from '@/components/Loadable';
+import { Loadable } from '@/components';
 
 /**
  * Lazy loads a component with Suspense handling

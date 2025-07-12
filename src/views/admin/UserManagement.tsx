@@ -1,512 +1,324 @@
-import {
-  assignRole,
-  createUser,
-  deleteUser,
-  getAllRoles,
-  getUsers,
-  removeRole,
-  updateUser,
-  User,
-} from '@/api/mockApi/users';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import { UserRole } from '@/store/useAuthStore';
-import { FilterConfig } from '@/types/filterType.types';
-import { FieldType } from '@/types/fieldType.types';
-import { HorizonXTable } from '@/components/horizonXTable';
-import { DynamicForm } from '@/components/HorizonXForm';
-import { Pencil, Shield, Trash2, UserPlus } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
-import { toast } from 'sonner';
+import { HelmetWrapper, Sheet, SheetContent, SheetTitle, DynamicTable, toast } from '@/components';
+import { useUsers, useAssignRoleToUser, useRemoveRoleFromUser, useUserFilter } from '@/hooks';
+import { Loader2 } from 'lucide-react';
+import { useState, useEffect, useMemo } from 'react';
+import type { FilterConfig, UserAPI, UserRoleAPI } from '@/types';
 
 const UserManagement = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [roles, setRoles] = useState<UserRole[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [statusFilter, setStatusFilter] = useState<string[]>([]);
-  const [rolesFilter, setRolesFilter] = useState<string[]>([]);
-
-  // User dialog state
-  const [isUserDialogOpen, setIsUserDialogOpen] = useState(false);
-  const [isUserDeleteDialogOpen, setIsUserDeleteDialogOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [userFormData, setUserFormData] = useState<Partial<User>>({
-    name: '',
-    email: '',
-    roles: [],
-    isActive: true,
+  const [filters, setFilters] = useState<{ status?: boolean; roles?: number[] }>({});
+  const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const { data: filterOptions } = useUserFilter();
+  const { data, isPending: usersLoading } = useUsers({
+    ...filters,
+    search,
+    limit,
+    offset: (page - 1) * limit,
   });
+  const users: UserAPI[] = Array.isArray(data)
+    ? data
+    : data && Array.isArray((data as { users?: UserAPI[] }).users)
+      ? (data as { users: UserAPI[] }).users
+      : [];
+  const totalCount = data?.total_count ?? 0;
+  const assignRoleToUser = useAssignRoleToUser();
+  const removeRoleFromUser = useRemoveRoleFromUser();
 
-  // Role dialog state
-  const [isRoleDialogOpen, setIsRoleDialogOpen] = useState(false);
+  const [editUser, setEditUser] = useState<UserAPI | null>(null);
 
-  // Load data
+  // Filter state for filterConfig
+  const [selectedRoleNames, setSelectedRoleNames] = useState<string[]>([]);
+  const [selectedStatusLabel, setSelectedStatusLabel] = useState<string | undefined>(undefined);
+
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        const [usersData, rolesData] = await Promise.all([getUsers(), getAllRoles()]);
-        setUsers(usersData);
-        setRoles(rolesData);
-      } catch (error) {
-        toast.error('Failed to load data');
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    if (filterOptions?.roles) {
+      setSelectedRoleNames(prev =>
+        prev.filter(roleName => filterOptions.roles.some(r => r.name === roleName))
+      );
+    }
+    if (filterOptions?.status) {
+      setSelectedStatusLabel(prev =>
+        filterOptions.status.some(s => s.label === prev) ? prev : undefined
+      );
+    }
+  }, [filterOptions]);
 
-    loadData();
-  }, []);
+  useEffect(() => {
+    if (!editUser) return;
+    const updated = users.find(u => u.ldapid === editUser.ldapid);
+    if (updated) setEditUser(updated);
+  }, [users, editUser?.ldapid]);
 
-  // Get initials for avatar fallback
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map(part => part[0])
-      .join('')
-      .toUpperCase()
-      .substring(0, 2);
-  };
+  const getTableData = (users: UserAPI[]) =>
+    users.map(user => ({
+      Name: user.name,
+      'Ldap Id': user.ldapid,
+      'Id Number': user.idNumber,
+      Active: user.is_active,
+      Roles: user.roles
+        .filter(r => r.isAssigned)
+        .map(role => ({
+          label: role.name,
+          value: role.role_id,
+        })),
+      _row: user,
+    }));
 
-  // User form schema
-  const userFormSchema: FieldType[] = [
-    {
-      name: 'name',
-      label: 'Full Name',
-      type: 'text',
-      required: true,
-      placeholder: 'Enter full name',
-      columns: 1,
-    },
-    {
-      name: 'email',
-      label: 'Email Address',
-      type: 'email',
-      required: true,
-      placeholder: 'Enter email address',
-      columns: 1,
-    },
-    {
-      name: 'avatar',
-      label: 'Avatar URL',
-      type: 'url',
-      required: false,
-      placeholder: 'https://example.com/avatar.jpg',
-      columns: 2,
-    },
-    {
-      name: 'roles',
-      label: 'User Roles',
-      type: 'select',
-      multiSelect: true,
-      required: false,
-      options: roles.map(role => ({ value: role, label: role })),
-      columns: 1,
-    },
-    {
-      name: 'isActive',
-      label: 'Account Status',
-      type: 'toggle',
-      required: false,
-      columns: 1,
-    },
-  ];
+  // FilterConfig with value and onChange for each filter
+  const filterConfig: FilterConfig[] = useMemo(
+    () => [
+      {
+        column: 'Active',
+        type: 'dropdown',
+        options: filterOptions?.status?.map(s => s.label) ?? [],
+        value: selectedStatusLabel,
+        onChange: (val: string | undefined) => {
+          setSelectedStatusLabel(val);
+          const statusValue = filterOptions?.status?.find(s => s.label === val)?.value;
+          setFilters(f => ({ ...f, status: statusValue }));
+        },
+      },
+      {
+        column: 'Roles',
+        type: 'multi-select',
+        options: filterOptions?.roles?.map(r => r.name) ?? [],
+        value: selectedRoleNames,
+        onChange: (val: string[]) => {
+          setSelectedRoleNames(val);
+          const roles = val
+            .map(roleName => filterOptions?.roles?.find(r => r.name === roleName)?.role_id)
+            .filter((id): id is number => typeof id === 'number');
+          setFilters(f => ({ ...f, roles: roles.length ? roles : undefined }));
+        },
+      },
+    ],
+    [filterOptions, selectedStatusLabel, selectedRoleNames]
+  );
 
-  // Role management form schema
-  const roleFormSchema: FieldType[] = [
-    {
-      name: 'roles',
-      label: 'Assigned Roles',
-      type: 'select',
-      multiSelect: true,
-      required: false,
-      options: roles.map(role => ({ value: role, label: role })),
-      columns: 2,
-    },
-  ];
-
-  // Filter configuration for HorizonXTable
-  const filterConfig: FilterConfig[] = [
-    {
-      column: 'isActive',
-      type: 'dropdown',
-      options: ['Active', 'Inactive'],
-      value: statusFilter.length > 0 ? statusFilter[0] : undefined,
-      onChange: (val: string) => setStatusFilter(val ? [val] : []),
-    },
-    {
-      column: 'roles',
-      type: 'multi-select',
-      options: roles,
-      value: rolesFilter,
-      onChange: (val: string[]) => setRolesFilter(val),
-    },
-  ];
-
-  // Custom render functions for table columns
   const customRender = {
-    name: (value: string, row: Record<string, any>) => (
-      <div className="flex items-center space-x-3">
-        <Avatar>
-          <AvatarImage src={row.avatar} />
-          <AvatarFallback>{getInitials(value)}</AvatarFallback>
-        </Avatar>
-        <div>
-          <p className="font-medium">{value}</p>
-          <p className="text-xs text-muted-foreground">
-            Created {new Date(row.createdAt).toLocaleDateString()}
-          </p>
-        </div>
-      </div>
-    ),
-    roles: (value: UserRole[]) => (
-      <div className="flex flex-wrap gap-1">
-        {value.map(role => (
-          <Badge key={role} variant="outline" className="capitalize">
-            {role}
-          </Badge>
-        ))}
-      </div>
-    ),
-    isActive: (value: boolean) => (
-      <span
-        className={`px-2 py-1 rounded-full text-xs font-medium ${
-          value ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-        }`}
-      >
+    Active: (value: boolean) => (
+      <span className={value ? 'text-success font-semibold' : 'text-destructive font-semibold'}>
         {value ? 'Active' : 'Inactive'}
       </span>
     ),
-    actions: (value: any, row: Record<string, any>) => (
-      <div className="flex items-center gap-1">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={(e) => {
-            e.stopPropagation();
-            openRoleDialog(row as User);
-          }}
-          title="Manage Roles"
-        >
-          <Shield className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={(e) => {
-            e.stopPropagation();
-            openUserDialog(row as User);
-          }}
-          title="Edit User"
-        >
-          <Pencil className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={(e) => {
-            e.stopPropagation();
-            openUserDeleteDialog(row as User);
-          }}
-          title="Delete User"
-        >
-          <Trash2 className="h-4 w-4" />
-        </Button>
+    Roles: (_: any, row: any) => (
+      <div className="flex flex-wrap gap-1">
+        {row._row.roles.filter((r: UserRoleAPI) => r.isAssigned).length > 0 ? (
+          row._row.roles
+            .filter((r: UserRoleAPI) => r.isAssigned)
+            .map((role: UserRoleAPI) => (
+              <span
+                key={role.role_id}
+                className="px-2 py-0.5 rounded-full text-xs font-medium border bg-chip-blue/10 border-chip-blue text-chip-blue"
+              >
+                {role.name}
+              </span>
+            ))
+        ) : (
+          <span className="text-muted-foreground text-xs">No Roles</span>
+        )}
       </div>
     ),
   };
 
-  // Transform users data to include actions column
-  const tableData = users.map(user => ({
-    ...user,
-    actions: null, // Will be rendered by customRender
-  }));
-
-  // Open user dialog for creating/editing
-  const openUserDialog = (user?: User) => {
-    if (user) {
-      setCurrentUser(user);
-      setUserFormData({
-        name: user.name,
-        email: user.email,
-        roles: [...user.roles],
-        isActive: user.isActive,
-        avatar: user.avatar,
-      });
-    } else {
-      setCurrentUser(null);
-      setUserFormData({
-        name: '',
-        email: '',
-        roles: [],
-        isActive: true,
-        avatar: undefined,
-      });
-    }
-    setIsUserDialogOpen(true);
-  };
-
-  // Open role management dialog
-  const openRoleDialog = (user: User) => {
-    setCurrentUser(user);
-    setUserFormData({
-      ...user,
-      roles: [...user.roles],
-    });
-    setIsRoleDialogOpen(true);
-  };
-
-  // Open delete confirmation dialog
-  const openUserDeleteDialog = (user: User) => {
-    setCurrentUser(user);
-    setIsUserDeleteDialogOpen(true);
-  };
-
-  // Handle user form submission
-  const handleUserSubmit = async (formData: Record<string, any>) => {
-    if (!formData.name || !formData.email) {
-      toast.error('Name and email are required');
-      return;
-    }
-
-    try {
-      if (currentUser) {
-        // Update existing user
-        const updated = await updateUser(currentUser.id, formData);
-        setUsers(prev => prev.map(u => (u.id === updated.id ? updated : u)));
-        toast.success('User updated successfully');
-      } else {
-        // Create new user
-        const created = await createUser(formData as Omit<User, 'id' | 'createdAt'>);
-        setUsers(prev => [...prev, created]);
-        toast.success('User created successfully');
-      }
-      setIsUserDialogOpen(false);
-      setCurrentUser(null);
-      setUserFormData({
-        name: '',
-        email: '',
-        roles: [],
-        isActive: true,
-      });
-    } catch (error) {
-      toast.error('Failed to save user');
-      console.error(error);
-    }
-  };
-
-  // Handle role management submission
-  const handleRoleSubmit = async (formData: Record<string, any>) => {
-    if (!currentUser) return;
-
-    try {
-      // Find roles to add and remove
-      const rolesToAdd = (formData.roles || []).filter(
-        (role: string) => !currentUser.roles.includes(role as UserRole)
-      );
-      const rolesToRemove = currentUser.roles.filter(
-        role => !(formData.roles || []).includes(role)
-      );
-
-      // Apply changes
-      let updatedUser = currentUser;
-
-      for (const role of rolesToAdd) {
-        updatedUser = await assignRole(currentUser.id, role);
-      }
-
-      for (const role of rolesToRemove) {
-        updatedUser = await removeRole(currentUser.id, role);
-      }
-
-      setUsers(prev => prev.map(u => (u.id === updatedUser.id ? updatedUser : u)));
-      toast.success('User roles updated successfully');
-      setIsRoleDialogOpen(false);
-      setCurrentUser(null);
-    } catch (error) {
-      toast.error('Failed to update user roles');
-      console.error(error);
-    }
-  };
-
-  // Handle user deletion
-  const handleUserDelete = async () => {
-    if (!currentUser) return;
-
-    try {
-      await deleteUser(currentUser.id);
-      setUsers(prev => prev.filter(u => u.id !== currentUser.id));
-      toast.success('User deleted successfully');
-      setIsUserDeleteDialogOpen(false);
-      setCurrentUser(null);
-    } catch (error) {
-      toast.error('Failed to delete user');
-      console.error(error);
-    }
-  };
-
-  // Handle form data changes
-  const handleFormDataChange = (formData: Record<string, any>) => {
-    setUserFormData(formData);
-  };
-
   return (
-    <div className="space-y-6">
-      <HorizonXTable
-        data={tableData}
+    <HelmetWrapper
+      title="Users | HorizonX"
+      heading="User Management"
+      subHeading="Manage users, roles, and permissions for your organization."
+    >
+      <DynamicTable
+        data={getTableData(users)}
         customRender={customRender}
-        isLoading={isLoading}
+        onRowClick={row => setEditUser(row._row)}
         filterConfig={filterConfig}
-        tableHeading="User Management"
-        headerActions={
-          <Button onClick={() => openUserDialog()}>
-            <UserPlus className="mr-2 h-4 w-4" />
-            Add User
-          </Button>
-        }
-        onRowClick={(row) => {
-          console.log('Row clicked:', row);
-        }}
-        className="w-full"
+        filterMode="ui"
+        onSearchChange={setSearch}
+        page={page}
+        onPageChange={setPage}
+        limit={limit}
+        onLimitChange={setLimit}
+        total={totalCount}
+        isLoading={usersLoading}
       />
-
-      {/* User Dialog */}
-      <Dialog open={isUserDialogOpen} onOpenChange={setIsUserDialogOpen}>
-        <DialogContent className="sm:max-w-2xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>
-              {currentUser ? 'Edit User' : 'Create New User'}
-            </DialogTitle>
-          </DialogHeader>
-          <div className="py-4">
-            <DynamicForm
-              schema={userFormSchema}
-              defaultValues={userFormData}
-              onSubmit={handleUserSubmit}
-              onCancel={() => {
-                setIsUserDialogOpen(false);
-                setCurrentUser(null);
-                setUserFormData({
-                  name: '',
-                  email: '',
-                  roles: [],
-                  isActive: true,
-                });
-              }}
-              onChange={handleFormDataChange}
-              submitButtonText={currentUser ? 'Update User' : 'Create User'}
-            />
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Role Management Dialog */}
-      <Dialog open={isRoleDialogOpen} onOpenChange={setIsRoleDialogOpen}>
-        <DialogContent className="sm:max-w-xl">
-          <DialogHeader>
-            <DialogTitle>Manage User Roles</DialogTitle>
-          </DialogHeader>
-          <div className="py-4">
-            {/* User Info Header */}
-            <div className="flex items-center space-x-3 mb-6 p-4 bg-muted/50 rounded-lg">
-              <Avatar>
-                <AvatarImage src={currentUser?.avatar} />
-                <AvatarFallback>
-                  {currentUser ? getInitials(currentUser.name) : ''}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <p className="font-medium text-lg">{currentUser?.name}</p>
-                <p className="text-sm text-muted-foreground">{currentUser?.email}</p>
-              </div>
-            </div>
-
-            {/* Role Management Form */}
-            <DynamicForm
-              schema={roleFormSchema}
-              defaultValues={{ roles: currentUser?.roles || [] }}
-              onSubmit={handleRoleSubmit}
-              onCancel={() => {
-                setIsRoleDialogOpen(false);
-                setCurrentUser(null);
-              }}
-              submitButtonText="Update Roles"
-            />
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* User Delete Confirmation Dialog */}
-      <Dialog open={isUserDeleteDialogOpen} onOpenChange={setIsUserDeleteDialogOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Confirm User Deletion</DialogTitle>
-          </DialogHeader>
-          <div className="py-4">
-            <div className="space-y-4">
-              <p className="text-muted-foreground">
-                Are you sure you want to delete this user? This action cannot be undone.
-              </p>
-              
-              {/* User Info */}
-              <div className="flex items-center space-x-3 p-4 bg-muted/50 rounded-lg">
-                <Avatar>
-                  <AvatarImage src={currentUser?.avatar} />
-                  <AvatarFallback>
-                    {currentUser ? getInitials(currentUser.name) : ''}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="font-medium">{currentUser?.name}</p>
-                  <p className="text-sm text-muted-foreground">{currentUser?.email}</p>
-                  <div className="flex flex-wrap gap-1 mt-2">
-                    {currentUser?.roles.map(role => (
-                      <Badge key={role} variant="outline" className="text-xs">
-                        {role}
-                      </Badge>
-                    ))}
+      <Sheet open={!!editUser} onOpenChange={open => !open && setEditUser(null)}>
+        <SheetTitle style={{ display: 'none' }} />
+        <SheetContent
+          side="right"
+          className="
+              p-0 
+              fixed right-0 top-1/2 -translate-y-1/2
+              min-h-fit max-h-[100vh]
+              sm:w-[90vw] md:w-[70vw] lg:w-[60vw] xl:w-[50vw]
+              bg-card border-l border-border
+              shadow-2xl
+              overflow-hidden
+              flex flex-col
+              rounded-l-xl
+            "
+          style={{ width: '90vw', maxWidth: '1200px' }}
+        >
+          <div className="flex-1 overflow-y-auto">
+            <div className="p-8 space-y-6">
+              {editUser && (
+                <>
+                  <div className="border-b border-border pb-4">
+                    <h2 className="text-3xl font-bold text-foreground mb-2">User Details</h2>
+                    <p className="text-sm text-muted-foreground">
+                      Manage user information and role assignments
+                    </p>
                   </div>
-                </div>
-              </div>
-
-              {/* Warning */}
-              <div className="flex items-center space-x-2 p-3 bg-destructive/10 rounded-lg border border-destructive/20">
-                <div className="w-2 h-2 bg-destructive rounded-full"></div>
-                <p className="text-sm text-destructive font-medium">
-                  This will permanently delete the user and all associated data.
-                </p>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex justify-end gap-3 mt-6">
-              <Button 
-                variant="outline" 
-                onClick={() => {
-                  setIsUserDeleteDialogOpen(false);
-                  setCurrentUser(null);
-                }}
-              >
-                Cancel
-              </Button>
-              <Button 
-                variant="destructive" 
-                onClick={handleUserDelete}
-              >
-                Delete User
-              </Button>
+                  <div className="bg-muted/50 rounded-lg p-6 space-y-4">
+                    <h3 className="text-lg font-semibold text-foreground mb-4">
+                      Basic Information
+                    </h3>
+                    <div className="grid grid-cols-1 gap-4">
+                      <div className="flex justify-between items-center py-2 border-b border-border/50">
+                        <span className="text-sm font-medium text-muted-foreground">Name</span>
+                        <span className="text-sm font-semibold text-foreground">
+                          {editUser.name}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center py-2 border-b border-border/50">
+                        <span className="text-sm font-medium text-muted-foreground">LDAP ID</span>
+                        <span className="text-sm font-mono text-foreground">{editUser.ldapid}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-2 border-b border-border/50">
+                        <span className="text-sm font-medium text-muted-foreground">ID Number</span>
+                        <span className="text-sm font-mono text-foreground">
+                          {editUser.idNumber}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center py-2">
+                        <span className="text-sm font-medium text-muted-foreground">Status</span>
+                        <span
+                          className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                            editUser.is_active
+                              ? 'bg-success/10 border-success text-success'
+                              : ' bg-destructive/10 border-destructive text-destructive'
+                          }`}
+                        >
+                          {editUser.is_active ? 'Active' : 'Inactive'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-muted/50 rounded-lg p-6">
+                    <h3 className="text-lg font-semibold text-foreground mb-4">
+                      Currently Assigned Roles
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {editUser.roles.filter(r => r.isAssigned).length > 0 ? (
+                        editUser.roles
+                          .filter(r => r.isAssigned)
+                          .map(role => (
+                            <span
+                              key={role.role_id}
+                              className="px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-sm font-medium border border-primary/20"
+                            >
+                              {role.name}
+                            </span>
+                          ))
+                      ) : (
+                        <div className="w-full text-center py-8">
+                          <span className="text-muted-foreground text-sm">
+                            No roles currently assigned
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="bg-muted/50 rounded-lg p-6">
+                    <h3 className="text-lg font-semibold text-foreground mb-4">
+                      Manage Role Assignments
+                    </h3>
+                    <div className="space-y-3">
+                      {editUser.roles.map((role: UserRoleAPI) => {
+                        const isLoading =
+                          assignRoleToUser.isPending || removeRoleFromUser.isPending;
+                        const checked = !!role.isAssigned;
+                        return (
+                          <div
+                            key={role.role_id}
+                            className="flex items-center justify-between p-3 rounded-lg bg-background border border-border hover:bg-muted/30 transition-colors"
+                          >
+                            <div className="flex flex-col">
+                              <span className="font-medium text-foreground">{role.name}</span>
+                              <span className="text-xs text-muted-foreground">
+                                Role ID: {role.role_id}
+                              </span>
+                            </div>
+                            <button
+                              type="button"
+                              className={`
+                                  relative w-12 h-6 flex items-center rounded-full p-1 
+                                  transition-all duration-200 ease-in-out
+                                  ${
+                                    checked
+                                      ? 'bg-success shadow-inner'
+                                      : 'bg-muted-foreground/20 shadow-inner'
+                                  } 
+                                  ${
+                                    isLoading
+                                      ? 'opacity-50 cursor-not-allowed'
+                                      : 'cursor-pointer hover:scale-105'
+                                  }
+                                  focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2
+                                `}
+                              disabled={isLoading}
+                              aria-pressed={checked}
+                              aria-label={`${checked ? 'Remove' : 'Assign'} ${role.name} role`}
+                              onClick={() => {
+                                if (isLoading) return;
+                                if (checked) {
+                                  removeRoleFromUser.mutate(
+                                    { user_id: editUser.ldapid, role_id: role.role_id },
+                                    {
+                                      onSuccess: () =>
+                                        toast({
+                                          title: 'Role removed successfully',
+                                          description: `${role.name} has been removed from ${editUser.name}`,
+                                        }),
+                                    }
+                                  );
+                                } else {
+                                  assignRoleToUser.mutate(
+                                    { user_id: editUser.ldapid, role_id: role.role_id },
+                                    {
+                                      onSuccess: () =>
+                                        toast({
+                                          title: 'Role assigned successfully',
+                                          description: `${role.name} has been assigned to ${editUser.name}`,
+                                        }),
+                                    }
+                                  );
+                                }
+                              }}
+                            >
+                              <span
+                                className={`
+                                    bg-background w-4 h-4 rounded-full shadow-sm
+                                    transform transition-transform duration-200 ease-in-out
+                                    ${checked ? 'translate-x-6' : 'translate-x-0'}
+                                  `}
+                              />
+                              {isLoading && (
+                                <Loader2 className="absolute inset-0 m-auto w-3 h-3 animate-spin text-foreground" />
+                              )}
+                            </button>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
-        </DialogContent>
-      </Dialog>
-    </div>
+        </SheetContent>
+      </Sheet>
+    </HelmetWrapper>
   );
 };
 

@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/store/useAuthStore';
+import { useAuthStore } from '@/store';
 import { AlertTriangle } from 'lucide-react';
 const UnauthorizedPage = () => {
   const { currentRole } = useAuthStore();

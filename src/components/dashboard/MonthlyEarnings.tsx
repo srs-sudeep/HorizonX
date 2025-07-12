@@ -1,5 +1,4 @@
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components';
 import { AreaChart, Area, Tooltip, ResponsiveContainer } from 'recharts';
 
 // Sample data for the chart
@@ -14,14 +13,14 @@ const data = [
   { name: 'Aug', value: 700 },
 ];
 
-const MonthlyEarnings = () => {
+export const MonthlyEarnings = () => {
   return (
     <Card className="col-span-12 md:col-span-4">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <div>
           <CardTitle className="text-lg font-medium">Monthly Earnings</CardTitle>
         </div>
-        <button className="bg-blue-100 text-blue-500 rounded-full p-2">
+        <button className="bg-primary/10 text-primary rounded-full p-2">
           <svg
             width="18"
             height="18"
@@ -85,5 +84,3 @@ const MonthlyEarnings = () => {
     </Card>
   );
 };
-
-export default MonthlyEarnings;

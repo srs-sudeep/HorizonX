@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon } from '@radix-ui/react-icons';
 import { format } from 'date-fns';
 import { DateRange } from 'react-day-picker';
 
@@ -22,7 +22,7 @@ export function DateRangePicker({ className, value, onChange }: DateRangePickerP
             id="date"
             variant={'outline'}
             className={cn(
-              'w-full justify-start text-left font-normal py-5',
+              'w-full justify-start text-left font-normal',
               !value && 'text-muted-foreground'
             )}
           >

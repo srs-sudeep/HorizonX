@@ -1,5 +1,7 @@
 /* This file exports all the UI components from the src/components. */
 
+export * from '@/components/dashboard/pieChart';
+
 //Exporting dashboard components
 export * from '@/components/dashboard/CustomersSection';
 export * from '@/components/dashboard/MonthlyEarnings';
@@ -11,23 +13,31 @@ export * from '@/components/dashboard/YearlyBreakup';
 
 //Exporting common components
 export * from '@/components/AppLogo';
-// export * from '@/components/HelmetWrapper';
+export * from '@/components/HelmetWrapper';
 export * from '@/components/Loadable';
+export * from '@/components/TypographyProvider';
 export * from '@/components/UserAvatar';
 
 //Exporting Layout Components
 export * from '@/components/navbar/LandingNavbar';
 export * from '@/components/navbar/Navbar';
+export * from '@/components/navbar/SettingsSidebar';
+export * from '@/components/navbar/SearchPanel';
 export * from '@/components/footer/MainFooter';
 export * from '@/components/sidebar/ModuleSidebar';
 export * from '@/components/footer/LandingFooter';
 
 //Exporting all landing components
 export * from '@/components/landing/Hero';
+export * from '@/components/landing/IITBhilaiInfo';
+export * from '@/components/landing/ContactSection';
+export * from '@/components/landing/FeaturesCards';
+export * from '@/components/landing/FaqSlider';
+export * from '@/components/landing/ScrollWrapper';
 
 // Exporting Custom Components
-// export * from '@/components/DynamicForm';
-export * from '@/components/horizonXTable';
+export * from '@/components/DynamicForm';
+export * from '@/components/DynamicTable';
 export * from '@/components/Transitions';
 
 // Exporting all the shadcn/ui components for easy import
@@ -53,6 +63,7 @@ export * from '@/components/ui/dateRangePicker';
 export * from '@/components/ui/dialog';
 export * from '@/components/ui/drawer';
 export * from '@/components/ui/dropdown-menu';
+export * from '@/components/ui/errorModal';
 export * from '@/components/ui/form';
 export * from '@/components/ui/hover-card';
 export * from '@/components/ui/input-otp';
@@ -83,5 +94,6 @@ export * from '@/components/ui/use-toast';
 export * from '@/components/ui/toggle-group';
 export * from '@/components/ui/toggle';
 export * from '@/components/ui/tooltip';
+export * from '@/components/ui/typography';
 export * from '@/components/ui/timeRangePicker';
 export * from '@/components/ui/tableShimmer';

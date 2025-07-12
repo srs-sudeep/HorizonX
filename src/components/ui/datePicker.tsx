@@ -1,4 +1,4 @@
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon } from '@radix-ui/react-icons';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger, Calendar, Button } from '@/components';

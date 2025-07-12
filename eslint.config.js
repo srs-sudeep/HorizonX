@@ -21,6 +21,7 @@ export default tseslint.config(
       'vite.config.ts',
       'tsconfig.json',
       'jsconfig.json',
+      'electron',
     ],
   },
   {

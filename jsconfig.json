@@ -19,6 +19,6 @@
       "@/lib/*": ["./src/lib/*"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "public/images/Logos/AppLogo.tsx"],
   "exclude": ["node_modules", "dist", "**/*.gen.ts"]
 }

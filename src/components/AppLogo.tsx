@@ -1,11 +1,14 @@
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/theme';
+import { useNavigate } from 'react-router-dom';
+import { logos } from '@/assets';
 
 interface AppLogoProps {
   className?: string;
   horizontal?: boolean;
   name?: boolean;
   short?: boolean;
+  imgClassname?: string;
 }
 
 const getLogoSrc = (
@@ -14,27 +17,39 @@ const getLogoSrc = (
   name?: boolean,
   short?: boolean
 ): string => {
+  const themeKey = theme === 'dark' ? 'dark' : 'light';
+
   if (horizontal) {
-    return theme === 'dark' ? '/WhiteLogoHorizontal.svg' : '/LogoHorizontal.svg';
+    return logos.horizontal[themeKey];
   } else if (name) {
-    return theme === 'dark' ? '/WhiteLongName.svg' : '/LongName.svg';
+    return logos.name[themeKey];
   } else if (short) {
-    return theme === 'dark' ? '/WhiteX.svg' : '/X.svg';
+    return logos.short[themeKey];
   }
-  return theme === 'dark' ? '/WhiteLogo.svg' : '/Logo.svg';
+  return logos.short[themeKey];
 };
 
-const AppLogo = ({ className, horizontal = false, name = false, short = false }: AppLogoProps) => {
-  const { theme } = useTheme();
-  const logoSrc = getLogoSrc(theme, horizontal, name, short);
+export const AppLogo = ({
+  className,
+  horizontal = false,
+  name = false,
+  short = false,
+  imgClassname,
+}: AppLogoProps) => {
+  const { mode } = useTheme();
+  const logoSrc = getLogoSrc(mode, horizontal, name, short);
+  const navigate = useNavigate();
 
   return (
     <div className={cn('flex items-center gap-2', className)}>
       <div className="relative">
-        <img src={logoSrc} alt="Logo" className="object-contain w-full h-full" />
+        <img
+          src={logoSrc}
+          alt="Logo"
+          className={cn('object-contain cursor-pointer', imgClassname)}
+          onClick={() => navigate('/')}
+        />
       </div>
     </div>
   );
 };
-
-export default AppLogo;

@@ -1,5 +1,4 @@
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components';
 import { LineChart, Line, XAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 // Sample data for the chart
@@ -13,7 +12,7 @@ const data = [
   { name: 'Jul', value: 55 },
 ];
 
-const CustomersSection = () => {
+export const CustomersSection = () => {
   return (
     <Card className="col-span-12 md:col-span-4">
       <CardHeader className="pb-2">
@@ -47,5 +46,3 @@ const CustomersSection = () => {
     </Card>
   );
 };
-
-export default CustomersSection;

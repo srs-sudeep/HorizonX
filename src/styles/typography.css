@@ -1,0 +1,130 @@
+/* Font Family Definitions - Two Perfect Contrasting Fonts */
+
+/* Font Family Classes - Two Perfect Contrasting Fonts */
+.font-inter {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.font-poppins {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Line Height Utilities */
+.leading-tight {
+  line-height: 1.25;
+}
+
+.leading-normal {
+  line-height: 1.75;
+}
+
+
+
+/* Font Size Utilities */
+.text-xs {
+  font-size: 0.75rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+.text-base {
+  font-size: 1rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+}
+
+.text-4xl {
+  font-size: 2.25rem;
+}
+
+.text-5xl {
+  font-size: 3rem;
+}
+
+.text-6xl {
+  font-size: 3.75rem;
+}
+
+/* Dynamic font size application for navbar and sidebar */
+[data-component="navbar"] {
+  font-size: var(--typography-font-size, 1rem);
+}
+
+[data-component="sidebar"] {
+  font-size: var(--typography-font-size, 1rem);
+}
+
+[data-component="settings-sidebar"] {
+  font-size: var(--typography-font-size, 1rem);
+}
+
+/* Responsive font size adjustments */
+[data-component="navbar"].text-xs { font-size: 0.75rem; }
+[data-component="navbar"].text-sm { font-size: 0.875rem; }
+[data-component="navbar"].text-base { font-size: 1rem; }
+[data-component="navbar"].text-lg { font-size: 1.125rem; }
+[data-component="navbar"].text-xl { font-size: 1.25rem; }
+[data-component="navbar"].text-2xl { font-size: 1.5rem; }
+
+[data-component="sidebar"].text-xs { font-size: 0.75rem; }
+[data-component="sidebar"].text-sm { font-size: 0.875rem; }
+[data-component="sidebar"].text-base { font-size: 1rem; }
+[data-component="sidebar"].text-lg { font-size: 1.125rem; }
+[data-component="sidebar"].text-xl { font-size: 1.25rem; }
+[data-component="sidebar"].text-2xl { font-size: 1.5rem; }
+[data-component="sidebar"].text-3xl { font-size: 1.875rem; }
+[data-component="sidebar"].text-4xl { font-size: 2.25rem; }
+[data-component="sidebar"].text-5xl { font-size: 3rem; }
+[data-component="sidebar"].text-6xl { font-size: 3.75rem; }
+
+[data-component="settings-sidebar"].text-xs { font-size: 0.75rem; }
+[data-component="settings-sidebar"].text-sm { font-size: 0.875rem; }
+[data-component="settings-sidebar"].text-base { font-size: 1rem; }
+[data-component="settings-sidebar"].text-lg { font-size: 1.125rem; }
+[data-component="settings-sidebar"].text-xl { font-size: 1.25rem; }
+[data-component="settings-sidebar"].text-2xl { font-size: 1.5rem; }
+[data-component="settings-sidebar"].text-3xl { font-size: 1.875rem; }
+[data-component="settings-sidebar"].text-4xl { font-size: 2.25rem; }
+[data-component="settings-sidebar"].text-5xl { font-size: 3rem; }
+[data-component="settings-sidebar"].text-6xl { font-size: 3.75rem; }
+
+/* Font Family Application for Components */
+[data-component="navbar"].font-inter {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+[data-component="navbar"].font-poppins {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+[data-component="sidebar"].font-inter {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+[data-component="sidebar"].font-poppins {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+[data-component="settings-sidebar"].font-inter {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+[data-component="settings-sidebar"].font-poppins {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+} 

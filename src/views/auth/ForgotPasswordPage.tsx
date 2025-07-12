@@ -1,99 +1,72 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { useToast } from '@/components/ui/use-toast';
+import { Button, HelmetWrapper, Input, Label, toast } from '@/components';
+import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
+import X from '@/assets/logos/X.svg';
+import WhiteX from '@/assets/logos/WhiteX.svg';
+import { useTheme } from '@/theme';
+import { useNavigate } from 'react-router-dom';
+
+// Dummy forgot password API function (replace with real API call)
+const forgotPassword = async ({ email }: { email: string }) => {
+  // Simulate API call
+  return new Promise((resolve) => setTimeout(() => resolve({ success: true }), 1000));
+};
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const { mode } = useTheme();
+  const navigate = useNavigate();
 
-  const { toast } = useToast();
+  const mutation = useMutation({
+    mutationFn: forgotPassword,
+    onSuccess: () => {
+      toast({ title: 'Success', description: 'Password reset link sent! Check your email.' });
+      navigate('/auth');
+    },
+    onError: (error: any) => {
+      toast({ title: 'Error', description: error?.message || 'Could not send reset link', variant: 'destructive' });
+    },
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleForgot = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (!email) {
-      toast({
-        title: 'Error',
-        description: 'Please enter your email address',
-        variant: 'destructive',
-      });
+      toast({ title: 'Error', description: 'Please enter your email or LDAP ID', variant: 'destructive' });
       return;
     }
-
-    setIsLoading(true);
-
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitted(true);
-      setIsLoading(false);
-    }, 1000);
+    mutation.mutate({ email });
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-muted/30 px-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">Forgot Password</CardTitle>
-          <CardDescription>
-            Enter your email address and we'll send you a link to reset your password
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {!isSubmitted ? (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="name@example.com"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  required
-                />
-              </div>
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? 'Sending...' : 'Send Reset Link'}
-              </Button>
-            </form>
-          ) : (
-            <div className="space-y-4">
-              <div className="rounded-lg bg-muted p-4 text-center">
-                <p className="mb-2">Reset link sent!</p>
-                <p className="text-sm text-muted-foreground">
-                  If an account exists with the email <span className="font-medium">{email}</span>,
-                  you will receive a password reset link shortly.
-                </p>
-              </div>
-              <Button asChild className="w-full">
-                <Link to="/login">Return to Login</Link>
-              </Button>
+    <HelmetWrapper title="Forgot Password | HorizonX">
+      <div className="relative min-h-screen w-full flex items-center justify-center px-4">
+        <div className="backdrop-blur-lg bg-white/60 dark:bg-black/40 p-8 sm:p-10 rounded-2xl shadow-2xl w-full max-w-md mx-auto z-10 border border-border/30 dark:border-border/50 transition-all duration-300">
+          <div className="flex flex-col items-center mb-8">
+            <img
+              src={mode === 'dark' ? WhiteX : X}
+              alt="HorizonX X Logo"
+              className="w-20 h-20 mb-4 drop-shadow-xl select-none"
+              draggable={false}
+            />
+            <h1 className="text-3xl font-extrabold text-foreground drop-shadow-lg mb-2 tracking-tight">Forgot Password</h1>
+            <p className="text-foreground/80 text-base text-center max-w-xs">Enter your email or LDAP ID to receive a password reset link.</p>
+          </div>
+          <form onSubmit={handleForgot} className="space-y-6 w-full">
+            <div className="space-y-2 w-full">
+              <Label htmlFor="email" className="text-foreground">LDAP ID / Email</Label>
+              <Input id="email" type="text" placeholder="Enter your LDAP ID or email" value={email} onChange={e => setEmail(e.target.value)} className="w-full bg-input/20 border-border text-foreground placeholder:text-foreground/60" />
             </div>
-          )}
-        </CardContent>
-        <CardFooter className="flex justify-center">
-          <p className="text-sm text-muted-foreground">
-            Remember your password?{' '}
-            <Link to="/login" className="text-primary hover:underline">
-              Log in
-            </Link>
-          </p>
-        </CardFooter>
-      </Card>
-    </div>
+            <Button type="submit" className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl text-lg font-semibold shadow-md transition-all duration-200" disabled={mutation.isPending}>
+              {mutation.isPending ? 'Sending...' : 'Send Reset Link'}
+            </Button>
+          </form>
+          <div className="flex justify-between mt-4">
+            <a href="/login" className="text-sm text-primary hover:underline">Back to login</a>
+          </div>
+        </div>
+      </div>
+    </HelmetWrapper>
   );
 };
 
-export default ForgotPasswordPage;
+export default ForgotPasswordPage; 

@@ -9,7 +9,7 @@ interface StatCardProps {
   iconColor?: string;
 }
 
-const StatCard = ({ icon, title, value, className, iconColor }: StatCardProps) => {
+export const StatCard = ({ icon, title, value, className, iconColor }: StatCardProps) => {
   return (
     <div className={cn('stat-card border p-4 ', className)}>
       <div className="flex items-start justify-between">
@@ -20,5 +20,3 @@ const StatCard = ({ icon, title, value, className, iconColor }: StatCardProps) =
     </div>
   );
 };
-
-export default StatCard;

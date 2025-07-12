@@ -1,11 +1,17 @@
+/* Google Fonts - Must be at the top */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@import './styles/typography.css';
 
 @plugin 'tailwindcss-animate';
 
 @custom-variant dark (&:is(.dark *));
 
 @theme {
+  /* Base color definitions using CSS custom properties */
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
@@ -18,17 +24,23 @@
   --color-secondary: hsl(var(--secondary));
   --color-secondary-foreground: hsl(var(--secondary-foreground));
 
-  --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
-
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
-
   --color-accent: hsl(var(--accent));
   --color-accent-foreground: hsl(var(--accent-foreground));
 
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-success: hsl(var(--success));
+  --color-success-foreground: hsl(var(--success-foreground));
+
+  --color-warning: hsl(var(--warning));
+  --color-warning-foreground: hsl(var(--warning-foreground));
+
+  --color-info: hsl(var(--info));
+  --color-info-foreground: hsl(var(--info-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
 
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
@@ -42,141 +54,323 @@
   --color-sidebar-border: hsl(var(--sidebar-border));
   --color-sidebar-ring: hsl(var(--sidebar-ring));
 
-  --color-navbar: hsl(var(--navbar));
-  --color-navbar-foreground: hsl(var(--navbar-foreground));
+  --color-chip-blue: hsl(var(--chip-blue));
+  --color-chip-purple: hsl(var(--chip-purple));
+  --color-chip-yellow: hsl(var(--chip-yellow));
 
-  --color-blur-theme: hsl(var(--blur-theme));
+  /* Dashboard Card Colors */
+  --color-card-blue: hsl(var(--card-blue));
+  --color-card-blue-bg: hsl(var(--card-blue-bg));
+  --color-card-blue-border: hsl(var(--card-blue-border));
+  --color-card-blue-text: hsl(var(--card-blue-text));
 
+  --color-card-red: hsl(var(--card-red));
+  --color-card-red-bg: hsl(var(--card-red-bg));
+  --color-card-red-border: hsl(var(--card-red-border));
+  --color-card-red-text: hsl(var(--card-red-text));
+
+  --color-card-yellow: hsl(var(--card-yellow));
+  --color-card-yellow-bg: hsl(var(--card-yellow-bg));
+  --color-card-yellow-border: hsl(var(--card-yellow-border));
+  --color-card-yellow-text: hsl(var(--card-yellow-text));
+
+  --color-card-green: hsl(var(--card-green));
+  --color-card-green-bg: hsl(var(--card-green-bg));
+  --color-card-green-border: hsl(var(--card-green-border));
+  --color-card-green-text: hsl(var(--card-green-text));
+
+  --color-card-purple: hsl(var(--card-purple));
+  --color-card-purple-bg: hsl(var(--card-purple-bg));
+  --color-card-purple-border: hsl(var(--card-purple-border));
+  --color-card-purple-text: hsl(var(--card-purple-text));
+
+  --color-card-orange: hsl(var(--card-orange));
+  --color-card-orange-bg: hsl(var(--card-orange-bg));
+  --color-card-orange-border: hsl(var(--card-orange-border));
+  --color-card-orange-text: hsl(var(--card-orange-text));
+
+  --color-card-pink: hsl(var(--card-pink));
+  --color-card-pink-bg: hsl(var(--card-pink-bg));
+  --color-card-pink-border: hsl(var(--card-pink-border));
+  --color-card-pink-text: hsl(var(--card-pink-text));
+
+  --color-card-teal: hsl(var(--card-teal));
+  --color-card-teal-bg: hsl(var(--card-teal-bg));
+  --color-card-teal-border: hsl(var(--card-teal-border));
+  --color-card-teal-text: hsl(var(--card-teal-text));
+
+  --color-card-gray: hsl(var(--card-gray));
+  --color-card-gray-bg: hsl(var(--card-gray-bg));
+  --color-card-gray-border: hsl(var(--card-gray-border));
+  --color-card-gray-text: hsl(var(--card-gray-text));
+
+  /* Analytics & Status Colors */
+  --color-status-active: hsl(var(--status-active));
+  --color-status-inactive: hsl(var(--status-inactive));
+  --color-status-pending: hsl(var(--status-pending));
+  --color-status-expired: hsl(var(--status-expired));
+
+  /* Gradient Background Colors */
+  --color-gradient-primary-from: hsl(var(--gradient-primary-from));
+  --color-gradient-primary-to: hsl(var(--gradient-primary-to));
+  --color-gradient-secondary-from: hsl(var(--gradient-secondary-from));
+  --color-gradient-secondary-to: hsl(var(--gradient-secondary-to));
+
+  /* Border radius */
   --radius-xl: calc(var(--radius) + 4px);
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
-
-  --animate-accordion-down: accordion-down 0.2s ease-out;
-  --animate-accordion-up: accordion-up 0.2s ease-out;
-  --animate-fade-in: fade-in 0.3s ease-out;
-  --animate-fade-out: fade-out 0.3s ease-out;
-
-  @keyframes accordion-down {
-    from {
-      height: 0;
-    }
-    to {
-      height: var(--radix-accordion-content-height);
-    }
-  }
-  @keyframes accordion-up {
-    from {
-      height: var(--radix-accordion-content-height);
-    }
-    to {
-      height: 0;
-    }
-  }
-  @keyframes fade-in {
-    0% {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  @keyframes fade-out {
-    0% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-  }
-}
-
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-@layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
-  }
+  --radius-sm: calc(var(--radius) - 6px);
 }
 
 @layer base {
+  /* Light Theme - Blue Color Scheme */
   :root {
-    --background: 0 0% 100%;
-    --foreground: 224 71.4% 4.1%;
-    --card: 0 0% 100%;
-    --card-foreground: 224 71.4% 4.1%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 224 71.4% 4.1%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 20% 98%;
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 220.9 39.3% 11%;
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
-    --accent: 220 14.3% 95.9%;
-    --accent-foreground: 220.9 39.3% 11%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 221.2 83.2% 53.3%;
     --radius: 0.75rem;
 
-    /* Sidebar theme */
-    --sidebar: 223 30% 97%;
-    --sidebar-foreground: 222 47% 29%;
-    --sidebar-accent: 222 47% 90%;
-    --sidebar-accent-foreground: 221.2 83.2% 53.3%;
-    --sidebar-primary: 221.2 83.2% 53.3%;
-    --sidebar-primary-foreground: 210 20% 98%;
-    --sidebar-border: 222 47% 88%;
-    --sidebar-ring: 222 47% 70%;
+    /* Base colors */
+    --background: 214 100% 99%; /* Very light blue-white */
+    --foreground: 215 32% 17%; /* Dark blue-gray */
+
+    /* Card colors */
+    --card: 210 100% 98%; /* Light blue-white */
+    --card-foreground: 215 32% 17%; /* Dark blue-gray */
+
+    /* Primary colors - Blue theme */
+    --primary: 217 91% 60%; /* Bright blue */
+    --primary-foreground: 0 0% 100%; /* White */
+
+    /* Secondary colors */
+    --secondary: 214 32% 91%; /* Light blue-gray */
+    --secondary-foreground: 215 32% 17%; /* Dark blue-gray */
+
+    /* Accent colors */
+    --accent: 210 100% 95%; /* Very light blue */
+    --accent-foreground: 217 91% 60%; /* Bright blue */
+
+    /* Destructive colors */
+    --destructive: 0 84% 57%; /* Red */
+    --destructive-foreground: 0 0% 100%; /* White */
+
+    /* Success colors */
+    --success: 142 71% 45%; /* Green */
+    --success-foreground: 0 0% 100%; /* White */
+
+    /* Warning colors */
+    --warning: 38 92% 50%; /* Orange/Yellow */
+    --warning-foreground: 0 0% 100%; /* White */
+
+    /* Info colors */
+    --info: 199 89% 48%; /* Cyan/Info blue */
+    --info-foreground: 0 0% 100%; /* White */
+
+    /* Muted colors */
+    --muted: 214 32% 94%; /* Light blue-gray */
+    --muted-foreground: 215 16% 47%; /* Medium blue-gray */
+
+    /* Input and border colors */
+    --border: 214 32% 88%; /* Light blue-gray border */
+    --input: 214 32% 88%; /* Light blue-gray input */
+    --ring: 217 91% 60%; /* Bright blue ring */
+
+    /* Sidebar colors */
+    --sidebar: 210 100% 97%; /* Very light blue */
+    --sidebar-foreground: 215 32% 17%; /* Dark blue-gray */
+    --sidebar-accent: 217 91% 90%; /* Light blue accent */
+    --sidebar-accent-foreground: 217 91% 60%; /* Bright blue */
+    --sidebar-primary: 217 91% 60%; /* Bright blue */
+    --sidebar-primary-foreground: 0 0% 100%; /* White */
+    --sidebar-border: 214 32% 85%; /* Blue-gray border */
+    --sidebar-ring: 217 91% 60%; /* Bright blue ring */
+
+    /* Dashboard Card Colors - Light Mode */
+    --card-blue: 217 91% 60%; /* Blue button/icon */
+    --card-blue-bg: 214 100% 97%; /* Light blue background */
+    --card-blue-border: 214 70% 85%; /* Blue border */
+    --card-blue-text: 217 91% 35%; /* Dark blue text */
+
+    --card-red: 0 84% 57%; /* Red button/icon */
+    --card-red-bg: 0 100% 97%; /* Light red background */
+    --card-red-border: 0 70% 85%; /* Red border */
+    --card-red-text: 0 84% 35%; /* Dark red text */
+
+    --card-yellow: 38 92% 50%; /* Yellow button/icon */
+    --card-yellow-bg: 38 100% 97%; /* Light yellow background */
+    --card-yellow-border: 38 70% 85%; /* Yellow border */
+    --card-yellow-text: 38 92% 35%; /* Dark yellow text */
+
+    --card-green: 142 71% 45%; /* Green button/icon */
+    --card-green-bg: 142 76% 97%; /* Light green background */
+    --card-green-border: 142 60% 85%; /* Green border */
+    --card-green-text: 142 71% 30%; /* Dark green text */
+
+    --card-purple: 271 91% 65%; /* Purple button/icon */
+    --card-purple-bg: 271 100% 97%; /* Light purple background */
+    --card-purple-border: 271 70% 85%; /* Purple border */
+    --card-purple-text: 271 91% 35%; /* Dark purple text */
+
+    --card-orange: 25 95% 53%; /* Orange button/icon */
+    --card-orange-bg: 25 100% 97%; /* Light orange background */
+    --card-orange-border: 25 70% 85%; /* Orange border */
+    --card-orange-text: 25 95% 35%; /* Dark orange text */
+
+    --card-pink: 330 81% 60%; /* Pink button/icon */
+    --card-pink-bg: 330 100% 97%; /* Light pink background */
+    --card-pink-border: 330 70% 85%; /* Pink border */
+    --card-pink-text: 330 81% 35%; /* Dark pink text */
+
+    --card-teal: 187 85% 53%; /* Teal button/icon */
+    --card-teal-bg: 187 100% 97%; /* Light teal background */
+    --card-teal-border: 187 70% 85%; /* Teal border */
+    --card-teal-text: 187 85% 35%; /* Dark teal text */
+
+    --card-gray: 215 16% 47%; /* Gray button/icon */
+    --card-gray-bg: 215 32% 94%; /* Light gray background */
+    --card-gray-border: 215 16% 80%; /* Gray border */
+    --card-gray-text: 215 16% 30%; /* Dark gray text */
+
+    /* Status Colors - Light Mode */
+    --status-active: 142 71% 45%; /* Green for active */
+    --status-inactive: 0 84% 57%; /* Red for inactive */
+    --status-pending: 38 92% 50%; /* Orange for pending */
+    --status-expired: 215 16% 47%; /* Gray for expired */
+
+    /* Gradient Colors - Light Mode */
+    --gradient-primary-from: 214 100% 98%; /* Light blue */
+    --gradient-primary-to: 214 32% 94%; /* Slightly darker blue */
+    --gradient-secondary-from: 210 100% 95%; /* Very light blue */
+    --gradient-secondary-to: 214 32% 88%; /* Light blue-gray */
+
+    /* Chip colors */
+    --chip-blue: 210 71% 45%; /* Darker Blue */
+    --chip-purple: 270 65% 55%; /* Softer, dark-usable Purple */
+    --chip-yellow: 38 92% 50%; /* Yellow */
   }
 
+  /* Dark Theme - Custom Purple Color Scheme (#e0cefd) */
   .dark {
-    --background: 224 71.4% 4.1%;
-    --foreground: 210 20% 98%;
-    --card: 224 71.4% 4.1%;
-    --card-foreground: 210 20% 98%;
-    --popover: 224 71.4% 4.1%;
-    --popover-foreground: 210 20% 98%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 20% 98%;
-    --secondary: 215 27.9% 16.9%;
-    --secondary-foreground: 210 20% 98%;
-    --muted: 215 27.9% 16.9%;
-    --muted-foreground: 217.9 10.6% 64.9%;
-    --accent: 215 27.9% 16.9%;
-    --accent-foreground: 210 20% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 215 27.9% 16.9%;
-    --input: 215 27.9% 16.9%;
-    --ring: 221.2 83.2% 53.3%;
+    /* Base colors */
+    --background: 327 84% 3%; /* Very dark purple */
+    --foreground: 261 45% 91%; /* Light purple text */
 
-    /* Sidebar theme (dark mode) */
-    --sidebar: 222 47% 10%;
-    --sidebar-foreground: 210 20% 84%;
-    --sidebar-accent: 221.2 83.2% 20%;
-    --sidebar-accent-foreground: 210 20% 98%;
-    --sidebar-primary: 221.2 83.2% 53.3%;
-    --sidebar-primary-foreground: 210 20% 98%;
-    --sidebar-border: 222 47% 20%;
-    --sidebar-ring: 222 47% 40%;
+    /* Card colors */
+    --card: 327 50% 2%; /* Near black card with purple tint */
+    --card-foreground: 261 45% 91%; /* Light purple text */
+
+    /* Primary colors - Bright pink */
+    --primary: 330 85% 35%; /* Bright pink for buttons */
+    --primary-foreground: 0 0% 100%; /* White text */
+
+    /* Secondary colors */
+    --secondary: 255 15% 18%; /* Dark purple-gray */
+    --secondary-foreground: 261 45% 91%; /* Light purple text */
+
+    /* Accent colors - Bright pink accent */
+    --accent: 327 90% 59%; /* Bright pink accent */
+    --accent-foreground: 0 0% 100%; /* White text */
+
+    /* Destructive colors */
+    --destructive: 0 75% 60%; /* Red */
+    --destructive-foreground: 0 0% 100%; /* White text */
+
+    /* Success colors */
+    --success: 142 65% 50%; /* Green */
+    --success-foreground: 0 0% 100%; /* White text */
+
+    /* Warning colors */
+    --warning: 38 92% 55%; /* Orange/Yellow */
+    --warning-foreground: 0 0% 100%; /* White text */
+
+    /* Info colors */
+    --info: 199 89% 58%; /* Cyan/Info blue */
+    --info-foreground: 0 0% 100%; /* White text */
+
+    /* Muted colors */
+    --muted: 255 15% 18%; /* Dark purple-gray */
+    --muted-foreground: 261 25% 65%; /* Medium purple-gray */
+
+    /* Input and border colors */
+    --border: 255 15% 22%; /* Purple border */
+    --input: 255 15% 15%; /* Dark purple input */
+    --ring: 327 90% 59%; /* Bright pink ring */
+
+    /* Sidebar colors */
+    --sidebar: 325 20% 8%; /* Very dark rose sidebar */
+    --sidebar-foreground: 345 45% 91%; /* Light rose text */
+    --sidebar-accent: 330 85% 45%; /* Bright rose accent */
+    --sidebar-accent-foreground: 0 0% 100%; /* White text */
+    --sidebar-primary: 327 80% 70%; /* Light pink primary */
+    --sidebar-primary-foreground: 330 30% 6%; /* Dark rose text */
+    --sidebar-border: 345 15% 25%; /* Rose border */
+    --sidebar-ring: 345 85% 60%; /* Vibrant rose ring */
+
+    /* Dashboard Card Colors - Dark Mode */
+    --card-blue: 217 91% 70%; /* Lighter blue for dark mode */
+    --card-blue-bg: 217 50% 8%; /* Dark blue background */
+    --card-blue-border: 217 60% 25%; /* Blue border */
+    --card-blue-text: 217 91% 75%; /* Light blue text */
+
+    --card-red: 0 75% 60%; /* Lighter red for dark mode */
+    --card-red-bg: 0 40% 8%; /* Dark red background */
+    --card-red-border: 0 50% 25%; /* Red border */
+    --card-red-text: 0 75% 75%; /* Light red text */
+
+    --card-yellow: 38 92% 60%; /* Lighter yellow for dark mode */
+    --card-yellow-bg: 38 40% 8%; /* Dark yellow background */
+    --card-yellow-border: 38 50% 25%; /* Yellow border */
+    --card-yellow-text: 38 92% 75%; /* Light yellow text */
+
+    --card-green: 142 71% 55%; /* Lighter green for dark mode */
+    --card-green-bg: 142 40% 8%; /* Dark green background */
+    --card-green-border: 142 50% 25%; /* Green border */
+    --card-green-text: 142 71% 75%; /* Light green text */
+
+    --card-purple: 271 91% 75%; /* Lighter purple for dark mode */
+    --card-purple-bg: 271 40% 8%; /* Dark purple background */
+    --card-purple-border: 271 50% 25%; /* Purple border */
+    --card-purple-text: 271 91% 75%; /* Light purple text */
+
+    --card-orange: 25 95% 65%; /* Lighter orange for dark mode */
+    --card-orange-bg: 25 40% 8%; /* Dark orange background */
+    --card-orange-border: 25 50% 25%; /* Orange border */
+    --card-orange-text: 25 95% 75%; /* Light orange text */
+
+    --card-pink: 330 81% 70%; /* Lighter pink for dark mode */
+    --card-pink-bg: 330 40% 8%; /* Dark pink background */
+    --card-pink-border: 330 50% 25%; /* Pink border */
+    --card-pink-text: 330 81% 75%; /* Light pink text */
+
+    --card-teal: 187 85% 65%; /* Lighter teal for dark mode */
+    --card-teal-bg: 187 40% 8%; /* Dark teal background */
+    --card-teal-border: 187 50% 25%; /* Teal border */
+    --card-teal-text: 187 85% 75%; /* Light teal text */
+
+    --card-gray: 215 16% 65%; /* Lighter gray for dark mode */
+    --card-gray-bg: 215 10% 12%; /* Dark gray background */
+    --card-gray-border: 215 16% 30%; /* Gray border */
+    --card-gray-text: 215 16% 80%; /* Light gray text */
+
+    /* Status Colors - Dark Mode */
+    --status-active: 142 65% 50%; /* Green for active */
+    --status-inactive: 0 75% 60%; /* Red for inactive */
+    --status-pending: 38 92% 55%; /* Orange for pending */
+    --status-expired: 261 25% 65%; /* Gray for expired */
+
+    /* Gradient Colors - Dark Mode */
+    --gradient-primary-from: 327 50% 5%; /* Very dark purple */
+    --gradient-primary-to: 255 15% 18%; /* Dark purple-gray */
+    --gradient-secondary-from: 255 15% 15%; /* Dark purple */
+    --gradient-secondary-to: 255 15% 22%; /* Slightly lighter dark purple */
+
+    /* Chart/Graph colors matching the dashboard */
+    --chart-purple: 345 85% 60%; /* Main rose for charts */
+    --chart-pink: 330 80% 70%; /* Light pink for secondary data */
+    --chart-blue: 240 70% 60%; /* Blue accent */
+
+    /* Chip colors */
+    --chip-blue: 210 65% 55%; /* Blue */
+    --chip-purple: 270 55% 70%; /* Purple */
+    --chip-yellow: 38 92% 50%; /* Yellow */
   }
 }
 
@@ -189,172 +383,758 @@
   }
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* Utility classes for the new card colors */
+@layer utilities {
+  /* Blue Card Utilities */
+  .bg-card-blue-gradient {
+    background: linear-gradient(135deg, hsl(var(--card-blue-bg)), hsl(var(--card-blue-bg) / 0.8));
+  }
+  .border-card-blue {
+    border-color: hsl(var(--card-blue-border));
+  }
+  .text-card-blue {
+    color: hsl(var(--card-blue-text));
+  }
+  .bg-card-blue-icon {
+    background-color: hsl(var(--card-blue));
+  }
+
+  /* Red Card Utilities */
+  .bg-card-red-gradient {
+    background: linear-gradient(135deg, hsl(var(--card-red-bg)), hsl(var(--card-red-bg) / 0.8));
+  }
+  .border-card-red {
+    border-color: hsl(var(--card-red-border));
+  }
+  .text-card-red {
+    color: hsl(var(--card-red-text));
+  }
+  .bg-card-red-icon {
+    background-color: hsl(var(--card-red));
+  }
+
+  /* Yellow Card Utilities */
+  .bg-card-yellow-gradient {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--card-yellow-bg)),
+      hsl(var(--card-yellow-bg) / 0.8)
+    );
+  }
+  .border-card-yellow {
+    border-color: hsl(var(--card-yellow-border));
+  }
+  .text-card-yellow {
+    color: hsl(var(--card-yellow-text));
+  }
+  .bg-card-yellow-icon {
+    background-color: hsl(var(--card-yellow));
+  }
+
+  /* Green Card Utilities */
+  .bg-card-green-gradient {
+    background: linear-gradient(135deg, hsl(var(--card-green-bg)), hsl(var(--card-green-bg) / 0.8));
+  }
+  .border-card-green {
+    border-color: hsl(var(--card-green-border));
+  }
+  .text-card-green {
+    color: hsl(var(--card-green-text));
+  }
+  .bg-card-green-icon {
+    background-color: hsl(var(--card-green));
+  }
+
+  /* Purple Card Utilities */
+  .bg-card-purple-gradient {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--card-purple-bg)),
+      hsl(var(--card-purple-bg) / 0.8)
+    );
+  }
+  .border-card-purple {
+    border-color: hsl(var(--card-purple-border));
+  }
+  .text-card-purple {
+    color: hsl(var(--card-purple-text));
+  }
+  .bg-card-purple-icon {
+    background-color: hsl(var(--card-purple));
+  }
+
+  /* Orange Card Utilities */
+  .bg-card-orange-gradient {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--card-orange-bg)),
+      hsl(var(--card-orange-bg) / 0.8)
+    );
+  }
+  .border-card-orange {
+    border-color: hsl(var(--card-orange-border));
+  }
+  .text-card-orange {
+    color: hsl(var(--card-orange-text));
+  }
+  .bg-card-orange-icon {
+    background-color: hsl(var(--card-orange));
+  }
+
+  /* Pink Card Utilities */
+  .bg-card-pink-gradient {
+    background: linear-gradient(135deg, hsl(var(--card-pink-bg)), hsl(var(--card-pink-bg) / 0.8));
+  }
+  .border-card-pink {
+    border-color: hsl(var(--card-pink-border));
+  }
+  .text-card-pink {
+    color: hsl(var(--card-pink-text));
+  }
+  .bg-card-pink-icon {
+    background-color: hsl(var(--card-pink));
+  }
+
+  /* Teal Card Utilities */
+  .bg-card-teal-gradient {
+    background: linear-gradient(135deg, hsl(var(--card-teal-bg)), hsl(var(--card-teal-bg) / 0.8));
+  }
+  .border-card-teal {
+    border-color: hsl(var(--card-teal-border));
+  }
+  .text-card-teal {
+    color: hsl(var(--card-teal-text));
+  }
+  .bg-card-teal-icon {
+    background-color: hsl(var(--card-teal));
+  }
+
+  /* Gray Card Utilities */
+  .bg-card-gray-gradient {
+    background: linear-gradient(135deg, hsl(var(--card-gray-bg)), hsl(var(--card-gray-bg) / 0.8));
+  }
+  .border-card-gray {
+    border-color: hsl(var(--card-gray-border));
+  }
+  .text-card-gray {
+    color: hsl(var(--card-gray-text));
+  }
+  .bg-card-gray-icon {
+    background-color: hsl(var(--card-gray));
+  }
+
+  /* Status Utilities */
+  .text-status-active {
+    color: hsl(var(--status-active));
+  }
+  .text-status-inactive {
+    color: hsl(var(--status-inactive));
+  }
+  .text-status-pending {
+    color: hsl(var(--status-pending));
+  }
+  .text-status-expired {
+    color: hsl(var(--status-expired));
+  }
+
+  .bg-status-active {
+    background-color: hsl(var(--status-active) / 0.1);
+    border-color: hsl(var(--status-active));
+    color: hsl(var(--status-active));
+  }
+  .bg-status-inactive {
+    background-color: hsl(var(--status-inactive) / 0.1);
+    border-color: hsl(var(--status-inactive));
+    color: hsl(var(--status-inactive));
+  }
+
+  /* Gradient Utilities */
+  .bg-gradient-dashboard {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--gradient-primary-from)),
+      hsl(var(--gradient-primary-to))
+    );
+  }
+  .bg-gradient-dashboard-secondary {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--gradient-secondary-from)),
+      hsl(var(--gradient-secondary-to))
+    );
+  }
 }
 
+/* Custom scrollbar using theme color */
+::-webkit-scrollbar-thumb {
+  background: var(--theme-scrollbar, #3b82f6);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-scrollbar, #2563eb);
+}
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 
-::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted));
-  border-radius: 4px;
+/* For Firefox */
+* {
+  scrollbar-color: var(--theme-scrollbar, #3b82f6) #e5e7eb;
+  scrollbar-width: thin;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.3);
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
 }
 
-.dark ::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.2);
+.theme-blue.light {
+  --primary: 217 91% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 214 32% 91%;
+  --secondary-foreground: 215 32% 17%;
+  --accent: 210 100% 95%;
+  --accent-foreground: 217 91% 60%;
+  --destructive: 0 84% 57%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 142 71% 45%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 92% 50%;
+  --warning-foreground: 0 0% 100%;
+  --info: 199 89% 48%;
+  --info-foreground: 0 0% 100%;
+  --muted: 214 32% 94%;
+  --muted-foreground: 215 16% 47%;
+  --border: 214 32% 88%;
+  --input: 214 32% 88%;
+  --ring: 217 91% 60%;
+  --background: 214 100% 99%;
+  --foreground: 215 32% 17%;
+  --card: 210 100% 98%;
+  --card-foreground: 215 32% 17%;
+  --sidebar: 210 100% 97%;
+  --sidebar-foreground: 215 32% 17%;
+  --sidebar-accent: 217 91% 90%;
+  --sidebar-accent-foreground: 217 91% 60%;
+  --sidebar-primary: 217 91% 60%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-border: 214 32% 85%;
+  --sidebar-ring: 217 91% 60%;
+}
+.theme-blue.dark {
+  --primary: 217 91% 70%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 255 15% 18%;
+  --secondary-foreground: 261 45% 91%;
+  --accent: 217 91% 70%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 75% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 142 65% 50%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 92% 55%;
+  --warning-foreground: 0 0% 100%;
+  --info: 199 89% 58%;
+  --info-foreground: 0 0% 100%;
+  --muted: 255 15% 18%;
+  --muted-foreground: 261 25% 65%;
+  --border: 255 15% 22%;
+  --input: 255 15% 15%;
+  --ring: 217 91% 70%;
+  --background: 327 84% 3%;
+  --foreground: 261 45% 91%;
+  --card: 327 50% 2%;
+  --card-foreground: 261 45% 91%;
+  --sidebar: 325 20% 8%;
+  --sidebar-foreground: 345 45% 91%;
+  --sidebar-accent: 217 91% 70%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-primary: 217 91% 70%;
+  --sidebar-primary-foreground: 330 30% 6%;
+  --sidebar-border: 345 15% 25%;
+  --sidebar-ring: 217 91% 70%;
 }
 
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.4);
+.theme-green.light {
+  --primary: 142 71% 45%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 142 32% 91%;
+  --secondary-foreground: 142 32% 17%;
+  --accent: 142 100% 95%;
+  --accent-foreground: 142 71% 45%;
+  --destructive: 0 84% 57%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 142 71% 45%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 92% 50%;
+  --warning-foreground: 0 0% 100%;
+  --info: 199 89% 48%;
+  --info-foreground: 0 0% 100%;
+  --muted: 142 32% 94%;
+  --muted-foreground: 142 16% 47%;
+  --border: 142 32% 88%;
+  --input: 142 32% 88%;
+  --ring: 142 71% 45%;
+  --background: 142 100% 99%;
+  --foreground: 142 32% 17%;
+  --card: 142 100% 98%;
+  --card-foreground: 142 32% 17%;
+  --sidebar: 142 100% 97%;
+  --sidebar-foreground: 142 32% 17%;
+  --sidebar-accent: 142 71% 90%;
+  --sidebar-accent-foreground: 142 71% 45%;
+  --sidebar-primary: 142 71% 45%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-border: 142 32% 85%;
+  --sidebar-ring: 142 71% 45%;
+}
+.theme-green.dark {
+  --primary: 142 71% 55%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 142 15% 18%;
+  --secondary-foreground: 142 45% 91%;
+  --accent: 142 71% 55%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 75% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 142 71% 55%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 92% 55%;
+  --warning-foreground: 0 0% 100%;
+  --info: 199 89% 58%;
+  --info-foreground: 0 0% 100%;
+  --muted: 142 15% 18%;
+  --muted-foreground: 142 25% 65%;
+  --border: 142 15% 22%;
+  --input: 142 15% 15%;
+  --ring: 142 71% 55%;
+  --background: 142 84% 3%;
+  --foreground: 142 45% 91%;
+  --card: 142 50% 2%;
+  --card-foreground: 142 45% 91%;
+  --sidebar: 142 20% 8%;
+  --sidebar-foreground: 142 45% 91%;
+  --sidebar-accent: 142 71% 55%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-primary: 142 71% 55%;
+  --sidebar-primary-foreground: 142 30% 6%;
+  --sidebar-border: 142 15% 25%;
+  --sidebar-ring: 142 71% 55%;
+}
+.theme-red.light {
+  --primary: 0 84% 57%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 32% 91%;
+  --secondary-foreground: 0 32% 17%;
+  --accent: 0 100% 95%;
+  --accent-foreground: 0 84% 57%;
+  --destructive: 0 84% 57%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 142 71% 45%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 92% 50%;
+  --warning-foreground: 0 0% 100%;
+  --info: 199 89% 48%;
+  --info-foreground: 0 0% 100%;
+  --muted: 0 32% 94%;
+  --muted-foreground: 0 16% 47%;
+  --border: 0 32% 88%;
+  --input: 0 32% 88%;
+  --ring: 0 84% 57%;
+  --background: 0 100% 99%;
+  --foreground: 0 32% 17%;
+  --card: 0 100% 98%;
+  --card-foreground: 0 32% 17%;
+  --sidebar: 0 100% 97%;
+  --sidebar-foreground: 0 32% 17%;
+  --sidebar-accent: 0 84% 90%;
+  --sidebar-accent-foreground: 0 84% 57%;
+  --sidebar-primary: 0 84% 57%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-border: 0 32% 85%;
+  --sidebar-ring: 0 84% 57%;
+}
+.theme-red.dark {
+  --primary: 0 75% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 15% 18%;
+  --secondary-foreground: 0 45% 91%;
+  --accent: 0 75% 60%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 75% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 142 65% 50%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 92% 55%;
+  --warning-foreground: 0 0% 100%;
+  --info: 199 89% 58%;
+  --info-foreground: 0 0% 100%;
+  --muted: 0 15% 18%;
+  --muted-foreground: 0 25% 65%;
+  --border: 0 15% 22%;
+  --input: 0 15% 15%;
+  --ring: 0 75% 60%;
+  --background: 0 84% 3%;
+  --foreground: 0 45% 91%;
+  --card: 0 50% 2%;
+  --card-foreground: 0 45% 91%;
+  --sidebar: 0 20% 8%;
+  --sidebar-foreground: 0 45% 91%;
+  --sidebar-accent: 0 75% 60%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-primary: 0 75% 60%;
+  --sidebar-primary-foreground: 0 30% 6%;
+  --sidebar-border: 0 15% 25%;
+  --sidebar-ring: 0 75% 60%;
+}
+.theme-purple.light {
+  --primary: 271 91% 65%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 271 32% 91%;
+  --secondary-foreground: 271 32% 17%;
+  --accent: 271 100% 95%;
+  --accent-foreground: 271 91% 65%;
+  --destructive: 0 84% 57%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 142 71% 45%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 92% 50%;
+  --warning-foreground: 0 0% 100%;
+  --info: 199 89% 48%;
+  --info-foreground: 0 0% 100%;
+  --muted: 271 32% 94%;
+  --muted-foreground: 271 16% 47%;
+  --border: 271 32% 88%;
+  --input: 271 32% 88%;
+  --ring: 271 91% 65%;
+  --background: 271 100% 99%;
+  --foreground: 271 32% 17%;
+  --card: 271 100% 98%;
+  --card-foreground: 271 32% 17%;
+  --sidebar: 271 100% 97%;
+  --sidebar-foreground: 271 32% 17%;
+  --sidebar-accent: 271 91% 90%;
+  --sidebar-accent-foreground: 271 91% 65%;
+  --sidebar-primary: 271 91% 65%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-border: 271 32% 85%;
+  --sidebar-ring: 271 91% 65%;
+}
+.theme-purple.dark {
+  --primary: 271 91% 75%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 271 15% 18%;
+  --secondary-foreground: 271 45% 91%;
+  --accent: 271 91% 75%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 75% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 142 65% 50%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 92% 55%;
+  --warning-foreground: 0 0% 100%;
+  --info: 199 89% 58%;
+  --info-foreground: 0 0% 100%;
+  --muted: 271 15% 18%;
+  --muted-foreground: 271 25% 65%;
+  --border: 271 15% 22%;
+  --input: 271 15% 15%;
+  --ring: 271 91% 75%;
+  --background: 271 84% 3%;
+  --foreground: 271 45% 91%;
+  --card: 271 50% 2%;
+  --card-foreground: 271 45% 91%;
+  --sidebar: 271 20% 8%;
+  --sidebar-foreground: 271 45% 91%;
+  --sidebar-accent: 271 91% 75%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-primary: 271 91% 75%;
+  --sidebar-primary-foreground: 271 30% 6%;
+  --sidebar-border: 271 15% 25%;
+  --sidebar-ring: 271 91% 75%;
+}
+.theme-orange.light {
+  --primary: 25 95% 53%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 25 32% 91%;
+  --secondary-foreground: 25 32% 17%;
+  --accent: 25 100% 95%;
+  --accent-foreground: 25 95% 53%;
+  --destructive: 0 84% 57%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 142 71% 45%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 92% 50%;
+  --warning-foreground: 0 0% 100%;
+  --info: 199 89% 48%;
+  --info-foreground: 0 0% 100%;
+  --muted: 25 32% 94%;
+  --muted-foreground: 25 16% 47%;
+  --border: 25 32% 88%;
+  --input: 25 32% 88%;
+  --ring: 25 95% 53%;
+  --background: 25 100% 99%;
+  --foreground: 25 32% 17%;
+  --card: 25 100% 98%;
+  --card-foreground: 25 32% 17%;
+  --sidebar: 25 100% 97%;
+  --sidebar-foreground: 25 32% 17%;
+  --sidebar-accent: 25 95% 90%;
+  --sidebar-accent-foreground: 25 95% 53%;
+  --sidebar-primary: 25 95% 53%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-border: 25 32% 85%;
+  --sidebar-ring: 25 95% 53%;
+}
+.theme-orange.dark {
+  --primary: 25 95% 65%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 25 15% 18%;
+  --secondary-foreground: 25 45% 91%;
+  --accent: 25 95% 65%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 75% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 142 65% 50%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 92% 55%;
+  --warning-foreground: 0 0% 100%;
+  --info: 199 89% 58%;
+  --info-foreground: 0 0% 100%;
+  --muted: 25 15% 18%;
+  --muted-foreground: 25 25% 65%;
+  --border: 25 15% 22%;
+  --input: 25 15% 15%;
+  --ring: 25 95% 65%;
+  --background: 25 84% 3%;
+  --foreground: 25 45% 91%;
+  --card: 25 50% 2%;
+  --card-foreground: 25 45% 91%;
+  --sidebar: 25 20% 8%;
+  --sidebar-foreground: 25 45% 91%;
+  --sidebar-accent: 25 95% 65%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-primary: 25 95% 65%;
+  --sidebar-primary-foreground: 25 30% 6%;
+  --sidebar-border: 25 15% 25%;
+  --sidebar-ring: 25 95% 65%;
+}
+.theme-teal.light {
+  --primary: 174 62% 47%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 174 32% 91%;
+  --secondary-foreground: 174 32% 17%;
+  --accent: 174 100% 95%;
+  --accent-foreground: 174 62% 47%;
+  --destructive: 0 84% 57%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 142 71% 45%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 92% 50%;
+  --warning-foreground: 0 0% 100%;
+  --info: 199 89% 48%;
+  --info-foreground: 0 0% 100%;
+  --muted: 174 32% 94%;
+  --muted-foreground: 174 16% 47%;
+  --border: 174 32% 88%;
+  --input: 174 32% 88%;
+  --ring: 174 62% 47%;
+  --background: 174 100% 99%;
+  --foreground: 174 32% 17%;
+  --card: 174 100% 98%;
+  --card-foreground: 174 32% 17%;
+  --sidebar: 174 100% 97%;
+  --sidebar-foreground: 174 32% 17%;
+  --sidebar-accent: 174 62% 90%;
+  --sidebar-accent-foreground: 174 62% 47%;
+  --sidebar-primary: 174 62% 47%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-border: 174 32% 85%;
+  --sidebar-ring: 174 62% 47%;
+}
+.theme-teal.dark {
+  --primary: 174 62% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 174 15% 18%;
+  --secondary-foreground: 174 45% 91%;
+  --accent: 174 62% 60%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 75% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 142 65% 50%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 92% 55%;
+  --warning-foreground: 0 0% 100%;
+  --info: 199 89% 58%;
+  --info-foreground: 0 0% 100%;
+  --muted: 174 15% 18%;
+  --muted-foreground: 174 25% 65%;
+  --border: 174 15% 22%;
+  --input: 174 15% 15%;
+  --ring: 174 62% 60%;
+  --background: 174 84% 3%;
+  --foreground: 174 45% 91%;
+  --card: 174 50% 2%;
+  --card-foreground: 174 45% 91%;
+  --sidebar: 174 20% 8%;
+  --sidebar-foreground: 174 45% 91%;
+  --sidebar-accent: 174 62% 60%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-primary: 174 62% 60%;
+  --sidebar-primary-foreground: 174 30% 6%;
+  --sidebar-border: 174 15% 25%;
+  --sidebar-ring: 174 62% 60%;
+}
+.theme-indigo.light {
+  --primary: 243 75% 59%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 243 32% 91%;
+  --secondary-foreground: 243 32% 17%;
+  --accent: 243 100% 95%;
+  --accent-foreground: 243 75% 59%;
+  --destructive: 0 84% 57%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 142 71% 45%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 92% 50%;
+  --warning-foreground: 0 0% 100%;
+  --info: 199 89% 48%;
+  --info-foreground: 0 0% 100%;
+  --muted: 243 32% 94%;
+  --muted-foreground: 243 16% 47%;
+  --border: 243 32% 88%;
+  --input: 243 32% 88%;
+  --ring: 243 75% 59%;
+  --background: 243 100% 99%;
+  --foreground: 243 32% 17%;
+  --card: 243 100% 98%;
+  --card-foreground: 243 32% 17%;
+  --sidebar: 243 100% 97%;
+  --sidebar-foreground: 243 32% 17%;
+  --sidebar-accent: 243 75% 90%;
+  --sidebar-accent-foreground: 243 75% 59%;
+  --sidebar-primary: 243 75% 59%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-border: 243 32% 85%;
+  --sidebar-ring: 243 75% 59%;
+}
+.theme-indigo.dark {
+  --primary: 243 75% 70%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 243 15% 18%;
+  --secondary-foreground: 243 45% 91%;
+  --accent: 243 75% 70%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 75% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 142 65% 50%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 92% 55%;
+  --warning-foreground: 0 0% 100%;
+  --info: 199 89% 58%;
+  --info-foreground: 0 0% 100%;
+  --muted: 243 15% 18%;
+  --muted-foreground: 243 25% 65%;
+  --border: 243 15% 22%;
+  --input: 243 15% 15%;
+  --ring: 243 75% 70%;
+  --background: 243 84% 3%;
+  --foreground: 243 45% 91%;
+  --card: 243 50% 2%;
+  --card-foreground: 243 45% 91%;
+  --sidebar: 243 20% 8%;
+  --sidebar-foreground: 243 45% 91%;
+  --sidebar-accent: 243 75% 70%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-primary: 243 75% 70%;
+  --sidebar-primary-foreground: 243 30% 6%;
+  --sidebar-border: 243 15% 25%;
+  --sidebar-ring: 243 75% 70%;
+}
+.theme-pink.light {
+  --primary: 330 81% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 330 32% 91%;
+  --secondary-foreground: 330 32% 17%;
+  --accent: 330 100% 95%;
+  --accent-foreground: 330 81% 60%;
+  --destructive: 0 84% 57%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 142 71% 45%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 92% 50%;
+  --warning-foreground: 0 0% 100%;
+  --info: 199 89% 48%;
+  --info-foreground: 0 0% 100%;
+  --muted: 330 32% 94%;
+  --muted-foreground: 330 16% 47%;
+  --border: 330 32% 88%;
+  --input: 330 32% 88%;
+  --ring: 330 81% 60%;
+  --background: 330 100% 99%;
+  --foreground: 330 32% 17%;
+  --card: 330 100% 98%;
+  --card-foreground: 330 32% 17%;
+  --sidebar: 330 100% 97%;
+  --sidebar-foreground: 330 32% 17%;
+  --sidebar-accent: 330 81% 90%;
+  --sidebar-accent-foreground: 330 81% 60%;
+  --sidebar-primary: 330 81% 60%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-border: 330 32% 85%;
+  --sidebar-ring: 330 81% 60%;
+}
+.theme-pink.dark {
+  --primary: 330 85% 35%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 255 15% 18%;
+  --secondary-foreground: 261 45% 91%;
+  --accent: 327 90% 59%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 75% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 142 65% 50%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 92% 55%;
+  --warning-foreground: 0 0% 100%;
+  --info: 199 89% 58%;
+  --info-foreground: 0 0% 100%;
+  --muted: 255 15% 18%;
+  --muted-foreground: 261 25% 65%;
+  --border: 255 15% 22%;
+  --input: 255 15% 15%;
+  --ring: 327 90% 59%;
+  --background: 327 84% 3%;
+  --foreground: 261 45% 91%;
+  --card: 327 50% 2%;
+  --card-foreground: 261 45% 91%;
+  --sidebar: 325 20% 8%;
+  --sidebar-foreground: 345 45% 91%;
+  --sidebar-accent: 330 85% 45%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-primary: 327 80% 70%;
+  --sidebar-primary-foreground: 330 30% 6%;
+  --sidebar-border: 345 15% 25%;
+  --sidebar-ring: 345 85% 60%;
 }
 
-/*
-  ---break---
-*/
-@theme {
-  --blur-theme: 30px;
-}
-@theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-navbar: var(--navbar);
-  --color-navbar-foreground: var(--navbar-foreground);
-  --color-blur-theme: var(--blur-theme);
+/* Global Typography Application */
+body {
+  font-family: var(--typography-font-family, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+  font-size: var(--typography-font-size, 1rem);
+  line-height: var(--typography-line-height, 1.5);
+  letter-spacing: var(--typography-letter-spacing, 0em);
 }
 
-/*
-  ---break---
-*/
-
-:root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
-  --navbar: #0b14374d;
-  --navbar-foreground: oklch(0.129 0.042 264.695);
-  --blur-theme: 2px;
+/* Apply typography settings to all text elements */
+h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, select, label {
+  font-family: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
 }
 
-/*
-  ---break---
-*/
-
-.dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
-  --navbar: #0b14374d;
-  --navbar-foreground: oklch(0.984 0.003 247.858);
-  --blur-theme: 30px;
-}
-
-/*
-  ---break---
-*/
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+/* Fix: Ensure icon color stays white on hover in dark mode for .text-primary icons inside ghost/icon buttons (Tailwind classes) */
+.dark .hover\:bg-accent.h-10.w-10:hover .text-primary,
+.dark .hover\:bg-accent.h-10.w-10:focus .text-primary {
+  color: #fff !important;
 }

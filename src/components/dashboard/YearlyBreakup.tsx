@@ -1,8 +1,6 @@
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
+import { Card, CardContent, CardHeader, CardTitle, Progress } from '@/components';
 
-const YearlyBreakup = () => {
+export const YearlyBreakup = () => {
   return (
     <Card className="col-span-12 md:col-span-4">
       <CardHeader>
@@ -24,12 +22,12 @@ const YearlyBreakup = () => {
           </div>
           <div className="relative h-24 w-24 mx-auto">
             {/* Circle background */}
-            <div className="absolute inset-0 bg-blue-100 rounded-full"></div>
+            <div className="absolute inset-0 bg-muted-foreground rounded-full"></div>
             {/* Progress circle */}
             <div className="absolute inset-0 -rotate-90">
               <svg className="h-full w-full" viewBox="0 0 100 100">
                 <circle
-                  className="text-blue-100"
+                  className="text-background"
                   strokeWidth="10"
                   stroke="currentColor"
                   fill="transparent"
@@ -38,7 +36,7 @@ const YearlyBreakup = () => {
                   cy="50"
                 />
                 <circle
-                  className="text-blue-500"
+                  className="text-primary"
                   strokeWidth="10"
                   strokeDasharray="251.2"
                   strokeDashoffset="75"
@@ -50,7 +48,7 @@ const YearlyBreakup = () => {
                 />
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
-                <p className="text-lg font-medium">70%</p>
+                <p className="text-lg font-medium text-background">70%</p>
               </div>
             </div>
           </div>
@@ -76,5 +74,3 @@ const YearlyBreakup = () => {
     </Card>
   );
 };
-
-export default YearlyBreakup;

@@ -4,7 +4,6 @@ import viteReact from '@vitejs/plugin-react';
 import AutoExport from 'unplugin-auto-export/vite';
 import checker from 'vite-plugin-checker';
 import { defineConfig } from 'vitest/config';
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     viteReact(),
@@ -24,6 +23,7 @@ export default defineConfig({
     }),
     tailwindcss(),
   ],
+  base: './',
   test: {
     globals: true,
     environment: 'jsdom',

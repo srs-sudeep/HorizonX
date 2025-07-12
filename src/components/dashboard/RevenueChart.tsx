@@ -1,5 +1,4 @@
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components';
 import {
   AreaChart,
   Area,
@@ -20,7 +19,7 @@ const data = [
   { name: '22/08', value: 2.5 },
 ];
 
-const RevenueChart = () => {
+export const RevenueChart = () => {
   return (
     <Card className="col-span-12 lg:col-span-8">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -63,22 +62,22 @@ const RevenueChart = () => {
 
         <div className="mt-4 flex flex-col gap-4">
           <div className="flex items-center gap-2">
-            <span className="h-3 w-3 rounded-full bg-blue-500"></span>
+            <span className="h-3 w-3 rounded-full bg-primary"></span>
             <p className="text-sm">Total earnings</p>
             <p className="ml-auto text-lg font-bold">$63,489.50</p>
           </div>
           <div className="flex items-center gap-2">
-            <span className="h-3 w-3 rounded-full bg-blue-500"></span>
+            <span className="h-3 w-3 rounded-full bg-primary/80"></span>
             <p className="text-sm">Earnings this month</p>
             <p className="ml-auto text-lg font-medium">$48,820</p>
           </div>
           <div className="flex items-center gap-2">
-            <span className="h-3 w-3 rounded-full bg-blue-300"></span>
+            <span className="h-3 w-3 rounded-full bg-primary/50"></span>
             <p className="text-sm">Expense this month</p>
             <p className="ml-auto text-lg font-medium">$26,498</p>
           </div>
 
-          <button className="mt-2 bg-blue-500 text-white rounded-md px-4 py-2 w-full md:w-auto md:self-end">
+          <button className="mt-2 bg-primary text-foreground rounded-md px-4 py-2 w-full md:w-auto md:self-end">
             View Full Report
           </button>
         </div>
@@ -86,5 +85,3 @@ const RevenueChart = () => {
     </Card>
   );
 };
-
-export default RevenueChart;

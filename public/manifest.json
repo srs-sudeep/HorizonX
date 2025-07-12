@@ -1,6 +1,15 @@
 {
-  "short_name": "Horizon",
-  "name": "Horizon Dashboard",
+  "short_name": "Seamless",
+  "name": "Seamless",
+  "description": "A seamless experience for managing school operations, from meal sessions to student transactions.",
+  "lang": "en-US",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff",
+  "orientation": "portrait",
+  "scope": ".",
+  "dir": "ltr",
   "icons": [
     {
       "src": "favicon.ico",
@@ -18,8 +27,29 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "screenshots": [
+    {
+      "src": "logo.png",
+      "sizes": "540x720",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["productivity", "education"],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.example.app"
+    }
+  ],
+  "prefer_related_applications": false,
+  "iarc_rating_id": "eC1234567890",
+  "shortcuts": [
+    {
+      "name": "Open Dashboard",
+      "short_name": "Dashboard",
+      "description": "Go to the dashboard",
+      "url": "/",
+      "icons": [{ "src": "logo.png", "sizes": "96x96" }]
+    }
+  ]
 }
