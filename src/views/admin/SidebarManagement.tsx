@@ -5,11 +5,9 @@ import {
   deleteSubModule,
   getModules,
   getSubModules,
-  SidebarModuleItem,
-  SidebarSubModuleItem,
   updateModule,
   updateSubModule,
-} from '@/api/mockApi/sidebar';
+} from '@/api/sidebarApi';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -39,7 +37,7 @@ import {
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { UserRole } from '@/store/useAuthStore';
-import { getIconComponent, iconMap } from '@/types';
+import { iconMap, SidebarModuleItem, SidebarSubModuleItem, SidebarSubModuleTreeItem } from '@/types';
 import { Pencil, PlusCircle, Trash2 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -78,6 +76,11 @@ const SidebarManagement = () => {
     isActive: true,
     parentId: undefined,
   });
+
+  const getIconComponent = (iconName: keyof typeof iconMap, size: number) => {
+    const IconComponent = iconMap[iconName];
+    return IconComponent ? <IconComponent size={size} /> : null;
+  };
 
   // Available roles
   const roles: UserRole[] = ['admin', 'teacher', 'student', 'librarian', 'medical'];
@@ -140,6 +143,10 @@ const SidebarManagement = () => {
   const handleSubModuleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setSubModuleFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubModuleParentChange = (parentId: string | undefined) => {
+    setSubModuleFormData(prev => ({ ...prev, parentId }));
   };
 
   const handleSubModuleNumberInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -346,17 +353,6 @@ const SidebarManagement = () => {
     return childIds;
   };
 
-  // Get potential parent submodules for a given module
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, unused-imports/no-unused-vars
-  const getPotentialParents = (moduleId: string): SidebarSubModuleItem[] => {
-    return subModules.filter(
-      sm =>
-        sm.moduleId === moduleId &&
-        (!currentSubModule || sm.id !== currentSubModule.id) &&
-        !isDescendantOf(sm.id, currentSubModule?.id || '')
-    );
-  };
-
   // Check if a submodule is a descendant of another
   const isDescendantOf = (subModuleId: string, potentialAncestorId: string): boolean => {
     if (!potentialAncestorId) return false;
@@ -381,7 +377,7 @@ const SidebarManagement = () => {
   };
 
   // Render a submodule item with its children
-  const renderSubModuleItem = (subModule: SidebarSubModuleItem, depth = 0) => {
+  const renderSubModuleItem = (subModule: SidebarSubModuleTreeItem, depth = 0) => {
     return (
       <React.Fragment key={subModule.id}>
         <TableRow>
@@ -389,7 +385,7 @@ const SidebarManagement = () => {
             <div style={{ paddingLeft: `${depth * 20}px` }} className="flex items-center">
               {subModule.icon && (
                 <div className="mr-2">
-                  {getIconComponent(subModule.icon as keyof typeof iconMap, subModule.iconSize)}
+                  {getIconComponent(subModule.icon as keyof typeof iconMap, subModule.iconSize ?? 16)}
                 </div>
               )}
               {subModule.label}
@@ -416,7 +412,7 @@ const SidebarManagement = () => {
           </TableCell>
           <TableCell>{subModule.order}</TableCell>
           <TableCell>
-            <Badge variant={subModule.isActive ? 'success' : 'secondary'}>
+            <Badge variant={subModule.isActive ? 'default' : 'secondary'}>
               {subModule.isActive ? 'Active' : 'Inactive'}
             </Badge>
           </TableCell>
@@ -491,7 +487,7 @@ const SidebarManagement = () => {
                               <div className="mr-2">
                                 {getIconComponent(
                                   module.icon as keyof typeof iconMap,
-                                  module.iconSize
+                                  module.iconSize ?? 16
                                 )}
                               </div>
                             )}
@@ -513,7 +509,7 @@ const SidebarManagement = () => {
                         </TableCell>
                         <TableCell>{module.order}</TableCell>
                         <TableCell>
-                          <Badge variant={module.isActive ? 'success' : 'secondary'}>
+                          <Badge variant={module.isActive ? 'default' : 'secondary'}>
                             {module.isActive ? 'Active' : 'Inactive'}
                           </Badge>
                         </TableCell>
