@@ -11,19 +11,17 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { UserRole } from '@/store/useAuthStore';
 import { FilterConfig } from '@/types/filterType.types';
+import { FieldType } from '@/types/fieldType.types';
 import { HorizonXTable } from '@/components/horizonXTable';
+import { DynamicForm } from '@/components/HorizonXForm';
 import { Pencil, Shield, Trash2, UserPlus } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -32,7 +30,6 @@ const UserManagement = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [roles, setRoles] = useState<UserRole[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string[]>([]);
   const [rolesFilter, setRolesFilter] = useState<string[]>([]);
 
@@ -77,6 +74,63 @@ const UserManagement = () => {
       .toUpperCase()
       .substring(0, 2);
   };
+
+  // User form schema
+  const userFormSchema: FieldType[] = [
+    {
+      name: 'name',
+      label: 'Full Name',
+      type: 'text',
+      required: true,
+      placeholder: 'Enter full name',
+      columns: 1,
+    },
+    {
+      name: 'email',
+      label: 'Email Address',
+      type: 'email',
+      required: true,
+      placeholder: 'Enter email address',
+      columns: 1,
+    },
+    {
+      name: 'avatar',
+      label: 'Avatar URL',
+      type: 'url',
+      required: false,
+      placeholder: 'https://example.com/avatar.jpg',
+      columns: 2,
+    },
+    {
+      name: 'roles',
+      label: 'User Roles',
+      type: 'select',
+      multiSelect: true,
+      required: false,
+      options: roles.map(role => ({ value: role, label: role })),
+      columns: 1,
+    },
+    {
+      name: 'isActive',
+      label: 'Account Status',
+      type: 'toggle',
+      required: false,
+      columns: 1,
+    },
+  ];
+
+  // Role management form schema
+  const roleFormSchema: FieldType[] = [
+    {
+      name: 'roles',
+      label: 'Assigned Roles',
+      type: 'select',
+      multiSelect: true,
+      required: false,
+      options: roles.map(role => ({ value: role, label: role })),
+      columns: 2,
+    },
+  ];
 
   // Filter configuration for HorizonXTable
   const filterConfig: FilterConfig[] = [
@@ -175,28 +229,6 @@ const UserManagement = () => {
     actions: null, // Will be rendered by customRender
   }));
 
-  // User form handlers
-  const handleUserInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUserFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleUserCheckboxChange = (checked: boolean) => {
-    setUserFormData(prev => ({ ...prev, isActive: checked }));
-  };
-
-  const handleUserRoleToggle = (role: UserRole) => {
-    setUserFormData(prev => {
-      const currentRoles = prev.roles || [];
-      return {
-        ...prev,
-        roles: currentRoles.includes(role)
-          ? currentRoles.filter(r => r !== role)
-          : [...currentRoles, role],
-      };
-    });
-  };
-
   // Open user dialog for creating/editing
   const openUserDialog = (user?: User) => {
     if (user) {
@@ -238,8 +270,8 @@ const UserManagement = () => {
   };
 
   // Handle user form submission
-  const handleUserSubmit = async () => {
-    if (!userFormData.name || !userFormData.email) {
+  const handleUserSubmit = async (formData: Record<string, any>) => {
+    if (!formData.name || !formData.email) {
       toast.error('Name and email are required');
       return;
     }
@@ -247,16 +279,23 @@ const UserManagement = () => {
     try {
       if (currentUser) {
         // Update existing user
-        const updated = await updateUser(currentUser.id, userFormData);
+        const updated = await updateUser(currentUser.id, formData);
         setUsers(prev => prev.map(u => (u.id === updated.id ? updated : u)));
         toast.success('User updated successfully');
       } else {
         // Create new user
-        const created = await createUser(userFormData as Omit<User, 'id' | 'createdAt'>);
+        const created = await createUser(formData as Omit<User, 'id' | 'createdAt'>);
         setUsers(prev => [...prev, created]);
         toast.success('User created successfully');
       }
       setIsUserDialogOpen(false);
+      setCurrentUser(null);
+      setUserFormData({
+        name: '',
+        email: '',
+        roles: [],
+        isActive: true,
+      });
     } catch (error) {
       toast.error('Failed to save user');
       console.error(error);
@@ -264,16 +303,16 @@ const UserManagement = () => {
   };
 
   // Handle role management submission
-  const handleRoleSubmit = async () => {
+  const handleRoleSubmit = async (formData: Record<string, any>) => {
     if (!currentUser) return;
 
     try {
       // Find roles to add and remove
-      const rolesToAdd = (userFormData.roles || []).filter(
-        role => !currentUser.roles.includes(role)
+      const rolesToAdd = (formData.roles || []).filter(
+        (role: string) => !currentUser.roles.includes(role as UserRole)
       );
       const rolesToRemove = currentUser.roles.filter(
-        role => !(userFormData.roles || []).includes(role)
+        role => !(formData.roles || []).includes(role)
       );
 
       // Apply changes
@@ -290,6 +329,7 @@ const UserManagement = () => {
       setUsers(prev => prev.map(u => (u.id === updatedUser.id ? updatedUser : u)));
       toast.success('User roles updated successfully');
       setIsRoleDialogOpen(false);
+      setCurrentUser(null);
     } catch (error) {
       toast.error('Failed to update user roles');
       console.error(error);
@@ -305,10 +345,16 @@ const UserManagement = () => {
       setUsers(prev => prev.filter(u => u.id !== currentUser.id));
       toast.success('User deleted successfully');
       setIsUserDeleteDialogOpen(false);
+      setCurrentUser(null);
     } catch (error) {
       toast.error('Failed to delete user');
       console.error(error);
     }
+  };
+
+  // Handle form data changes
+  const handleFormDataChange = (formData: Record<string, any>) => {
+    setUserFormData(formData);
   };
 
   return (
@@ -326,7 +372,6 @@ const UserManagement = () => {
           </Button>
         }
         onRowClick={(row) => {
-          // Optional: Handle row click if needed
           console.log('Row clicked:', row);
         }}
         className="w-full"
@@ -334,125 +379,67 @@ const UserManagement = () => {
 
       {/* User Dialog */}
       <Dialog open={isUserDialogOpen} onOpenChange={setIsUserDialogOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-2xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>{currentUser ? 'Edit User' : 'Create User'}</DialogTitle>
+            <DialogTitle>
+              {currentUser ? 'Edit User' : 'Create New User'}
+            </DialogTitle>
           </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
-              <Input
-                id="name"
-                name="name"
-                value={userFormData.name}
-                onChange={handleUserInputChange}
-                placeholder="User Name"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                value={userFormData.email}
-                onChange={handleUserInputChange}
-                placeholder="user@example.com"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="avatar">Avatar URL (Optional)</Label>
-              <Input
-                id="avatar"
-                name="avatar"
-                value={userFormData.avatar || ''}
-                onChange={handleUserInputChange}
-                placeholder="https://example.com/avatar.png"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label>Roles</Label>
-              <div className="grid grid-cols-2 gap-2">
-                {roles.map(role => (
-                  <div key={role} className="flex items-center space-x-2">
-                    <Checkbox
-                      id={`role-${role}`}
-                      checked={(userFormData.roles || []).includes(role)}
-                      onCheckedChange={() => handleUserRoleToggle(role)}
-                    />
-                    <Label htmlFor={`role-${role}`} className="capitalize">
-                      {role}
-                    </Label>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="isActive"
-                  checked={userFormData.isActive}
-                  onCheckedChange={handleUserCheckboxChange}
-                />
-                <Label htmlFor="isActive">Active</Label>
-              </div>
-            </div>
+          <div className="py-4">
+            <DynamicForm
+              schema={userFormSchema}
+              defaultValues={userFormData}
+              onSubmit={handleUserSubmit}
+              onCancel={() => {
+                setIsUserDialogOpen(false);
+                setCurrentUser(null);
+                setUserFormData({
+                  name: '',
+                  email: '',
+                  roles: [],
+                  isActive: true,
+                });
+              }}
+              onChange={handleFormDataChange}
+              submitButtonText={currentUser ? 'Update User' : 'Create User'}
+            />
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsUserDialogOpen(false)}>
-              Cancel
-            </Button>
-            <Button onClick={handleUserSubmit}>{currentUser ? 'Update' : 'Create'}</Button>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
 
       {/* Role Management Dialog */}
       <Dialog open={isRoleDialogOpen} onOpenChange={setIsRoleDialogOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-xl">
           <DialogHeader>
             <DialogTitle>Manage User Roles</DialogTitle>
           </DialogHeader>
           <div className="py-4">
-            <div className="flex items-center space-x-3 mb-4">
+            {/* User Info Header */}
+            <div className="flex items-center space-x-3 mb-6 p-4 bg-muted/50 rounded-lg">
               <Avatar>
                 <AvatarImage src={currentUser?.avatar} />
-                <AvatarFallback>{currentUser ? getInitials(currentUser.name) : ''}</AvatarFallback>
+                <AvatarFallback>
+                  {currentUser ? getInitials(currentUser.name) : ''}
+                </AvatarFallback>
               </Avatar>
               <div>
-                <p className="font-medium">{currentUser?.name}</p>
+                <p className="font-medium text-lg">{currentUser?.name}</p>
                 <p className="text-sm text-muted-foreground">{currentUser?.email}</p>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label>Assigned Roles</Label>
-              <div className="grid grid-cols-2 gap-2">
-                {roles.map(role => (
-                  <div key={role} className="flex items-center space-x-2">
-                    <Checkbox
-                      id={`role-dialog-${role}`}
-                      checked={(userFormData.roles || []).includes(role)}
-                      onCheckedChange={() => handleUserRoleToggle(role)}
-                    />
-                    <Label htmlFor={`role-dialog-${role}`} className="capitalize">
-                      {role}
-                    </Label>
-                  </div>
-                ))}
-              </div>
-            </div>
+            {/* Role Management Form */}
+            <DynamicForm
+              schema={roleFormSchema}
+              defaultValues={{ roles: currentUser?.roles || [] }}
+              onSubmit={handleRoleSubmit}
+              onCancel={() => {
+                setIsRoleDialogOpen(false);
+                setCurrentUser(null);
+              }}
+              submitButtonText="Update Roles"
+            />
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsRoleDialogOpen(false)}>
-              Cancel
-            </Button>
-            <Button onClick={handleRoleSubmit}>Save Changes</Button>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
 
@@ -460,30 +447,63 @@ const UserManagement = () => {
       <Dialog open={isUserDeleteDialogOpen} onOpenChange={setIsUserDeleteDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Confirm Deletion</DialogTitle>
+            <DialogTitle>Confirm User Deletion</DialogTitle>
           </DialogHeader>
           <div className="py-4">
-            <p>Are you sure you want to delete this user?</p>
-            <div className="flex items-center space-x-3 mt-4">
-              <Avatar>
-                <AvatarImage src={currentUser?.avatar} />
-                <AvatarFallback>{currentUser ? getInitials(currentUser.name) : ''}</AvatarFallback>
-              </Avatar>
-              <div>
-                <p className="font-medium">{currentUser?.name}</p>
-                <p className="text-sm text-muted-foreground">{currentUser?.email}</p>
+            <div className="space-y-4">
+              <p className="text-muted-foreground">
+                Are you sure you want to delete this user? This action cannot be undone.
+              </p>
+              
+              {/* User Info */}
+              <div className="flex items-center space-x-3 p-4 bg-muted/50 rounded-lg">
+                <Avatar>
+                  <AvatarImage src={currentUser?.avatar} />
+                  <AvatarFallback>
+                    {currentUser ? getInitials(currentUser.name) : ''}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="font-medium">{currentUser?.name}</p>
+                  <p className="text-sm text-muted-foreground">{currentUser?.email}</p>
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    {currentUser?.roles.map(role => (
+                      <Badge key={role} variant="outline" className="text-xs">
+                        {role}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Warning */}
+              <div className="flex items-center space-x-2 p-3 bg-destructive/10 rounded-lg border border-destructive/20">
+                <div className="w-2 h-2 bg-destructive rounded-full"></div>
+                <p className="text-sm text-destructive font-medium">
+                  This will permanently delete the user and all associated data.
+                </p>
               </div>
             </div>
-            <p className="text-sm text-muted-foreground mt-4">This action cannot be undone.</p>
+
+            {/* Action Buttons */}
+            <div className="flex justify-end gap-3 mt-6">
+              <Button 
+                variant="outline" 
+                onClick={() => {
+                  setIsUserDeleteDialogOpen(false);
+                  setCurrentUser(null);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button 
+                variant="destructive" 
+                onClick={handleUserDelete}
+              >
+                Delete User
+              </Button>
+            </div>
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsUserDeleteDialogOpen(false)}>
-              Cancel
-            </Button>
-            <Button variant="destructive" onClick={handleUserDelete}>
-              Delete
-            </Button>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
