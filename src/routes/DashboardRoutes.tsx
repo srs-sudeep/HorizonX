@@ -19,6 +19,10 @@ const DashboardRoutes = {
       path: 'admin',
       element: <AdminDashboard />,
     },
+    {
+      path: 'student',
+      element: <AdminDashboard />,
+    },
   ],
 };
 
