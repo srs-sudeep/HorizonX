@@ -15,7 +15,7 @@ export const TypographyProvider: React.FC<TypographyProviderProps> = ({ children
     // Apply font family
     const selectedFont = FONT_FAMILIES.find(font => font.value === fontFamily);
     if (selectedFont) {
-      root.style.setProperty('--font-family', selectedFont.class);
+      root.style.setProperty('--typography-font-family', selectedFont.class);
       root.classList.remove(...FONT_FAMILIES.map(font => font.class));
       root.classList.add(selectedFont.class);
       
@@ -23,6 +23,7 @@ export const TypographyProvider: React.FC<TypographyProviderProps> = ({ children
       const navbar = document.querySelector('[data-component="navbar"]');
       const sidebar = document.querySelector('[data-component="sidebar"]');
       const settingsSidebar = document.querySelector('[data-component="settings-sidebar"]');
+      document.body.style.fontFamily = `var(--typography-font-family), 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif`;
       
       if (navbar) {
         navbar.classList.remove(...FONT_FAMILIES.map(font => font.class));
@@ -60,7 +61,7 @@ export const TypographyProvider: React.FC<TypographyProviderProps> = ({ children
     root.style.setProperty('--line-height', lineHeight);
 
     // Apply CSS custom properties for global use
-    root.style.setProperty('--typography-font-family', selectedFont?.class || 'font-inter');
+     root.style.setProperty('--typography-font-family', 'Inter');
     root.style.setProperty('--typography-font-size', fontSize);
     root.style.setProperty('--typography-line-height', lineHeight);
 
