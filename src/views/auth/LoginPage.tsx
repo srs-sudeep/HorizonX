@@ -1,4 +1,5 @@
 import { login } from '@/api';
+import { logos } from '@/assets';
 import { Button, HelmetWrapper, Input, toast } from '@/components';
 import { useAuthStore } from '@/store';
 import { useMutation } from '@tanstack/react-query';
@@ -50,30 +51,33 @@ const LoginPage: React.FC = () => {
 
   return (
     <HelmetWrapper title="Login | HorizonX">
-      <div className="w-full flex bg-gray-900 rounded-xl">
+      <div className="w-[80vw] h-[80vh] flex bg-gray-900 rounded-xl">
         
         {/* Left Side - Login Form */}
-        <div className="flex-1 flex items-center justify-center p-8 bg-black rounded-l-xl">
+        <div className="flex-1 flex items-center p-8 px-20 pt-24 bg-black max-w-1/2 rounded-l-xl">
           <div className="w-full">
             
             {/* Header */}
-            <div className="mb-8">
-              <h1 className="text-2xl font-bold text-white mb-2">HorizonX</h1>
+            <div className="mb-16 flex items-center gap-3">
+              <img src={logos.short.dark} alt="logo" className='h-16 w-16' />
+              <div>
+                <h1 className="text-3xl font-bold text-white mb-2">HorizonX</h1>
               <p className="text-gray-400 text-sm">Please Enter your Account details</p>
+              </div>
             </div>
 
             <form onSubmit={handleLogin} className="space-y-6">
               {/* Email Field */}
               <div className="space-y-2">
-                <label className="text-white text-sm font-medium">Email</label>
+                <label className="text-white text-sm font-medium">LDAP ID</label>
                 <Input
                   id="ldapid"
                   type="text"
-                  placeholder="johndoe@gmail.com"
+                  placeholder="superadmin"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
-                  className="w-full h-12 px-4 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder:text-gray-500 focus:border-gray-600 focus:ring-0 focus:outline-none transition-colors duration-200"
-                  autoComplete="username"
+                  className="bg-foreground dark:bg-background text-background dark:text-foreground mt-3"
+                  autoComplete="ldapid"
                 />
               </div>
 
@@ -87,7 +91,7 @@ const LoginPage: React.FC = () => {
                     value={password}
                     placeholder="••••••••"
                     onChange={e => setPassword(e.target.value)}
-                    className="w-full h-12 px-4 pr-12 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder:text-gray-500 focus:border-gray-600 focus:ring-0 focus:outline-none transition-colors duration-200"
+                    className="bg-foreground dark:bg-background text-background dark:text-foreground mt-3"
                     autoComplete="current-password"
                   />
                   <button
@@ -101,26 +105,16 @@ const LoginPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Forgot Password */}
-              <div className="text-right">
-                <a 
-                  href="/forgot-password" 
-                  className="text-sm text-gray-400 hover:text-white underline transition-colors duration-200"
-                >
-                  Forgot Password
-                </a>
-              </div>
-
               {/* Sign In Button */}
               <Button
                 type="submit"
-                className="w-full h-12 bg-primary hover:bg-green-600 text-white font-semibold rounded-lg text-base transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full h-12 bg-primary text-white font-semibold rounded-lg text-base transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={mutation.isPending}
               >
                 {mutation.isPending ? (
                   <div className="flex items-center gap-2">
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Signing in...
+                    Login in...
                   </div>
                 ) : (
                   'Sign in'
@@ -153,12 +147,13 @@ const LoginPage: React.FC = () => {
             </div>
 
             {/* Create Account */}
-            <div className="text-center mt-8">
+            <div className="text-center mt-8 text-primary">
+              Don't have an account?
               <a 
                 href="/signup" 
-                className="text-sm text-gray-400 hover:text-white underline transition-colors duration-200"
+                className="text-sm ml-2 text-gray-400 hover:text-white underline transition-colors duration-200"
               >
-                Create an account
+                Sign up
               </a>
             </div>
           </div>
@@ -166,19 +161,19 @@ const LoginPage: React.FC = () => {
 
         {/* Right Side - Info Card */}
         <div className="bg-black p-6 flex-1 rounded-r-xl">
-            <div className="flex-1 bg-primary p-8 flex items-center justify-center relative overflow-hidden rounded-xl">
+            <div className="flex-1 bg-primary p-8 flex items-center justify-center relative overflow-hidden rounded-xl min-h-full">
           
           {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0 opacity-10 ">
             <div className="absolute top-10 left-10 w-32 h-32 border border-white rounded-full"></div>
             <div className="absolute bottom-20 right-20 w-24 h-24 border border-white rounded-full"></div>
             <div className="absolute top-1/2 right-10 w-16 h-16 border border-white rounded-full"></div>
           </div>
 
-          <div className="relative z-10 w-full max-w-md">
+          <div className="relative z-10 w-full">
             
             {/* Main Card */}
-            <div className="bg-white/20 backdrop-blur-xl rounded-3xl p-8 mb-6 border border-white/30">
+            <div className="bg-white/20 backdrop-blur-xl rounded-3xl p-8 mb-20 border border-white/30">
               <h2 className="text-3xl font-bold text-white mb-4">
                 What's our Developers Said.
               </h2>

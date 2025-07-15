@@ -10,12 +10,6 @@ const AuthLayout = () => {
         className="absolute inset-0 w-full h-full pointer-events-none bg-primary/10"
         style={{ zIndex: 0 }}
       >
-        {/* <img
-          src='/bg.jpg'
-          alt="HorizonX Logo Background"
-          className="absolute inset-0 w-full h-full object-cover opacity-100 pointer-events-none select-none"
-          style={{ zIndex: 0 }}
-        /> */}
       </div>
       {/* Color overlay from theme color */}
       <div
