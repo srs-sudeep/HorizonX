@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const { setAuth } = useAuthStore();
@@ -23,7 +23,7 @@ const LoginPage: React.FC = () => {
         title: 'Success',
         description: 'You have successfully logged in',
       });
-      navigate('/dashboard/admin');
+      navigate('/horizonx/workbench/dashboard/admin');
     },
     onError: (error: any) => {
       toast({
@@ -37,7 +37,7 @@ const LoginPage: React.FC = () => {
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!email || !password) {
+    if (!username || !password) {
       toast({
         title: 'Error',
         description: 'Please fill in all fields',
@@ -46,7 +46,7 @@ const LoginPage: React.FC = () => {
       return;
     }
 
-    mutation.mutate({ ldapid: email, password });
+    mutation.mutate({ username, password });
   };
 
   return (
@@ -94,15 +94,15 @@ const LoginPage: React.FC = () => {
               <div className="space-y-3">
                 <label className="text-white text-sm font-medium flex items-center gap-2">
                   <Shield className="w-4 h-4 text-primary" />
-                  LDAP ID
+                  Username
                 </label>
                 <div className="relative group">
                   <Input
-                    id="ldapid"
+                    id="username"
                     type="text"
-                    placeholder="Enter your LDAP ID"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
+                    placeholder="Enter your username"
+                    value={username}
+                    onChange={e => setUsername(e.target.value)}
                     className="w-full h-12 px-4 bg-gray-800/50 backdrop-blur-sm border border-gray-600/50 rounded-xl text-white placeholder:text-gray-500 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 focus:bg-gray-800/70 transition-all duration-300 group-hover:border-gray-500/70"
                     autoComplete="ldapid"
                   />

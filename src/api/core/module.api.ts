@@ -4,7 +4,7 @@ import type { Module } from '@/types';
 const BASE = `${CORE_URL}/modules/`;
 
 export async function getModules(): Promise<Module[]> {
-  const { data } = await apiClient.get<Module[]>('/core/api/v1/modules/');
+  const { data } = await apiClient.get<Module[]>('/api/v1/modules/');
   return data;
 }
 

@@ -81,6 +81,7 @@ import {
   ShieldUser,
   SquareChartGantt,
   Ambulance,
+  Gauge,
 } from 'lucide-react';
 export const iconMap = {
   dashboard: LayoutDashboard,
@@ -131,7 +132,7 @@ export const iconMap = {
   lock: Lock,
   key: Key,
   boxes: Boxes,
-  path: Waypoints,
+  route: Waypoints,
   view: View,
   device: MonitorSmartphone,
   deviceAdmin: MonitorCheck,
@@ -165,4 +166,5 @@ export const iconMap = {
   doctor: ShieldUser,
   slots: SquareChartGantt,
   ambulance: Ambulance,
+  workbench: Gauge,
 };

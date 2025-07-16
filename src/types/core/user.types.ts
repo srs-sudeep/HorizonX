@@ -12,9 +12,10 @@ export interface GetUsersParams {
 }
 
 export interface UserAPI {
-  ldapid: string;
-  idNumber: string;
   name: string;
+  phoneNumber: string;
+  email: string;
+  username: string;
   is_active: boolean;
   roles: UserRoleAPI[];
 }

@@ -1,12 +1,10 @@
 import { useAuthStore } from '@/store';
 import { Building, Hash, Mail, User, UserCheck } from 'lucide-react';
-import { ProtectedComponent } from '@/components/ProtectedComponent';
-import { useUserPermissions } from '@/hooks/useComponentAccess';
+import { ProtectedComponent } from '@/core/context/protectedComponent';
+// import { useUserPermissions } from '@/hooks/useComponentAccess';
 
 export default function ProfilePage() {
   const { user } = useAuthStore();
-  const userRoles = user?.roles || [];
-  const { permissions } = useUserPermissions(userRoles);
 
   return (
     <div className="container">
@@ -240,29 +238,6 @@ export default function ProfilePage() {
                   Access Level
                 </p>
               </div>
-            </div>
-          </div>
-        </ProtectedComponent>
-
-        {/* Debug Info - Shows current permissions (Admin only) */}
-        <ProtectedComponent
-          componentId="comp-profile-icon"
-          fallback={null}
-        >
-          <div className="mt-8 p-4 bg-muted/50 rounded-lg">
-            <h3 className="font-semibold mb-2">Debug Info (Admin Only)</h3>
-            <p className="text-sm text-muted-foreground mb-2">
-              Current Permissions:
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {permissions.map((permission) => (
-                <span
-                  key={permission.permission_id}
-                  className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs"
-                >
-                  {permission.name}
-                </span>
-              ))}
             </div>
           </div>
         </ProtectedComponent>

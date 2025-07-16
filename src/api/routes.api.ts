@@ -7,7 +7,7 @@ import { type UserRoute } from '@/types';
  * @returns {Promise<string[]>} A promise that resolves to an array of route paths.
  */
 export const fetchUserRoutes = async (): Promise<string[]> => {
-  const { data } = await apiClient.get<UserRoute[]>('/core/api/v1/routes/my-routes', {
+  const { data } = await apiClient.get<UserRoute[]>('/api/v1/route/my-routes', {
     silentError: false,
     headers: {
       'x-error-context': 'Fetching Sidebar Modules',

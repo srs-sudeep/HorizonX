@@ -7,10 +7,15 @@ export interface LoginResponse {
 
 export interface User {
   name: string;
-  idNumber: string;
-  ldapid: string;
+  phoneNumber: string;
+  email: string;
+  username: string;
   is_active: boolean;
   roles: UserRole[];
   created_at: string;
   updated_at: string;
+}
+
+export interface userComponents {
+  components: string[];
 }
