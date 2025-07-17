@@ -39,11 +39,11 @@ export function useUserFilter() {
   });
 }
 
-export function useUserComponents(user_id: string) {
+export function useUserComponents(user_id?: string) {
   return useQuery<UserComponentsResponse>({
-    queryKey: ['user-components', user_id],
-    queryFn: () => getUserComponents(user_id),
-    enabled: !!user_id,
+    queryKey: ['user-components', user_id ?? 'me'],
+    queryFn: () => user_id ? getUserComponents(user_id) : getUserComponents(),
+    enabled: user_id !== undefined || user_id === undefined, // always enabled
   });
 }
 

@@ -48,7 +48,7 @@ export default function ProfilePage() {
 
         {/* Profile Details Grid - Protected Component */}
         <ProtectedComponent
-          componentId="comp-profile-details"
+          componentId="profile-details"
           fallback={
             <div className="text-center py-8">
               <p className="text-muted-foreground">
@@ -97,12 +97,12 @@ export default function ProfilePage() {
                   <p
                     className={`text-sm font-medium mb-2 transition-colors duration-500 text-muted-foreground`}
                   >
-                    LDAP ID
+                    Username
                   </p>
                   <p
                     className={`text-xl font-bold break-words transition-colors duration-500 text-foreground`}
                   >
-                    {user?.ldapid}
+                    {user?.username}
                   </p>
                 </div>
               </div>
@@ -122,12 +122,12 @@ export default function ProfilePage() {
                   <p
                     className={`text-sm font-medium mb-2 transition-colors duration-500 text-muted-foreground`}
                   >
-                    Institute ID
+                    Phone
                   </p>
                   <p
                     className={`text-xl font-bold break-words transition-colors duration-500 text-foreground`}
                   >
-                    {user?.idNumber}
+                    {user?.phoneNumber}
                   </p>
                 </div>
               </div>
@@ -152,7 +152,7 @@ export default function ProfilePage() {
                   <p
                     className={`text-xl font-bold break-words transition-colors duration-500 text-foreground`}
                   >
-                    {user?.ldapid}@iitbhilai.ac.in
+                    {user?.email}
                   </p>
                 </div>
               </div>

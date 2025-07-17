@@ -53,7 +53,7 @@ export async function getUserFilters(): Promise<UserFiltersResponse> {
   return data;
 }
 
-export async function getUserComponents(user_id: string): Promise<UserComponentsResponse> {
+export async function getUserComponents(user_id?: string): Promise<UserComponentsResponse> {
   const { data } = await apiClient.get<UserComponentsResponse>(`${CORE_URL}/users/components`, {
     params: { user_id },
   });

@@ -37,6 +37,8 @@ import {
   useUpdateRoute,
   useUsers,
   useMultiUserComponents,
+  useAddRouteComponent,
+  useRemoveRouteComponent,
 } from '@/hooks';
 import { FieldType, FilterConfig } from '@/types';
 import { Pencil, Plus, Trash2, Search, X, ChevronDownIcon, View, Loader2 } from 'lucide-react';
@@ -82,6 +84,7 @@ const RouteManagement = () => {
   const [viewComponentPanel, setViewComponentPanel] = useState<number>();
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [tab, setTab] = useState<'user' | 'component'>('user');
+  const [newComponentId, setNewComponentId] = useState('');
 
   // Fetch all users for the dropdown
   const { data: userListData } = useUsers({});
@@ -655,6 +658,8 @@ const RouteManagement = () => {
   // Route components for the selected route
   const routeId = viewComponentPanel;
   const { data: routeComponents } = useRouteComponents(routeId ?? 0);
+  const addRouteComponentMutation = useAddRouteComponent();
+  const removeRouteComponentMutation = useRemoveRouteComponent();
 
   // Build userComponentsMap from hook
   const userComponentsMap = useMultiUserComponents(selectedUsers);
@@ -700,6 +705,28 @@ const RouteManagement = () => {
     },
     {}
   );
+
+  const routeComponentTableData = (routeComponents?.component_ids || []).map(component_id => ({
+    Component: component_id,
+    Actions: { route_id: routeId, component_id },
+  }));
+
+  const routeComponentTableCustomRender = {
+    Actions: (val: { route_id?: number; component_id: string }) => (
+      <Button
+        size="icon"
+        variant="destructive"
+        onClick={() => {
+          if (val.route_id && val.component_id) {
+            removeRouteComponentMutation.mutate({ route_id: val.route_id, component_id: val.component_id });
+          }
+        }}
+        disabled={removeRouteComponentMutation.isPending}
+      >
+        <Trash2 className="w-4 h-4" />
+      </Button>
+    ),
+  };
 
   return (
     <HelmetWrapper
@@ -886,7 +913,39 @@ const RouteManagement = () => {
                 />
               )}
             </TabsContent>
-            {/* Second tab will be implemented in next prompt */}
+            <TabsContent value="component">
+              <div className="space-y-4">
+                {/* Input for new component */}
+                <div className="flex gap-2 items-center mb-4">
+                  <Input
+                    type="text"
+                    placeholder="Enter new component ID"
+                    value={newComponentId}
+                    onChange={e => setNewComponentId(e.target.value)}
+                  />
+                  <Button
+                    onClick={() => {
+                      if (newComponentId.trim() && routeId) {
+                        addRouteComponentMutation.mutate(
+                          { route_id: routeId, component_id: newComponentId.trim() },
+                          { onSuccess: () => setNewComponentId('') }
+                        );
+                      }
+                    }}
+                    disabled={addRouteComponentMutation.isPending || !newComponentId.trim()}
+                  >
+                    Add Component
+                  </Button>
+                </div>
+
+                {/* Table of components */}
+                <DynamicTable
+                  data={routeComponentTableData}
+                  customRender={routeComponentTableCustomRender}
+                  disableSearch
+                />
+              </div>
+            </TabsContent>
           </Tabs>
         </SheetContent>
       </Sheet>
