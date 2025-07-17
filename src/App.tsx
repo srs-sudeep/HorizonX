@@ -5,6 +5,7 @@ import { Toaster as Sonner } from '@/components/ui/sonner';
 import { TooltipProvider, Toaster, TypographyProvider } from '@/components';
 import { ThemeProvider } from '@/theme';
 import { HelmetProvider } from 'react-helmet-async';
+import { ProtectedComponentProvider } from '@/core';
 
 // Extend the Window interface to include 'electron'
 declare global {
@@ -29,19 +30,21 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <HelmetProvider>
-        <ThemeProvider>
-          <TypographyProvider>
-            <TooltipProvider>
-              <Toaster />
-              <Sonner />
-              <RouterComponent>
-                <Router />
-              </RouterComponent>
-            </TooltipProvider>
-          </TypographyProvider>
-        </ThemeProvider>
-      </HelmetProvider>
+      <ProtectedComponentProvider>
+        <HelmetProvider>
+          <ThemeProvider>
+            <TypographyProvider>
+              <TooltipProvider>
+                <Toaster />
+                <Sonner />
+                <RouterComponent>
+                  <Router />
+                </RouterComponent>
+              </TooltipProvider>
+            </TypographyProvider>
+          </ThemeProvider>
+        </HelmetProvider>
+      </ProtectedComponentProvider>
     </QueryClientProvider>
   );
 }

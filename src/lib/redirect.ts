@@ -4,7 +4,7 @@ export function getDashboardLink(role: UserRole | null | undefined) {
   const rolePaths: Record<string, string> = {
     default: '/horizonx/workbench',
     superuser: '/horizonx/workbench/dashboard/admin',
-    student: '/horizonx/workbench/dashboard/student'
+    user: '/horizonx/workbench/dashboard/user',
   };
 
   return role && rolePaths[role] ? rolePaths[role] : '/';

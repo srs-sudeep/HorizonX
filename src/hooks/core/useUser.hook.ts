@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getUsers, getUserFilters, assignRoleToUser, removeRoleFromUser } from '@/api';
-import type { UserListResponse, GetUsersParams, UserFiltersResponse } from '@/types';
+import { getUsers, getUserFilters, assignRoleToUser, removeRoleFromUser, getUserComponents } from '@/api';
+import type { UserListResponse, GetUsersParams, UserFiltersResponse, UserComponentsResponse } from '@/types';
 
 export function useUsers(params: GetUsersParams = {}) {
   return useQuery<UserListResponse>({
@@ -36,5 +36,12 @@ export function useUserFilter() {
   return useQuery<UserFiltersResponse>({
     queryKey: ['user-filters'],
     queryFn: getUserFilters,
+  });
+}
+
+export function useUserComponents() {
+  return useQuery<UserComponentsResponse>({
+    queryKey: ['user-components'],
+    queryFn: getUserComponents,
   });
 }

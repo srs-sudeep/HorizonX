@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, Typography, H3, P, Small } from '@/components';
-import { Settings, Palette, X, Type, AlignLeft } from 'lucide-react';
+import { Button, Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, H3, P, Small } from '@/components';
+import { Settings, Palette, Type } from 'lucide-react';
 import { useTheme } from '@/theme/ThemeProvider';
 import { ColorTheme, ThemeMode } from '@/theme/types';
 import { useTypographyStore, FONT_FAMILIES, FONT_SIZES, LINE_HEIGHTS } from '@/store';

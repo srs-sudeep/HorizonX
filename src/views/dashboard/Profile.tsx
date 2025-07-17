@@ -11,7 +11,7 @@ export default function ProfilePage() {
       <div className="relative z-10 p-8 md:p-12">
         {/* Profile Header - Protected Component */}
         <ProtectedComponent
-          componentId="comp-profile-header"
+          componentId="profile-header"
           fallback={
             <div className="text-center py-8">
               <p className="text-muted-foreground">

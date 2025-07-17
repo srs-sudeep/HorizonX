@@ -20,7 +20,7 @@ const DashboardRoutes = {
       element: <AdminDashboard />,
     },
     {
-      path: 'student',
+      path: 'user',
       element: <AdminDashboard />,
     },
   ],

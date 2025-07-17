@@ -38,3 +38,8 @@ export interface UserFiltersResponse {
   roles: UserRoleFilter[];
   status: UserStatusFilter[];
 }
+
+export interface UserComponentsResponse {
+  user_id: string;
+  component_ids: string[];
+}

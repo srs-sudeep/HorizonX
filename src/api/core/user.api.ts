@@ -1,5 +1,5 @@
 import { apiClient, CORE_URL } from '@/core';
-import type { UserListResponse, UserFiltersResponse, GetUsersParams } from '@/types';
+import type { UserListResponse, UserFiltersResponse, GetUsersParams, UserComponentsResponse } from '@/types';
 
 const BASE = `${CORE_URL}/users/`;
 
@@ -50,5 +50,10 @@ export async function removeRoleFromUser(user_id: string, role_id: number) {
 
 export async function getUserFilters(): Promise<UserFiltersResponse> {
   const { data } = await apiClient.get<UserFiltersResponse>(`${BASE}filters`);
+  return data;
+}
+
+export async function getUserComponents(): Promise<UserComponentsResponse> {
+  const { data } = await apiClient.get<UserComponentsResponse>(`${CORE_URL}/users/components`);
   return data;
 }
