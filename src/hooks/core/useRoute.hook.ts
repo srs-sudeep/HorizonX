@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getRoutes, createRoute, updateRoute, deleteRoute } from '@/api';
-import type { Route } from '@/types';
+import { getRoutes, createRoute, updateRoute, deleteRoute, getRouteComponents } from '@/api';
+import type { Route, RouteComponentResponse } from '@/types';
 
 export function useRoutes() {
   return useQuery<Route[]>({
@@ -45,5 +45,13 @@ export function useDeleteRoute() {
       queryClient.invalidateQueries({ queryKey: ['routes'] });
       queryClient.invalidateQueries({ queryKey: ['sidebarItems'] });
     },
+  });
+}
+
+export function useRouteComponents(route_id: number) {
+  return useQuery<RouteComponentResponse>({
+    queryKey: ['route-components', route_id],
+    queryFn: () => getRouteComponents(route_id),
+    enabled: !!route_id,
   });
 }

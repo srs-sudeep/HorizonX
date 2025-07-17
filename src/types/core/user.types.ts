@@ -44,3 +44,8 @@ export interface UserComponentsResponse {
   user_id: string;
   component_ids: string[];
 }
+
+export interface UserComponentPayload {
+  user_id: string;
+  component_id: string;
+}

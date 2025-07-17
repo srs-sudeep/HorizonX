@@ -1,5 +1,5 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getUsers, getUserFilters, assignRoleToUser, removeRoleFromUser, getUserComponents } from '@/api';
+import { useQuery, useMutation, useQueryClient, useQueries } from '@tanstack/react-query';
+import { getUsers, getUserFilters, assignRoleToUser, removeRoleFromUser, getUserComponents, addUserComponent, removeUserComponent } from '@/api';
 import type { UserListResponse, GetUsersParams, UserFiltersResponse, UserComponentsResponse } from '@/types';
 
 export function useUsers(params: GetUsersParams = {}) {
@@ -39,9 +39,45 @@ export function useUserFilter() {
   });
 }
 
-export function useUserComponents() {
+export function useUserComponents(user_id: string) {
   return useQuery<UserComponentsResponse>({
-    queryKey: ['user-components'],
-    queryFn: getUserComponents,
+    queryKey: ['user-components', user_id],
+    queryFn: () => getUserComponents(user_id),
+    enabled: !!user_id,
   });
+}
+
+export function useAddUserComponent() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: addUserComponent,
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['user-components', variables.user_id] });
+    },
+  });
+}
+
+export function useRemoveUserComponent() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: removeUserComponent,
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['user-components', variables.user_id] });
+    },
+  });
+}
+
+export function useMultiUserComponents(userIds: string[]) {
+  const queries = useQueries({
+    queries: userIds.map(user_id => ({
+      queryKey: ['user-components', user_id],
+      queryFn: () => getUserComponents(user_id),
+      enabled: !!user_id,
+    })),
+  });
+
+  return userIds.reduce((acc, user_id, idx) => {
+    acc[user_id] = queries[idx]?.data?.component_ids || [];
+    return acc;
+  }, {} as Record<string, string[]>);
 }

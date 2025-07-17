@@ -1,5 +1,5 @@
 import { apiClient, CORE_URL } from '@/core';
-import type { UserListResponse, UserFiltersResponse, GetUsersParams, UserComponentsResponse } from '@/types';
+import type { UserListResponse, UserFiltersResponse, GetUsersParams, UserComponentsResponse, UserComponentPayload } from '@/types';
 
 const BASE = `${CORE_URL}/users/`;
 
@@ -53,7 +53,17 @@ export async function getUserFilters(): Promise<UserFiltersResponse> {
   return data;
 }
 
-export async function getUserComponents(): Promise<UserComponentsResponse> {
-  const { data } = await apiClient.get<UserComponentsResponse>(`${CORE_URL}/users/components`);
+export async function getUserComponents(user_id: string): Promise<UserComponentsResponse> {
+  const { data } = await apiClient.get<UserComponentsResponse>(`${CORE_URL}/users/components`, {
+    params: { user_id },
+  });
   return data;
+}
+
+export async function addUserComponent(payload: UserComponentPayload) {
+  await apiClient.post(`${CORE_URL}/users/add-component`, payload);
+}
+
+export async function removeUserComponent(payload: UserComponentPayload) {
+  await apiClient.delete(`${CORE_URL}/users/remove-component`, { data: payload });
 }

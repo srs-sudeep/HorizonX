@@ -11,3 +11,8 @@ export interface Route {
   created_at: string;
   updated_at: string;
 }
+
+export interface RouteComponentResponse {
+  route_id: number;
+  component_ids: string[];
+}

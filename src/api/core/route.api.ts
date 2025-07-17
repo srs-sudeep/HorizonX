@@ -1,5 +1,5 @@
 import { apiClient, CORE_URL } from '@/core';
-import type { Route } from '@/types';
+import type { Route, RouteComponentResponse } from '@/types';
 
 const BASE = `${CORE_URL}/route/`;
 
@@ -26,5 +26,10 @@ export async function createRoute(payload: Omit<Route, 'route_id' | 'created_at'
   const { data } = await apiClient.post<Route>(`${BASE}`, payload, {
     silentError: false,
   });
+  return data;
+}
+
+export async function getRouteComponents(route_id: number): Promise<RouteComponentResponse> {
+  const { data } = await apiClient.get<RouteComponentResponse>(`${CORE_URL}/route/${route_id}/components`);
   return data;
 }
