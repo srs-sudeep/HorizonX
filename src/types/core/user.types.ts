@@ -12,6 +12,7 @@ export interface GetUsersParams {
 }
 
 export interface UserAPI {
+  id: string;
   name: string;
   phoneNumber: string;
   email: string;

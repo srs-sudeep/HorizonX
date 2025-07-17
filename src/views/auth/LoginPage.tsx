@@ -23,7 +23,7 @@ const LoginPage: React.FC = () => {
         title: 'Success',
         description: 'You have successfully logged in',
       });
-      navigate('/horizonx/workbench/dashboard/admin');
+      navigate('/horizonx/workbench');
     },
     onError: (error: any) => {
       toast({

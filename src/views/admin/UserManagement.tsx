@@ -46,15 +46,16 @@ const UserManagement = () => {
 
   useEffect(() => {
     if (!editUser) return;
-    const updated = users.find(u => u.ldapid === editUser.ldapid);
+    const updated = users.find(u => u.username === editUser.username);
     if (updated) setEditUser(updated);
-  }, [users, editUser?.ldapid]);
+  }, [users, editUser?.username]);
 
   const getTableData = (users: UserAPI[]) =>
     users.map(user => ({
       Name: user.name,
-      'Ldap Id': user.ldapid,
-      'Id Number': user.idNumber,
+      Username: user.username,
+      Email: user.email,
+      Phone: user.phoneNumber,
       Active: user.is_active,
       Roles: user.roles
         .filter(r => r.isAssigned)
@@ -181,13 +182,19 @@ const UserManagement = () => {
                         </span>
                       </div>
                       <div className="flex justify-between items-center py-2 border-b border-border/50">
-                        <span className="text-sm font-medium text-muted-foreground">LDAP ID</span>
-                        <span className="text-sm font-mono text-foreground">{editUser.ldapid}</span>
+                        <span className="text-sm font-medium text-muted-foreground">Username</span>
+                        <span className="text-sm font-mono text-foreground">{editUser.username}</span>
                       </div>
                       <div className="flex justify-between items-center py-2 border-b border-border/50">
-                        <span className="text-sm font-medium text-muted-foreground">ID Number</span>
+                        <span className="text-sm font-medium text-muted-foreground">Email</span>
                         <span className="text-sm font-mono text-foreground">
-                          {editUser.idNumber}
+                          {editUser.email}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center py-2 border-b border-border/50">
+                        <span className="text-sm font-medium text-muted-foreground">Phone</span>
+                        <span className="text-sm font-mono text-foreground">
+                          {editUser.phoneNumber}
                         </span>
                       </div>
                       <div className="flex justify-between items-center py-2">
@@ -273,7 +280,7 @@ const UserManagement = () => {
                                 if (isLoading) return;
                                 if (checked) {
                                   removeRoleFromUser.mutate(
-                                    { user_id: editUser.ldapid, role_id: role.role_id },
+                                    { user_id: editUser.id, role_id: role.role_id },
                                     {
                                       onSuccess: () =>
                                         toast({
@@ -284,7 +291,7 @@ const UserManagement = () => {
                                   );
                                 } else {
                                   assignRoleToUser.mutate(
-                                    { user_id: editUser.ldapid, role_id: role.role_id },
+                                    { user_id: editUser.id, role_id: role.role_id },
                                     {
                                       onSuccess: () =>
                                         toast({

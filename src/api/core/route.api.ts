@@ -1,7 +1,7 @@
 import { apiClient, CORE_URL } from '@/core';
 import type { Route } from '@/types';
 
-const BASE = `${CORE_URL}/routes/`;
+const BASE = `${CORE_URL}/route/`;
 
 export async function getRoutes(): Promise<Route[]> {
   const { data } = await apiClient.get<Route[]>(`${BASE}`);
