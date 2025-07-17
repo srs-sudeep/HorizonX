@@ -34,15 +34,89 @@ import {
   UserAvatar,
   useToast,
 } from '@/components';
+import React, { useState, useEffect, useRef } from 'react';
+import Lottie from 'lottie-react';
+import bellAnimation from '@/assets/animations/bell.json';
+import menuAnimation from '@/assets/animations/menu.json';
+import settingsAnimation from '@/assets/animations/settings.json';
+import searchAnimation from '@/assets/animations/searchToX.json';
 import { useSidebar } from '@/core';
 import { useIsMobile } from '@/hooks';
 import { getDashboardLink } from '@/lib/redirect';
 import { useAuthStore, useTypographyStore, FONT_FAMILIES } from '@/store';
 
 import { notifications, UserRole } from '@/types';
-import { Bell, ChevronDown, HelpCircle, LogOut, Menu, User, Info, Search } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import { ChevronDown, HelpCircle, LogOut, User, Info } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
+
+// Bell Lottie
+const BellLottie = () => {
+  const lottieRef = useRef();
+  return (
+    <div
+      onClick={() => lottieRef.current?.play()}
+      style={{ cursor: 'pointer' }}
+      className="text-gray-800 dark:text-white"
+    >
+      <Lottie
+        lottieRef={lottieRef}
+        animationData={bellAnimation}
+        loop={false}
+        autoplay={false}
+        style={{ width: 20, height: 20 }}
+        onComplete={() => lottieRef.current?.goToAndStop(0, true)}
+      />
+    </div>
+  );
+};
+// Menu Lottie
+const MenuLottie = () => {
+  const lottieRef = useRef();
+  return (
+    <div onClick={() => lottieRef.current?.play()} style={{ cursor: 'pointer' }}>
+      <Lottie
+        lottieRef={lottieRef}
+        animationData={menuAnimation}
+        loop={false}
+        autoplay={false}
+        style={{ width: 24, height: 24 }}
+        onComplete={() => lottieRef.current?.goToAndStop(0, true)}
+      />
+    </div>
+  );
+};
+// Settings Lottie
+const SettingsLottie = () => {
+  const lottieRef = useRef();
+  return (
+    <div onClick={() => lottieRef.current?.play()} style={{ cursor: 'pointer' }}>
+      <Lottie
+        lottieRef={lottieRef}
+        animationData={settingsAnimation}
+        loop={false}
+        autoplay={false}
+        style={{ width: 20, height: 20 }}
+        onComplete={() => lottieRef.current?.goToAndStop(0, true)}
+      />
+    </div>
+  );
+};
+// Search Lottie
+const SearchLottie = () => {
+  const lottieRef = useRef();
+  return (
+    <div onClick={() => lottieRef.current?.play()} style={{ cursor: 'pointer' }}>
+      <Lottie
+        lottieRef={lottieRef}
+        animationData={searchAnimation}
+        loop={false}
+        autoplay={false}
+        style={{ width: 20, height: 20 }}
+        onComplete={() => lottieRef.current?.goToAndStop(0, true)}
+      />
+    </div>
+  );
+};
 
 export const Navbar = () => {
   const { user, logout, setCurrentRole, currentRole } = useAuthStore();
@@ -126,7 +200,7 @@ export const Navbar = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <button onClick={toggleSidebar}>
-                <Menu className="w-6 h-6" />
+                <MenuLottie />
               </button>
             </TooltipTrigger>
             <TooltipContent>Toggle Sidebar</TooltipContent>
@@ -139,7 +213,7 @@ export const Navbar = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(true)}>
-                <Search className="h-5 w-5 text-primary" />
+                <SearchLottie />
               </Button>
             </TooltipTrigger>
             <TooltipContent side="bottom">Search</TooltipContent>
@@ -165,7 +239,7 @@ export const Navbar = () => {
                 {/* Notifications */}
                 <div className="space-y-1">
                   <div className="flex items-center gap-2 text-muted-foreground font-medium text-sm">
-                    <Bell className="h-4 w-4" />
+                    <BellLottie />
                     Notifications
                   </div>
                   <div className="max-h-48 overflow-y-auto border rounded-md" >
@@ -305,7 +379,7 @@ export const Navbar = () => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(true)}>
-                  <Search className="h-5 w-5 text-primary" />
+                  <SearchLottie />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>Search</TooltipContent>
@@ -321,7 +395,7 @@ export const Navbar = () => {
                 <TooltipTrigger asChild>
                   <PopoverTrigger asChild>
                     <Button variant="ghost" size="icon" className="relative">
-                      <Bell className="h-5 w-5" />
+                      <BellLottie />
                       <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-xs flex items-center justify-center text-background">
                         {notifications.filter(n => !n.read).length}
                       </span>

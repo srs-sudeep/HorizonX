@@ -70,139 +70,53 @@ export function FullPageLoader() {
           animation: 'containerGlow 4s ease-in-out infinite alternate',
         }}
       >
-        {/* S */}
-        <div className="loader s">
-          <svg
-            viewBox="0 0 70 90"
-            className="block w-full h-full"
-            style={{ filter: 'drop-shadow(0 0 15px rgba(255, 105, 180, 0.4))' }}
-          >
-            <path
-              d="M55 20 L20 20 Q10 20 10 30 Q10 35 15 35 L45 35 Q60 35 60 50 Q60 70 45 70 L15 70"
-              fill="none"
-              strokeWidth="10"
-              strokeLinejoin="round"
-              strokeLinecap="round"
-            />
+        {/* H */}
+        <div className="loader h">
+          <svg viewBox="0 0 70 90" className="block w-full h-full" style={{ filter: 'drop-shadow(0 0 15px rgba(255, 105, 180, 0.4))' }}>
+            <path d="M15 70 L15 20 M15 45 L55 45 M55 20 L55 70" fill="none" strokeWidth="10" strokeLinejoin="round" strokeLinecap="round" />
           </svg>
         </div>
-
-        {/* E */}
-        <div className="loader e">
-          <svg
-            viewBox="0 0 70 90"
-            className="block w-full h-full"
-            style={{ filter: 'drop-shadow(0 0 15px rgba(255, 105, 180, 0.4))' }}
-          >
-            <path
-              d="M15 70 L15 20 L55 20 M15 45 L50 45 M15 70 L55 70"
-              fill="none"
-              strokeWidth="10"
-              strokeLinejoin="round"
-              strokeLinecap="round"
-            />
+        {/* o */}
+        <div className="loader o">
+          <svg viewBox="0 0 70 90" className="block w-full h-full" style={{ filter: 'drop-shadow(0 0 15px rgba(255, 105, 180, 0.4))' }}>
+            <ellipse cx="35" cy="45" rx="25" ry="25" fill="none" strokeWidth="10" strokeLinejoin="round" strokeLinecap="round" />
           </svg>
         </div>
-
-        {/* A */}
-        <div className="loader a">
-          <svg
-            viewBox="0 0 70 90"
-            className="block w-full h-full"
-            style={{ filter: 'drop-shadow(0 0 15px rgba(255, 105, 180, 0.4))' }}
-          >
-            <path
-              d="M10 70 L35 20 L60 70 M20 55 L50 55"
-              fill="none"
-              strokeWidth="10"
-              strokeLinejoin="round"
-              strokeLinecap="round"
-            />
+        {/* r */}
+        <div className="loader r">
+          <svg viewBox="0 0 70 90" className="block w-full h-full" style={{ filter: 'drop-shadow(0 0 15px rgba(255, 105, 180, 0.4))' }}>
+            <path d="M20 70 L20 20 M20 45 Q40 20 55 45" fill="none" strokeWidth="10" strokeLinejoin="round" strokeLinecap="round" />
           </svg>
         </div>
-
-        {/* M */}
-        <div className="loader m">
-          <svg
-            viewBox="0 0 70 90"
-            className="block w-full h-full"
-            style={{ filter: 'drop-shadow(0 0 15px rgba(255, 105, 180, 0.4))' }}
-          >
-            <path
-              d="M10 70 L10 20 L35 45 L60 20 L60 70"
-              fill="none"
-              strokeWidth="10"
-              strokeLinejoin="round"
-              strokeLinecap="round"
-            />
+        {/* i */}
+        <div className="loader i">
+          <svg viewBox="0 0 70 90" className="block w-full h-full" style={{ filter: 'drop-shadow(0 0 15px rgba(255, 105, 180, 0.4))' }}>
+            <path d="M35 30 L35 70" fill="none" strokeWidth="10" strokeLinejoin="round" strokeLinecap="round" />
+            <circle cx="35" cy="20" r="6" fill="none" strokeWidth="10" />
           </svg>
         </div>
-
-        {/* L */}
-        <div className="loader l">
-          <svg
-            viewBox="0 0 70 90"
-            className="block w-full h-full"
-            style={{ filter: 'drop-shadow(0 0 15px rgba(255, 105, 180, 0.4))' }}
-          >
-            <path
-              d="M15 20 L15 70 L55 70"
-              fill="none"
-              strokeWidth="10"
-              strokeLinejoin="round"
-              strokeLinecap="round"
-            />
+        {/* z */}
+        <div className="loader z">
+          <svg viewBox="0 0 70 90" className="block w-full h-full" style={{ filter: 'drop-shadow(0 0 15px rgba(255, 105, 180, 0.4))' }}>
+            <path d="M15 20 L55 20 L15 70 L55 70" fill="none" strokeWidth="10" strokeLinejoin="round" strokeLinecap="round" />
           </svg>
         </div>
-
-        {/* E */}
-        <div className="loader e">
-          <svg
-            viewBox="0 0 70 90"
-            className="block w-full h-full"
-            style={{ filter: 'drop-shadow(0 0 15px rgba(255, 105, 180, 0.4))' }}
-          >
-            <path
-              d="M15 70 L15 20 L55 20 M15 45 L50 45 M15 70 L55 70"
-              fill="none"
-              strokeWidth="10"
-              strokeLinejoin="round"
-              strokeLinecap="round"
-            />
+        {/* o */}
+        <div className="loader o">
+          <svg viewBox="0 0 70 90" className="block w-full h-full" style={{ filter: 'drop-shadow(0 0 15px rgba(255, 105, 180, 0.4))' }}>
+            <ellipse cx="35" cy="45" rx="25" ry="25" fill="none" strokeWidth="10" strokeLinejoin="round" strokeLinecap="round" />
           </svg>
         </div>
-
-        {/* S */}
-        <div className="loader s">
-          <svg
-            viewBox="0 0 70 90"
-            className="block w-full h-full"
-            style={{ filter: 'drop-shadow(0 0 15px rgba(255, 105, 180, 0.4))' }}
-          >
-            <path
-              d="M55 20 L20 20 Q10 20 10 30 Q10 35 15 35 L45 35 Q60 35 60 50 Q60 70 45 70 L15 70"
-              fill="none"
-              strokeWidth="10"
-              strokeLinejoin="round"
-              strokeLinecap="round"
-            />
+        {/* n */}
+        <div className="loader n">
+          <svg viewBox="0 0 70 90" className="block w-full h-full" style={{ filter: 'drop-shadow(0 0 15px rgba(255, 105, 180, 0.4))' }}>
+            <path d="M15 70 L15 20 Q35 45 55 20 L55 70" fill="none" strokeWidth="10" strokeLinejoin="round" strokeLinecap="round" />
           </svg>
         </div>
-
-        {/* S */}
-        <div className="loader s">
-          <svg
-            viewBox="0 0 70 90"
-            className="block w-full h-full"
-            style={{ filter: 'drop-shadow(0 0 15px rgba(255, 105, 180, 0.4))' }}
-          >
-            <path
-              d="M55 20 L20 20 Q10 20 10 30 Q10 35 15 35 L45 35 Q60 35 60 50 Q60 70 45 70 L15 70"
-              fill="none"
-              strokeWidth="10"
-              strokeLinejoin="round"
-              strokeLinecap="round"
-            />
+        {/* X */}
+        <div className="loader x">
+          <svg viewBox="0 0 70 90" className="block w-full h-full" style={{ filter: 'drop-shadow(0 0 15px rgba(255, 105, 180, 0.4))' }}>
+            <path d="M15 20 L55 70 M55 20 L15 70" fill="none" strokeWidth="10" strokeLinejoin="round" strokeLinecap="round" />
           </svg>
         </div>
       </div>

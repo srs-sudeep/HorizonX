@@ -49,7 +49,6 @@ export const useProfileIconAccess = (userRoles: UserRole[]) => {
         setIsLoading(false);
       }
     };
-
     if (userRoles.length > 0) {
       checkAccess();
     } else {

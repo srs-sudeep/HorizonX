@@ -14,8 +14,8 @@ type HelmetWrapperProps = {
 };
 
 export const HelmetWrapper: React.FC<HelmetWrapperProps> = ({
-  title = 'Seamless',
-  description = 'Seamless Management System',
+  title = 'HorizonX',
+  description = 'HorizonX Management System',
   keywords = 'default, keywords',
   heading,
   subHeading,

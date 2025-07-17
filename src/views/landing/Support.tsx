@@ -22,24 +22,24 @@ const SupportPage: React.FC = () => {
   const faqData: Record<string, FAQItem[]> = {
     general: [
       {
-        question: 'What is Seamless and how does it work?',
+        question: 'What is HorizonX and how does it work?',
         answer:
-          'Seamless is a comprehensive productivity application that helps you manage tasks, collaborate with teams, and streamline your workflow. It works by integrating multiple productivity tools into one seamless experience, allowing you to switch between different modes like task management, document editing, and team communication without losing context.',
+          'HorizonX is a comprehensive productivity application that helps you manage tasks, collaborate with teams, and streamline your workflow. It works by integrating multiple productivity tools into one HorizonX experience, allowing you to switch between different modes like task management, document editing, and team communication without losing context.',
       },
       {
-        question: 'How do I get started with Seamless?',
+        question: 'How do I get started with HorizonX?',
         answer:
           "Getting started is simple! Download the app from our website, create your account, and follow the guided onboarding process. You'll be able to import existing data from other productivity tools and set up your workspace in under 5 minutes.",
       },
       {
-        question: 'Is my data secure with Seamless?',
+        question: 'Is my data secure with HorizonX?',
         answer:
           'Absolutely. We use enterprise-grade encryption (AES-256) for all data in transit and at rest. Your data is stored in secure, SOC 2 compliant data centers, and we never share your personal information with third parties.',
       },
       {
-        question: 'Can I use Seamless offline?',
+        question: 'Can I use HorizonX offline?',
         answer:
-          "Yes! Seamless offers robust offline functionality. You can access your recent documents, tasks, and notes even without an internet connection. All changes sync automatically when you're back online.",
+          "Yes! HorizonX offers robust offline functionality. You can access your recent documents, tasks, and notes even without an internet connection. All changes sync automatically when you're back online.",
       },
     ],
     account: [
@@ -80,7 +80,7 @@ const SupportPage: React.FC = () => {
       {
         question: 'What are the system requirements?',
         answer:
-          'Seamless works on Windows 10+, macOS 10.14+, and Linux (Ubuntu 18.04+). For mobile, we support iOS 12+ and Android 8+. We recommend at least 4GB RAM and 2GB free storage space.',
+          'HorizonX works on Windows 10+, macOS 10.14+, and Linux (Ubuntu 18.04+). For mobile, we support iOS 12+ and Android 8+. We recommend at least 4GB RAM and 2GB free storage space.',
       },
       {
         question: 'Why is the app running slowly?',
@@ -143,7 +143,7 @@ const SupportPage: React.FC = () => {
                   <Mail className="w-5 h-5 text-primary mr-3" />
                   <div>
                     <div className="font-medium text-foreground">Email Support</div>
-                    <div className="text-sm text-muted-foreground">support@seamlessapp.com</div>
+                    <div className="text-sm text-muted-foreground">support@horizonx.com</div>
                   </div>
                 </div>
 
@@ -302,7 +302,7 @@ const SupportPage: React.FC = () => {
 
           <div className="mt-8 pt-8 border-t border-border text-center text-foreground">
             <p>
-              &copy; 2025 Seamless App. All rights reserved. | Version 2.4.1 | Last updated: June
+              &copy; 2025 HorizonX App. All rights reserved. | Version 2.4.1 | Last updated: June
               19, 2025
             </p>
           </div>

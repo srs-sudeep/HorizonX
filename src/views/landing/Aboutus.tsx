@@ -241,7 +241,7 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
             </pre>
             <div className="max-w-2xl mx-auto  p-6 rounded-xl font-mono text-sm transition-colors duration-300">
               <p>
-                <span className="text-success">seamless</span>@
+                <span className="text-success">HorizonX</span>@
                 <span className="text-primary">iitbhilai</span>
               </p>
               <hr className="my-2 border-border" />
@@ -440,7 +440,7 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
                 <div className="w-3 h-3 rounded-full bg-success"></div>
               </div>
               <div className="ml-auto text-foreground text-xs font-medium">
-                seamless@iitbhilai: ~
+                HorizonX@iitbhilai: ~
               </div>
             </div>
 
@@ -479,7 +479,7 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
                   <div key={index} className="mb-4">
                     <div className="flex items-center mb-2 bg-secondary rounded-lg p-2">
                       <span className="text-success font-bold mr-3">
-                        <span className="text-chip-blue">seamless</span>
+                        <span className="text-chip-blue">HorizonX</span>
                         <span className="text-muted-foreground">@</span>
                         <span className="text-chip-yellow">iitbhilai</span>
                         <span className="text-muted-foreground">:</span>
@@ -513,7 +513,7 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
                 <div className="flex items-center font-mono text-base rounded-md px-4 py-2 transition-colors shadow-sm">
                   {/* Prompt */}
                   <span className="text-success font-bold mr-3 whitespace-nowrap">
-                    <span className="text-chip-blue">seamless</span>
+                    <span className="text-chip-blue">HorizonX</span>
                     <span className="text-muted-foreground">@</span>
                     <span className="text-chip-yellow">iitbhilai</span>
                     <span className="text-muted-foreground">:</span>
@@ -636,7 +636,7 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
             <div className="relative group">
               <h2 className="text-5xl md:text-6xl lg:text-7xl font-extralight text-center tracking-widest">
                 <span className="inline-block px-12 py-4 text-foreground relative overflow-hidden transition-all duration-500 ease-out hover:text-foreground">
-                  About Seamless
+                  About HorizonX
                   <span className="absolute bottom-0 left-0 w-0 h-px bg-gradient-to-r from-muted-foreground via-foreground to-muted-foreground group-hover:w-full transition-all duration-700 ease-out"></span>
                 </span>
               </h2>
@@ -649,32 +649,32 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
           </blockquote>
 
           <p className="text-[17px] font-light leading-relaxed mb-6">
-            <strong className="font-semibold text-primary">Seamless</strong> is a modern, intuitive
+            <strong className="font-semibold text-primary">HorizonX</strong> is a modern, intuitive
             platform designed to simplify digital workflows, enhance collaboration, and provide
             users with a frictionless experience across devices and services. Built with elegance
-            and efficiency in mind, Seamless bridges the gap between functionality and design —
+            and efficiency in mind, HorizonX bridges the gap between functionality and design —
             empowering individuals and teams to do more with less effort.
           </p>
 
           <hr className="my-6 border-muted-foreground/30" />
 
           <p className="text-[17px] font-light leading-relaxed mb-6">
-            At its core, Seamless is about minimizing digital clutter. Whether you're managing
-            tasks, collaborating on content, or switching between tools, Seamless offers a unified
+            At its core, HorizonX is about minimizing digital clutter. Whether you're managing
+            tasks, collaborating on content, or switching between tools, HorizonX offers a unified
             interface that adapts to your context. Its minimalist aesthetic, paired with powerful
             capabilities, helps you stay focused on what matters most — getting things done.
           </p>
 
           <p className="text-[17px] font-light leading-relaxed mb-6">
-            One of Seamless’ key strengths is its adaptive layout and smart component system. From
+            One of HorizonX’ key strengths is its adaptive layout and smart component system. From
             responsive controls to dynamic dashboards, every element is designed for clarity and
             flow. The platform supports role-based views and personalization, ensuring that both
             beginners and power users feel right at home.
           </p>
 
           <p className="text-[17px] font-light leading-relaxed">
-            But Seamless isn’t just another tool — it’s a mindset. We believe great software gets
-            out of your way. Whether you're planning, building, or exploring, Seamless offers an
+            But HorizonX isn’t just another tool — it’s a mindset. We believe great software gets
+            out of your way. Whether you're planning, building, or exploring, HorizonX offers an
             environment where ideas flow naturally, collaboration thrives, and work feels
             effortless.
           </p>

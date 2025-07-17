@@ -70,7 +70,7 @@ export function TimeRangePicker({ value, onChange, placeholder = 'Select time ra
   }, [isOpen, activeSelection, internalRange, value]);
 
   const hours = Array.from({ length: 12 }, (_, i) => i + 1);
-  const minutes = Array.from({ length: 12 }, (_, i) => i * 5);
+  const minutes = Array.from({ length: 60 }, (_, i) => i);
 
   const createTimeFromComponents = (hour: number, minute: number, isPM: boolean) => {
     const date = new Date();
@@ -181,60 +181,57 @@ export function TimeRangePicker({ value, onChange, placeholder = 'Select time ra
           <Separator className="mb-4" />
 
           {/* Time Pickers */}
-          <div className="flex divide-x">
-            {/* Hours */}
-            <ScrollArea className="w-20 h-[200px]" ref={hourRef}>
-              <div className="flex flex-col p-2">
+          <div className="flex gap-4 items-center justify-center">
+            {/* Hour Dropdown */}
+            <div className="flex flex-col items-center">
+              <span className="mb-2 text-xs text-muted-foreground">Hour</span>
+              <select
+                className="border rounded px-2 py-1 focus:outline-none"
+                value={(() => {
+                  const currentTime = activeSelection === 'start' ? internalRange.start : internalRange.end;
+                  if (!currentTime) return 12;
+                  let h = currentTime.getHours() % 12;
+                  return h === 0 ? 12 : h;
+                })()}
+                onChange={e => handleTimeChange('hour', e.target.value)}
+              >
                 {hours.map(hour => (
-                  <Button
-                    key={hour}
-                    size="sm"
-                    variant={isActive('hour', hour) ? 'default' : 'ghost'}
-                    className="w-full mb-1"
-                    onClick={() => handleTimeChange('hour', hour.toString())}
-                    data-hour={hour}
-                  >
-                    {hour}
-                  </Button>
+                  <option key={hour} value={hour}>{hour}</option>
                 ))}
-              </div>
-            </ScrollArea>
-
-            {/* Minutes */}
-            <ScrollArea className="w-20 h-[200px]" ref={minuteRef}>
-              <div className="flex flex-col p-2">
+              </select>
+            </div>
+            {/* Minute Dropdown */}
+            <div className="flex flex-col items-center">
+              <span className="mb-2 text-xs text-muted-foreground">Minute</span>
+              <select
+                className="border rounded px-2 py-1 focus:outline-none"
+                value={(() => {
+                  const currentTime = activeSelection === 'start' ? internalRange.start : internalRange.end;
+                  return currentTime ? currentTime.getMinutes() : 0;
+                })()}
+                onChange={e => handleTimeChange('minute', e.target.value)}
+              >
                 {minutes.map(minute => (
-                  <Button
-                    key={minute}
-                    size="sm"
-                    variant={isActive('minute', minute) ? 'default' : 'ghost'}
-                    className="w-full mb-1"
-                    onClick={() => handleTimeChange('minute', minute.toString())}
-                    data-minute={minute}
-                  >
-                    {minute.toString().padStart(2, '0')}
-                  </Button>
+                  <option key={minute} value={minute}>{minute.toString().padStart(2, '0')}</option>
                 ))}
-              </div>
-            </ScrollArea>
-
-            {/* AM/PM */}
-            <ScrollArea className="w-20 h-[200px]" ref={ampmRef}>
-              <div className="flex flex-col p-2">
-                {['AM', 'PM'].map(ampm => (
-                  <Button
-                    key={ampm}
-                    size="sm"
-                    variant={isActive('ampm', ampm) ? 'default' : 'ghost'}
-                    className="w-full mb-1"
-                    onClick={() => handleTimeChange('ampm', ampm)}
-                    data-ampm={ampm}
-                  >
-                    {ampm}
-                  </Button>
-                ))}
-              </div>
-            </ScrollArea>
+              </select>
+            </div>
+            {/* AM/PM Dropdown */}
+            <div className="flex flex-col items-center">
+              <span className="mb-2 text-xs text-muted-foreground">AM/PM</span>
+              <select
+                className="border rounded px-2 py-1 focus:outline-none"
+                value={(() => {
+                  const currentTime = activeSelection === 'start' ? internalRange.start : internalRange.end;
+                  if (!currentTime) return 'AM';
+                  return currentTime.getHours() >= 12 ? 'PM' : 'AM';
+                })()}
+                onChange={e => handleTimeChange('ampm', e.target.value)}
+              >
+                <option value="AM">AM</option>
+                <option value="PM">PM</option>
+              </select>
+            </div>
           </div>
 
           {/* Quick Actions */}

@@ -6,12 +6,12 @@ export const Hero = () => {
         {/* SVG Background Images */}
         <img
           src={logos.short.light}
-          alt="Seamless Background"
+          alt="HorizonX Background"
           className="absolute inset-0 w-full h-full object-cover z-0 opacity-20 dark:hidden"
         />
         <img
           src={logos.short.dark}
-          alt="Seamless Background"
+          alt="HorizonX Background"
           className="absolute inset-0 w-full h-full object-cover z-0 opacity-25 hidden dark:block"
         />
 

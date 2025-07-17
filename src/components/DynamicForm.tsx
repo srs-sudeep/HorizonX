@@ -20,6 +20,8 @@ import { type FieldType as BaseFieldType } from '@/types';
 import { parse } from 'date-fns';
 import { Check, ChevronDown, Plus, Trash2 } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
+import { TimePicker } from '@/components/ui/timePicker';
+import { DateRangePicker } from '@/components/ui/dateRangePicker';
 
 // Extend FieldType to include 'fields', 'minItems', and 'maxItems' for array type
 type FieldType = BaseFieldType & {
@@ -291,7 +293,7 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
             if (currentRow.length > 0) rows.push(currentRow);
 
             return rows.map((row, rowIndex) => (
-              <div key={rowIndex} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div key={rowIndex} className="flex flex-col">
                 {row.map(field => (
                   <div
                     key={field.name}
@@ -375,6 +377,20 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
                           </div>
                         ))}
                       </div>
+                    ) : field.type === 'daterange' ? (
+                      <DateRangePicker
+                        value={formData[field.name]}
+                        onChange={range => {
+                          setFormData({
+                            ...formData,
+                            [field.name]: range,
+                          });
+                          if (onChange) onChange({
+                            ...formData,
+                            [field.name]: range,
+                          });
+                        }}
+                      />
                     ) : field.type === 'timerange' ? (
                       <TimeRangePicker
                         value={formData[field.name]}
@@ -385,6 +401,20 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
                           });
                         }}
                         placeholder="Select time range"
+                      />
+                    ) : field.type === 'time' ? (
+                      <TimePicker
+                        value={formData[field.name] ? new Date(formData[field.name]) : undefined}
+                        onChange={date => {
+                          setFormData({
+                            ...formData,
+                            [field.name]: date ? date.toISOString() : '',
+                          });
+                          if (onChange) onChange({
+                            ...formData,
+                            [field.name]: date ? date.toISOString() : '',
+                          });
+                        }}
                       />
                     ) : field.type === 'toggle' ? (
                       <label className="flex items-center gap-2 my-3">
@@ -861,6 +891,17 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
                           );
                         })}
                       </div>
+                    ) : field.type === 'color' ? (
+                      <input
+                        type="color"
+                        name={field.name}
+                        required={field.required}
+                        onChange={handleChange}
+                        className="w-12 h-12 p-0 border-none bg-transparent mb-6 cursor-pointer"
+                        value={formData[field.name] ?? field.defaultValue ?? '#3788d8'}
+                        disabled={disabled || field.disabled}
+                        style={{ minWidth: 48, minHeight: 48 }}
+                      />
                     ) : (
                       <Input
                         type={field.type}

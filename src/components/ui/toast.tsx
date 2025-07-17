@@ -2,6 +2,8 @@ import * as React from 'react';
 import * as ToastPrimitives from '@radix-ui/react-toast';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
+import { CheckCircle, XCircle, Info, AlertTriangle, Sparkles } from 'lucide-react';
+import confetti from 'canvas-confetti';
 
 import { cn } from '@/lib/utils';
 
@@ -22,14 +24,35 @@ const ToastViewport = React.forwardRef<
 ));
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName;
 
+const toastTypeMap = {
+  success: {
+    icon: <CheckCircle className="text-green-500 animate-pop" />,
+    variant: 'success',
+  },
+  error: {
+    icon: <XCircle className="text-red-500 animate-pop" />,
+    variant: 'destructive',
+  },
+  info: {
+    icon: <Info className="text-blue-500 animate-pop" />,
+    variant: 'info',
+  },
+  warning: {
+    icon: <AlertTriangle className="text-yellow-500 animate-pop" />,
+    variant: 'warning',
+  },
+};
+
 const toastVariants = cva(
-  'group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border p-6 pr-8 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full',
+  'group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-xl border p-6 pr-8 shadow-2xl transition-all duration-300 data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full',
   {
     variants: {
       variant: {
         default: 'border bg-background text-foreground',
-        destructive:
-          'destructive group border-destructive bg-destructive text-destructive-foreground',
+        destructive: 'border-red-500 bg-red-50 text-red-900',
+        success: 'border-green-500 bg-green-50 text-green-900',
+        info: 'border-blue-500 bg-blue-50 text-blue-900',
+        warning: 'border-yellow-500 bg-yellow-50 text-yellow-900',
       },
     },
     defaultVariants: {
@@ -40,14 +63,40 @@ const toastVariants = cva(
 
 const Toast = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Root>,
-  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> & VariantProps<typeof toastVariants>
->(({ className, variant, ...props }, ref) => {
+  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> & VariantProps<typeof toastVariants> & { type?: 'success' | 'error' | 'info' | 'warning', progress?: number }
+>(({ className, variant, type, progress, ...props }, ref) => {
+  React.useEffect(() => {
+    if (type === 'success') {
+      confetti({
+        particleCount: 60,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+    }
+  }, [type]);
+  const typeData = type ? toastTypeMap[type] : null;
   return (
     <ToastPrimitives.Root
       ref={ref}
-      className={cn(toastVariants({ variant }), className)}
+      className={cn(toastVariants({ variant: typeData?.variant || variant }), className)}
       {...props}
-    />
+    >
+      {typeData && <span className="mr-2">{typeData.icon}</span>}
+      {props.children}
+      {typeof progress === 'number' && (
+        <div className="absolute left-0 bottom-0 h-1 w-full bg-gray-200">
+          <div
+            className={cn('h-1 rounded-full transition-all', {
+              'bg-green-500': type === 'success',
+              'bg-red-500': type === 'error',
+              'bg-blue-500': type === 'info',
+              'bg-yellow-500': type === 'warning',
+            })}
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+      )}
+    </ToastPrimitives.Root>
   );
 });
 Toast.displayName = ToastPrimitives.Root.displayName;

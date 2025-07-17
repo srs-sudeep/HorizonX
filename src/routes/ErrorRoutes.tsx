@@ -4,6 +4,7 @@ import ErrorLayout from '@/layouts/ErrorLayout';
 // Error pages
 const NotFoundPage = lazyLoad(() => import('@/views/errors/NotFoundPage'));
 const UnauthorizedPage = lazyLoad(() => import('@/views/errors/UnauthorizedPage'));
+const InternalServerErrorPage = lazyLoad(() => import('@/views/errors/InternalServerErrorPage'));
 
 const ErrorRoutes = [
   {
@@ -11,6 +12,14 @@ const ErrorRoutes = [
     element: (
       <ErrorLayout>
         <UnauthorizedPage />
+      </ErrorLayout>
+    ),
+  },
+  {
+    path: 'servererror',
+    element: (
+      <ErrorLayout>
+        <InternalServerErrorPage />
       </ErrorLayout>
     ),
   },

@@ -23,7 +23,7 @@ export const FeaturesCards = () => {
     },
     {
       icon: Sparkles,
-      title: 'Seamless Campus Life',
+      title: 'HorizonX Campus Life',
       description: 'Smart, secure, and student-centric digital ecosystem.',
       delay: 800,
     },
@@ -45,7 +45,7 @@ export const FeaturesCards = () => {
             Features
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Why <span className="bg-primary bg-clip-text text-transparent">Seamless?</span>
+            Why <span className="bg-primary bg-clip-text text-transparent">HorizonX?</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Experience the power of unified business operations with our comprehensive platform
