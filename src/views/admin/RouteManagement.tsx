@@ -686,7 +686,8 @@ const RouteManagement = () => {
         return (
           <button
             type="button"
-            className={`w-10 h-6 rounded-full ${isAssigned ? 'bg-success' : 'bg-muted-foreground/20'} ${isLoading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+            className={`relative w-12 h-6 flex items-center rounded-full p-1 
+              transition-all duration-200 ease-in-out ${isAssigned ? 'bg-success' : 'bg-muted-foreground/20'} ${isLoading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'} focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2`}
             disabled={isLoading}
             onClick={() => {
               if (isAssigned) {
@@ -881,8 +882,8 @@ const RouteManagement = () => {
               rounded-l-xl
             "
           style={{ width: '90vw', maxWidth: '1200px' }}>
-          <Tabs value={tab} onValueChange={value => setTab(value as 'user' | 'component')}>
-            <TabsList>
+          <Tabs value={tab} onValueChange={value => setTab(value as 'user' | 'component')} className='m-10'>
+            <TabsList className='mb-5'>
               <TabsTrigger value="user">User Permissions</TabsTrigger>
               <TabsTrigger value="component">Add Components</TabsTrigger>
             </TabsList>
@@ -910,6 +911,7 @@ const RouteManagement = () => {
                   data={componentTableData}
                   customRender={componentTableCustomRender}
                   disableSearch
+                  className='mt-10'
                 />
               )}
             </TabsContent>
@@ -943,6 +945,7 @@ const RouteManagement = () => {
                   data={routeComponentTableData}
                   customRender={routeComponentTableCustomRender}
                   disableSearch
+                  className='mt-10'
                 />
               </div>
             </TabsContent>
