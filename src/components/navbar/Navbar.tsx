@@ -180,7 +180,7 @@ export const Navbar = () => {
   // Get current page name from path
   const getPageName = () => {
     const path = location.pathname.split('/');
-    return path[1]?.charAt(0).toUpperCase() + path[1]?.slice(1);
+    return path[2]?.charAt(0).toUpperCase() + path[2]?.slice(1);
   };
 
   const getBreadcrumbItems = () => {
@@ -352,7 +352,7 @@ export const Navbar = () => {
                   </Tooltip>
                 </BreadcrumbItem>
 
-                {getBreadcrumbItems().map((item, index) => (
+                {getBreadcrumbItems().slice(1).map((item, index) => (
                   <React.Fragment key={index}>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>

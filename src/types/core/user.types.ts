@@ -12,9 +12,11 @@ export interface GetUsersParams {
 }
 
 export interface UserAPI {
-  ldapid: string;
-  idNumber: string;
+  id: string;
   name: string;
+  phoneNumber: string;
+  email: string;
+  username: string;
   is_active: boolean;
   roles: UserRoleAPI[];
 }
@@ -36,4 +38,14 @@ export interface UserStatusFilter {
 export interface UserFiltersResponse {
   roles: UserRoleFilter[];
   status: UserStatusFilter[];
+}
+
+export interface UserComponentsResponse {
+  user_id: string;
+  component_ids: string[];
+}
+
+export interface UserComponentPayload {
+  user_id: string;
+  component_id: string;
 }

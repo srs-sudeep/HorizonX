@@ -1,7 +1,6 @@
 import React from 'react';
-import { useComponentAccess } from '@/hooks/useComponentAccess';
-import { useAuthStore } from '@/store';
 import { Loader2 } from 'lucide-react';
+import { useProtectedComponentContext } from './ProtectedComponentProvider';
 
 interface ProtectedComponentProps {
   componentId: string;
@@ -18,9 +17,7 @@ export const ProtectedComponent: React.FC<ProtectedComponentProps> = ({
   children,
   className = "",
 }) => {
-  const { user } = useAuthStore();
-  const userRoles = user?.roles || [];
-  const { hasAccess, isLoading } = useComponentAccess(componentId, userRoles);
+  const { allowedComponentIds, isLoading } = useProtectedComponentContext();
 
   if (isLoading && showLoader) {
     return (
@@ -30,7 +27,7 @@ export const ProtectedComponent: React.FC<ProtectedComponentProps> = ({
     );
   }
 
-  if (!hasAccess) {
+  if (!allowedComponentIds.includes(componentId)) {
     return <>{fallback}</>;
   }
 

@@ -1,19 +1,17 @@
 import { useAuthStore } from '@/store';
 import { Building, Hash, Mail, User, UserCheck } from 'lucide-react';
-import { ProtectedComponent } from '@/components/ProtectedComponent';
-import { useUserPermissions } from '@/hooks/useComponentAccess';
+import { ProtectedComponent } from '@/core/context/protectedComponent';
+// import { useUserPermissions } from '@/hooks/useComponentAccess';
 
 export default function ProfilePage() {
   const { user } = useAuthStore();
-  const userRoles = user?.roles || [];
-  const { permissions } = useUserPermissions(userRoles);
 
   return (
     <div className="container">
       <div className="relative z-10 p-8 md:p-12">
         {/* Profile Header - Protected Component */}
         <ProtectedComponent
-          componentId="comp-profile-header"
+          componentId="profile-header"
           fallback={
             <div className="text-center py-8">
               <p className="text-muted-foreground">
@@ -50,7 +48,7 @@ export default function ProfilePage() {
 
         {/* Profile Details Grid - Protected Component */}
         <ProtectedComponent
-          componentId="comp-profile-details"
+          componentId="profile-details"
           fallback={
             <div className="text-center py-8">
               <p className="text-muted-foreground">
@@ -99,12 +97,12 @@ export default function ProfilePage() {
                   <p
                     className={`text-sm font-medium mb-2 transition-colors duration-500 text-muted-foreground`}
                   >
-                    LDAP ID
+                    Username
                   </p>
                   <p
                     className={`text-xl font-bold break-words transition-colors duration-500 text-foreground`}
                   >
-                    {user?.ldapid}
+                    {user?.username}
                   </p>
                 </div>
               </div>
@@ -124,12 +122,12 @@ export default function ProfilePage() {
                   <p
                     className={`text-sm font-medium mb-2 transition-colors duration-500 text-muted-foreground`}
                   >
-                    Institute ID
+                    Phone
                   </p>
                   <p
                     className={`text-xl font-bold break-words transition-colors duration-500 text-foreground`}
                   >
-                    {user?.idNumber}
+                    {user?.phoneNumber}
                   </p>
                 </div>
               </div>
@@ -154,7 +152,7 @@ export default function ProfilePage() {
                   <p
                     className={`text-xl font-bold break-words transition-colors duration-500 text-foreground`}
                   >
-                    {user?.ldapid}@iitbhilai.ac.in
+                    {user?.email}
                   </p>
                 </div>
               </div>
@@ -240,29 +238,6 @@ export default function ProfilePage() {
                   Access Level
                 </p>
               </div>
-            </div>
-          </div>
-        </ProtectedComponent>
-
-        {/* Debug Info - Shows current permissions (Admin only) */}
-        <ProtectedComponent
-          componentId="comp-profile-icon"
-          fallback={null}
-        >
-          <div className="mt-8 p-4 bg-muted/50 rounded-lg">
-            <h3 className="font-semibold mb-2">Debug Info (Admin Only)</h3>
-            <p className="text-sm text-muted-foreground mb-2">
-              Current Permissions:
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {permissions.map((permission) => (
-                <span
-                  key={permission.permission_id}
-                  className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs"
-                >
-                  {permission.name}
-                </span>
-              ))}
             </div>
           </div>
         </ProtectedComponent>

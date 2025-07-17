@@ -39,6 +39,7 @@ export const useAuthStore = create<AuthState>()(
           currentRole: user.roles[0],
           isAuthenticated: true,
         });
+        
       },
 
       logout: () => {

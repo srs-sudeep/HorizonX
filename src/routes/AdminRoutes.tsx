@@ -10,27 +10,27 @@ const RolesManagement = lazyLoad(() => import('@/views/admin/RolesManagement'));
 const UserManagement = lazyLoad(() => import('@/views/admin/UserManagement'));
 const ServiceManagement = lazyLoad(() => import('@/views/admin/ServiceManagement'));
 const AdminRoutes: RouteObject = {
-  path: '/admin',
+  path: '/horizonx/rbac',
   element: <MainLayout />,
   children: [
     {
-      path: 'roles-management',
+      path: 'role',
       element: <RolesManagement />,
     },
     {
-      path: 'permission-management',
+      path: 'permission',
       element: <PermissionManagement />,
     },
     {
-      path: 'module-management',
+      path: 'module',
       element: <ModuleManagement />,
     },
     {
-      path: 'user-management',
+      path: 'user',
       element: <UserManagement />,
     },
     {
-      path: 'path-management',
+      path: 'path',
       element: <RouteManagement />,
     },
     {

@@ -2,9 +2,9 @@ import { type UserRole } from '@/types';
 
 export function getDashboardLink(role: UserRole | null | undefined) {
   const rolePaths: Record<string, string> = {
-    default: '/',
-    admin: '/dashboard/admin',
-    student: '/dashboard/student'
+    default: '/horizonx/workbench',
+    superuser: '/horizonx/workbench/dashboard/admin',
+    user: '/horizonx/workbench/dashboard/user',
   };
 
   return role && rolePaths[role] ? rolePaths[role] : '/';

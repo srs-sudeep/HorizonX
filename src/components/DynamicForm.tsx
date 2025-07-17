@@ -269,7 +269,7 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
   }, [openDropdowns]);
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 mx-auto max-w-5xl w-full">
+    <form onSubmit={handleSubmit} className="space-y-8 mx-auto w-full">
       {Object.entries(sectionMap).map(([section, fields]) => (
         <div key={section} className="mb-8">
           {section !== 'General' && <h2 className="text-lg font-semibold mb-4">{section}</h2>}

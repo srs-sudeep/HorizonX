@@ -18,11 +18,31 @@ import {
   ScrollArea,
   Checkbox,
   Badge,
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
 } from '@/components';
-import { useCreateRoute, useDeleteRoute, useRoles, useSidebarItems, useUpdateRoute } from '@/hooks';
+import {
+  useAddUserComponent,
+  useCreateRoute,
+  useDeleteRoute,
+  useRemoveUserComponent,
+  useRoles,
+  useRouteComponents,
+  useSidebarItems,
+  useUpdateRoute,
+  useUsers,
+  useMultiUserComponents,
+  useAddRouteComponent,
+  useRemoveRouteComponent,
+} from '@/hooks';
 import { FieldType, FilterConfig } from '@/types';
-import { Pencil, Plus, Trash2, Search, X, ChevronDownIcon } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { Pencil, Plus, Trash2, Search, X, ChevronDownIcon, View, Loader2 } from 'lucide-react';
+import React, { useMemo, useState } from 'react';
 
 const baseSchema: FieldType[] = [
   { name: 'path', label: 'Path', type: 'text', required: true, columns: 2 },
@@ -53,7 +73,6 @@ const RouteManagement = () => {
   const createMutation = useCreateRoute();
   const updateMutation = useUpdateRoute();
   const deleteMutation = useDeleteRoute();
-
   const { data: allRolesApi = [], isFetching: rolesLoading } = useRoles();
 
   const [editRoute, setEditRoute] = useState<any | null>(null);
@@ -62,6 +81,22 @@ const RouteManagement = () => {
     parent_id: number | null;
   } | null>(null);
   const [globalSearch, setGlobalSearch] = useState('');
+  const [viewComponentPanel, setViewComponentPanel] = useState<number>();
+  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
+  const [tab, setTab] = useState<'user' | 'component'>('user');
+  const [newComponentId, setNewComponentId] = useState('');
+
+  // Fetch all users for the dropdown
+  const { data: userListData } = useUsers({});
+  const userList = userListData?.users || [];
+
+  const userIdToName = useMemo(() => {
+    const map: Record<string, string> = {};
+    userList.forEach(u => {
+      map[u.id] = u.name;
+    });
+    return map;
+  }, [userList]);
 
   const allRoles = useMemo(
     () =>
@@ -87,25 +122,26 @@ const RouteManagement = () => {
   ];
 
   const getSubModuleTableData = (subModules: any[]) =>
-    subModules.map(sub => ({
-      Label: sub.label,
-      Path: sub.path || '',
-      Icon: sub.icon,
-      Status: sub.isActive,
-      Roles: (sub.roles || []).map((role: any) => ({
-        label: role.role_name || role.name || role.label || role,
-        value: role.role_id || role.value || role,
-      })),
-      'Is Sidebar': sub.is_sidebar,
-      Edit: '',
-      Delete: '',
-      Create: '',
-      _row: sub,
-      _subModules: sub.children || [],
-      _module_id: sub.module_id,
-      _parent_id: sub.parent_id ?? null,
-      _roles: sub.roles || [],
-    }));
+  subModules.map(sub => ({
+    Label: sub.label,
+    Path: sub.path || '',
+    Icon: sub.icon,
+    Status: sub.isActive,
+    Roles: (sub.roles || []).map((role: any) => ({
+      label: role.role_name || role.name || role.label || role,
+      value: role.role_id || role.value || role,
+    })),
+    'Is Sidebar': sub.is_sidebar,
+    Edit: '',
+    Delete: '',
+    Create: '',
+    'View Component': '',
+    _row: sub,
+    _subModules: sub.children || [],
+    _module_id: sub.module_id,
+    _parent_id: sub.parent_id ?? null,
+    _roles: sub.roles || [],
+  }));
 
   const customRender = {
     Edit: (_: any, row: Record<string, any>) => (
@@ -203,6 +239,23 @@ const RouteManagement = () => {
           <span className="text-muted-foreground text-xs">No Roles</span>
         )}
       </div>
+    ),
+    'View Component': (_: any, row: Record<string, any>) => (
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            size="icon"
+            variant="outline"
+            onClick={e => {
+              e.stopPropagation();
+              setViewComponentPanel(row._row.route_id || row._row.id);
+            }}
+          >
+            <View className="w-4 h-4" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>Manage Route Components</TooltipContent>
+      </Tooltip>
     ),
   };
 
@@ -602,6 +655,80 @@ const RouteManagement = () => {
     );
   };
 
+  // Route components for the selected route
+  const routeId = viewComponentPanel;
+  const { data: routeComponents } = useRouteComponents(routeId ?? 0);
+  const addRouteComponentMutation = useAddRouteComponent();
+  const removeRouteComponentMutation = useRemoveRouteComponent();
+
+  // Build userComponentsMap from hook
+  const userComponentsMap = useMultiUserComponents(selectedUsers);
+
+  // Prepare table data for user-component assignment
+  const componentTableData = (routeComponents?.component_ids || []).map(component_id => {
+    const row: any = { Component: component_id };
+    selectedUsers.forEach(user_id => {
+      row[userIdToName[user_id] || user_id] = { component_id, user_id }; // Show name, keep id for API
+    });
+    return row;
+  });
+
+  const addMutation = useAddUserComponent();
+  const removeMutation = useRemoveUserComponent();
+
+  const componentTableCustomRender = selectedUsers.reduce(
+    (acc: { [key: string]: (val: any) => React.JSX.Element }, user_id) => {
+      const userName = userIdToName[user_id] || user_id;
+      acc[userName] = (val: any) => {
+        const assignedComponents = userComponentsMap[user_id] || [];
+        const isAssigned = assignedComponents.includes(val.component_id);
+        const isLoading = addMutation.isPending || removeMutation.isPending;
+        return (
+          <button
+            type="button"
+            className={`relative w-12 h-6 flex items-center rounded-full p-1 
+              transition-all duration-200 ease-in-out ${isAssigned ? 'bg-success' : 'bg-muted-foreground/20'} ${isLoading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'} focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2`}
+            disabled={isLoading}
+            onClick={() => {
+              if (isAssigned) {
+                removeMutation.mutate({ component_id: val.component_id, user_id: val.user_id });
+              } else {
+                addMutation.mutate({ component_id: val.component_id, user_id: val.user_id });
+              }
+            }}
+          >
+            <span className={`bg-background w-4 h-4 rounded-full ${isAssigned ? 'translate-x-6' : 'translate-x-0'}`} />
+            {isLoading && <Loader2 className="absolute inset-0 m-auto w-3 h-3 animate-spin text-foreground" />}
+          </button>
+        );
+      };
+      return acc;
+    },
+    {}
+  );
+
+  const routeComponentTableData = (routeComponents?.component_ids || []).map(component_id => ({
+    Component: component_id,
+    Actions: { route_id: routeId, component_id },
+  }));
+
+  const routeComponentTableCustomRender = {
+    Actions: (val: { route_id?: number; component_id: string }) => (
+      <Button
+        size="icon"
+        variant="destructive"
+        onClick={() => {
+          if (val.route_id && val.component_id) {
+            removeRouteComponentMutation.mutate({ route_id: val.route_id, component_id: val.component_id });
+          }
+        }}
+        disabled={removeRouteComponentMutation.isPending}
+      >
+        <Trash2 className="w-4 h-4" />
+      </Button>
+    ),
+  };
+
   return (
     <HelmetWrapper
       title="Paths | HorizonX"
@@ -735,6 +862,96 @@ const RouteManagement = () => {
           />
         </DialogContent>
       </Dialog>
+      {/* View Component Sheet */}
+      <Sheet
+        open={!!viewComponentPanel}
+        onOpenChange={open => {
+          if (!open) setViewComponentPanel(0);
+        }}
+      >
+        <SheetTitle style={{ display: 'none' }} />
+        <SheetContent side="right" className="
+              p-0 
+              fixed right-0 top-1/2 -translate-y-1/2
+              min-h-fit max-h-[100vh]
+              w-full sm:w-[90vw] md:w-[70vw] lg:w-[60vw] xl:w-[100vw]
+              bg-card border-l border-border
+              shadow-2xl
+              overflow-hidden
+              flex flex-col
+              rounded-l-xl
+            "
+          style={{ width: '90vw', maxWidth: '1200px' }}>
+          <Tabs value={tab} onValueChange={value => setTab(value as 'user' | 'component')} className='m-10'>
+            <TabsList className='mb-5'>
+              <TabsTrigger value="user">User Permissions</TabsTrigger>
+              <TabsTrigger value="component">Add Components</TabsTrigger>
+            </TabsList>
+            <TabsContent value="user">
+              <DynamicForm
+                schema={[
+                  {
+                    name: 'users',
+                    label: 'Select Users',
+                    type: 'select',
+                    multiSelect: true,
+                    options: userList.map(u => ({
+                      value: u.id,
+                      label: `${u.name} (${u.email})`,
+                    })),
+                    required: true,
+                    columns: 2,
+                  },
+                ]}
+                defaultValues={{ users: selectedUsers }}
+                onSubmit={data => setSelectedUsers(data.users)}
+              />
+              {selectedUsers.length > 0 && (
+                <DynamicTable
+                  data={componentTableData}
+                  customRender={componentTableCustomRender}
+                  disableSearch
+                  className='mt-10'
+                />
+              )}
+            </TabsContent>
+            <TabsContent value="component">
+              <div className="space-y-4">
+                {/* Input for new component */}
+                <div className="flex gap-2 items-center mb-4">
+                  <Input
+                    type="text"
+                    placeholder="Enter new component ID"
+                    value={newComponentId}
+                    onChange={e => setNewComponentId(e.target.value)}
+                  />
+                  <Button
+                    onClick={() => {
+                      if (newComponentId.trim() && routeId) {
+                        addRouteComponentMutation.mutate(
+                          { route_id: routeId, component_id: newComponentId.trim() },
+                          { onSuccess: () => setNewComponentId('') }
+                        );
+                      }
+                    }}
+                    disabled={addRouteComponentMutation.isPending || !newComponentId.trim()}
+                  >
+                    Add Component
+                  </Button>
+                </div>
+
+                {/* Table of components */}
+                <DynamicTable
+                  data={routeComponentTableData}
+                  customRender={routeComponentTableCustomRender}
+                  disableSearch
+                  className='mt-10'
+                />
+              </div>
+            </TabsContent>
+          </Tabs>
+        </SheetContent>
+      </Sheet>
     </HelmetWrapper>
   );
 };

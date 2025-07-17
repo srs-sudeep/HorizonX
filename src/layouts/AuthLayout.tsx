@@ -1,25 +1,15 @@
 import { AppLogo, SettingsSidebar } from '@/components';
 import { Outlet } from 'react-router-dom';
-import { useTheme } from '@/theme';
-import LogoHorizontal from '@/assets/logos/LogoHorizontal.svg';
-import WhiteLogoHorizontal from '@/assets/logos/WhiteLogoHorizontal.svg';
 
 const AuthLayout = () => {
-  const { mode } = useTheme();
-  const backgroundImage = mode === 'dark' ? WhiteLogoHorizontal : LogoHorizontal;
 
   return (
-    <div className="relative flex items-center justify-center w-screen h-screen min-h-screen overflow-hidden">
+    <div className="relative flex items-center justify-center w-screen h-screen min-h-screen">
       {/* Modern Gradient Background with HorizonX Logo */}
       <div
-        className="fixed inset-0 w-screen h-screen bg-gradient-to-br from-[#0f2027] via-[#2c5364] to-[#24243e] dark:from-[#232526] dark:via-[#414345] dark:to-[#232526] flex items-center justify-center -z-10"
+        className="absolute inset-0 w-full h-full pointer-events-none bg-primary/10"
+        style={{ zIndex: 0 }}
       >
-        <img
-          src={backgroundImage}
-          alt="HorizonX Logo Background"
-          className="absolute inset-0 w-full h-full object-contain opacity-100 pointer-events-none select-none"
-          style={{ zIndex: 0 }}
-        />
       </div>
       {/* Color overlay from theme color */}
       <div
