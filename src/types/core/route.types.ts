@@ -16,3 +16,8 @@ export interface RouteComponentResponse {
   route_id: number;
   component_ids: string[];
 }
+
+export interface RouteComponentPayload {
+  route_id: number;
+  component_id: string;
+}
